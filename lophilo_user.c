@@ -307,10 +307,18 @@ int AM_2301_read_data()
 	return ret;
 }
 
+#define AM2301_ADDRESS 0x220
+#define AM2301_BASE    (AM2301_ADDRESS / 4)
+#define AM2301_ID      *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+1))
+#define AM2301_DATA    *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+3))
+#define AM2301_READY   *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+4))
+
+
 int main(int argn, char* argv[])
 {
 	  int sysmem_fd;
-
+	  short temperature_data;
+	  float temperature;
 	  sysmem_fd = open("/sys/kernel/debug/lophilo/modmem", O_RDWR);
 	  FPGA_MOD_BASE = mmap(
 		  0,  // starting address
@@ -331,36 +339,23 @@ int main(int argn, char* argv[])
 		  0x0 // offset
 		  );
 	  close(sysmem_fd);
-	  printf("FPGA ID=0x%x\n", IOB_ID);
+
 	  SHIELD_CTRL = 0x03030300;
 	  //IOA_OE      = 0xffffffff;
 	  IOB_OE      = 0xffffffff;
-	  printf("IOB_OE =0x%x\n", IOB_OE);
-	  printf("&IOB_OE =0x%x\n", &IOB_OE);
-	  printf("&IOA_OE =0x%x\n", &IOA_OE);
-
+	  printf("SYS_ID      =0x%x\n", SYS_ID);
+	  printf("AM2301 ID   =0x%x\n", AM2301_ID);
+	  printf("AM2301_DATA =0x%x\n", AM2301_DATA);
+	  printf("AM2301_READY=0x%x\n", AM2301_READY);
+	  temperature_data = 0xffff & AM2301_DATA;
+	  temperature  = temperature_data/10.0;
+	  printf("Temperature=%.1fC\n", temperature);
 	  //Sensor_SDA = 1;
-	  IOB_OE = 0x0;
-	  debuginf("%d",Sensor_SDA);
-	  //while(1)
-	  //{
-	//	  IOB_DATA=0;
-		  //usleep(20);
-	//	  IOB_DATA=0xffffffff;
-		  //usleep(20);
-	//  }
-//	  while(1)
-//	  {
-		  printf("0x%x\n",AM_2301_read_data());
+//	  IOB_OE = 0x0;
+//	  debuginf("%d",Sensor_SDA);
 
-//	      Tmp = Sensor_Data[0]*256+Sensor_Data[1];
-//	      UART_PutStringAndNum("M",Tmp);
-//	   	  Tmp = Sensor_Data[2]*256+Sensor_Data[3];
-//	      UART_PutStringAndNum("T",Tmp);
-//		  usleep(2000000);
-//	  }
-	  printf(log_buffer);
-	  printf("\n");
+//	  printf(log_buffer);
+//	  printf("\n");
 	  munmap(FPGA_SYS_BASE, length);
 	  munmap(FPGA_MOD_BASE, length);
 
