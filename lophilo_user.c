@@ -319,6 +319,8 @@ int main(int argn, char* argv[])
 	  int sysmem_fd;
 	  short temperature_data;
 	  float temperature;
+	  short moisture_data;
+	  float moisture;
 	  sysmem_fd = open("/sys/kernel/debug/lophilo/modmem", O_RDWR);
 	  FPGA_MOD_BASE = mmap(
 		  0,  // starting address
@@ -347,6 +349,10 @@ int main(int argn, char* argv[])
 	  printf("AM2301 ID   =0x%x\n", AM2301_ID);
 	  printf("AM2301_DATA =0x%x\n", AM2301_DATA);
 	  printf("AM2301_READY=0x%x\n", AM2301_READY);
+	  moisture_data    =  AM2301_DATA >> 16;
+	  printf("moisture_data=%d\n", moisture_data);
+	  moisture     = moisture_data/10.0;
+	  printf("Moisture=%.1f%%\n", moisture);
 	  temperature_data = 0xffff & AM2301_DATA;
 	  temperature  = temperature_data/10.0;
 	  printf("Temperature=%.1fC\n", temperature);
