@@ -5,7 +5,9 @@
 #include "ShieldCtrl.h"
 #include "FPGA.h"
 #include "AM2301.h"
+#include "position_sensor.h"
 #include "debug.h"
+
 
 int main(int argn, char* argv[])
 {
@@ -14,7 +16,8 @@ int main(int argn, char* argv[])
 	  AM2301_init();
 	  //IOA_OE      = 0xffffffff;
 	  //IOB_OE      = 0xffffffff;
+	  printf("Position is %d\n",get_position());
 	  fpga_close();
-	  trace_back();
+	  //trace_back();
 	  return 0;
 }
