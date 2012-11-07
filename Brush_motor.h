@@ -1,2 +1,16 @@
-ü—ð^#eS”PÏàæ ŒÆØ;v¤;E [ÞŸT—ñ#âª¼úKŸ¼LÍ-ªï›D^Q‹tW¥Ç&¦o…O²¢‘”­(¨"ªs
-@×qi…ÌÀY|;ðfÜ‡÷öÇõõ¸N:jË:„åh+£t2tÝCú %@ã»ß†ÇÙ€´—û¢¾{pº³ºoä¼³ë<ÿ\áž[ª)]ŒÂ@áz0»Õqÿôjô0²(‘WBSHé„%’Ñ‘¨|ÚÆü9;Ü¨†7Œf@LŒa¯i¤ÛuëŠ0ñ Ü"(€³€ô“@üïW4šÃðæ²[¢|TšÇ`fk9O¤Fÿ'æŒÙ9_Ô°­I
+/*
+ * Brush_motor.h
+ *
+ *  Created on: Nov 6, 2012
+ *      Author: Zhizhou Li
+ */
+
+#ifndef BRUSHMOTOR_H_
+#define BRUSHMOTOR_H_
+
+extern void Brush_motor_init();
+extern void Brush_motor_forward();
+extern void Brush_motor_back();
+extern void Brush_motor_set_pwm(unsigned int pwm);
+
+#endif /* BRUSHMOTOR_H_ */
