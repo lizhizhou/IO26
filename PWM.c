@@ -31,6 +31,5 @@ void PWM_SET_GATE(unsigned int gate)
 
 void PWM_SET_DUTY_CYCLE(unsigned int duty)
 {
-
 	PWM_DUTYCYCLE = duty;
 }
