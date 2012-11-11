@@ -15,7 +15,7 @@
 
 float PID(float x_n,float x_n_1,float x_n_2, float Kp, float Ki, float Kd)
 {
-	float y_n;
+	float y_n, A0, A1, A2;
 	static float y_n_1=0.0;
 	A0 = Kp + Ki + Kd;
 	A1 = (-Kp) - (2 * Kd);
@@ -27,7 +27,7 @@ float PID(float x_n,float x_n_1,float x_n_2, float Kp, float Ki, float Kd)
 
 double PID_d(double x_n,double x_n_1,double x_n_2, double Kp, double Ki, double Kd)
 {
-	double y_n;
+	double y_n, A0, A1, A2;
 	static double y_n_1=0.0;
 	A0 = Kp + Ki + Kd;
 	A1 = (-Kp) - (2 * Kd);
