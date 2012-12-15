@@ -15,7 +15,7 @@
 #define BRUSHMOTOR_ON_OFF        *((volatile int*) FPGA_SYS_BASE+BRUSHMOTOR_CTRL_BASE+3)
 #define BRUSHMOTOR_FORWARD_BACK  *((volatile int*) FPGA_SYS_BASE+BRUSHMOTOR_CTRL_BASE+4)
 
-const static int frequent   = 1000; // PWM frequence
+const static int frequent   = 30000; // PWM frequence
 const static int duty_cycle = 50;   // PWM duty_cycle
 
 void Brush_motor_init()
@@ -35,7 +35,19 @@ void Brush_motor_back()
 	BRUSHMOTOR_FORWARD_BACK=0;
 }
 
+void Brush_motor_ON()
+{
+	BRUSHMOTOR_ON_OFF = 1;
+}
+
+void Brush_motor_OFF()
+{
+	BRUSHMOTOR_ON_OFF = 0;
+}
+
 void Brush_motor_set_pwm(unsigned int pwm)
 {
 	BRUSHMOTOR_PWM_WIDTH = pwm;
 }
+
+
