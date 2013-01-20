@@ -8,7 +8,7 @@
 #ifndef POSITION_SENSOR_H_
 #define POSITION_SENSOR_H_
 
-extern int get_position_A();
-extern int get_position_B();
+extern int get_position();
+extern int get_direction();
 
 #endif /* POSITION_SENSOR_H_ */
