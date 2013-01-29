@@ -1,5 +1,5 @@
 /*
- * Setp_motor.h
+ * Step_motor.h
  *
  *  Created on: Nov 6, 2012
  *      Author: Zhizhou Li
