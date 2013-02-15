@@ -6,8 +6,8 @@
  */
 #include "Brush_motor.h"
 #include "FPGA.h"
-
-#define BRUSHMOTOR_CTRL_ADDRESS 0x260
+static unsigned int brushmotor_address;
+#define BRUSHMOTOR_CTRL_ADDRESS brushmotor_address//0x260
 #define BRUSHMOTOR_CTRL_BASE    (BRUSHMOTOR_CTRL_ADDRESS/4)
 #define BRUSHMOTOR_ID            *((volatile int*) FPGA_SYS_BASE+BRUSHMOTOR_CTRL_BASE)
 #define BRUSHMOTOR_PWM_FREQUENCE *((volatile int*) FPGA_SYS_BASE+BRUSHMOTOR_CTRL_BASE+1)
@@ -17,6 +17,11 @@
 
 const static int frequent   = 30000; // PWM frequence
 const static int duty_cycle = 50;   // PWM duty_cycle
+
+void select_brush_motor(unsigned int address)
+{
+    brushmotor_address = address;
+}
 
 void Brush_motor_init()
 {

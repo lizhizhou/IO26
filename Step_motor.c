@@ -7,8 +7,8 @@
 #include "Step_motor.h"
 #include "FPGA.h"
 #include <math.h>
-
-#define STEPMOTOR_CTRL_ADDRESS 0x240
+static int stepmotor_address;
+#define STEPMOTOR_CTRL_ADDRESS stepmotor_address//0x240
 #define STEPMOTOR_CTRL_BASE    (STEPMOTOR_CTRL_ADDRESS/4)
 #define STEPMOTOR_PWM_FREQUENCE *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE)
 #define STEPMOTOR_PWM_WIDTH_A   *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE+1)
@@ -20,6 +20,11 @@ const int frequent = 1000; // PWM frequence
 const int duty_cycle =50;  // PWM duty_cycle
 
 #define MAX_SUBDIVISION 0xFFFFFFFF
+
+void select_step_motor(unsigned int address)
+{
+    stepmotor_address = address;
+}
 
 void Step_motor_init()
 {

@@ -6,6 +6,7 @@
  */
 #include "PWM.h"
 #include "FPGA.h"
+static void* pwm_address;
 #define PWM_CTRL_ADDRESS 0x100
 #define PWM_CTRL_BASE    (PWM_CTRL_ADDRESS/4)
 #define PWM_ID            *((volatile int*) FPGA_MOD_BASE+PWM_CTRL_BASE+1)

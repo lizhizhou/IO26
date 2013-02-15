@@ -5,7 +5,7 @@
  *      Author: lizhizhou
  */
 #include "FPGA.h"
-
+static void* am2301_address;
 #define AM2301_ADDRESS 0x220
 #define AM2301_BASE    (AM2301_ADDRESS / 4)
 #define AM2301_ID      *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+1))

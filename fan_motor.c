@@ -7,7 +7,7 @@
 
 #include "fan_motor.h"
 #include "FPGA.h"
-
+static void* fanmotor;
 #define FANMOTOR_CTRL_ADDRESS 0x2A0
 #define FANMOTOR_CTRL_BASE    (FANMOTOR_CTRL_ADDRESS/4)
 #define FANMOTOR_ID            *((volatile int*) FPGA_SYS_BASE+FANMOTOR_CTRL_BASE)
