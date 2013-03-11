@@ -17,6 +17,7 @@ int main(int argn, char* argv[])
 	  AM2301_init();
 	  Brush_motor_init();
 	  fan_motor_init();
+	  select_step_motor(0x240);
 	  Step_motor_init();
 	  //IOA_OE      = 0xffffffff;
 	  //IOB_OE      = 0xffffffff;
@@ -30,8 +31,8 @@ int main(int argn, char* argv[])
 //		  Brush_motor_OFF();
 //		  fan_OFF();
 //		  getchar();
-		  printf("Position is %d\n",get_position());
-		  printf("Direction is %s\n",get_direction()?"forword":"backword");
+//		  printf("Position is %d\n",get_position());
+//		  printf("Direction is %s\n",get_direction()?"forword":"backword");
 		  usleep(2000);
 		  Step_motor_move_step_forward();
 	  }
