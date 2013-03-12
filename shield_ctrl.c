@@ -4,10 +4,10 @@
  *  Created on: Oct 26, 2012
  *      Author: Zhizhou LI
  */
-#include "ShieldCtrl.h"
+#include "shield_ctrl.h"
 #include "FPGA.h"
 
-void ShieldCtrl_init()
+void shield_ctrl_init()
 {
 	  SHIELD_CTRL = 0x03030300;
 }

@@ -5,14 +5,13 @@
  *      Author: lizhizhou
  */
 #include "FPGA.h"
-static void* am2301_address;
-#define AM2301_ADDRESS 0x220
+#define AM2301_ADDRESS AM2301_address//0x220
 #define AM2301_BASE    (AM2301_ADDRESS / 4)
 #define AM2301_ID      *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+1))
 #define AM2301_DATA    *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+3))
 #define AM2301_READY   *((volatile int*) (FPGA_SYS_BASE+AM2301_BASE+4))
 
-void AM2301_init()
+void AM2301_init(unsigned int AM2301_address)
 {
 	  short temperature_data;
 	  float temperature;

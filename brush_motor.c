@@ -1,10 +1,10 @@
 /*
- * Brush_motor.c
+ * brush_motor.c
  *
  *  Created on: Nov 6, 2012
  *      Author: Zhizhou Li
  */
-#include "Brush_motor.h"
+#include "brush_motor.h"
 #include "FPGA.h"
 static unsigned int brushmotor_address;
 #define BRUSHMOTOR_CTRL_ADDRESS brushmotor_address//0x260
@@ -23,34 +23,34 @@ void select_brush_motor(unsigned int address)
     brushmotor_address = address;
 }
 
-void Brush_motor_init()
+void brush_motor_init()
 {
 	BRUSHMOTOR_PWM_FREQUENCE = frequent * 0x100000000 / 200000000;
 	BRUSHMOTOR_PWM_WIDTH = 0xFFFFFFFF / 100 * duty_cycle;
 	BRUSHMOTOR_ON_OFF = 1; 
 }
 
-void Brush_motor_forward()
+void brush_motor_forward()
 {
 	BRUSHMOTOR_FORWARD_BACK = 1;
 }
 
-void Brush_motor_back()
+void brush_motor_back()
 {
 	BRUSHMOTOR_FORWARD_BACK=0;
 }
 
-void Brush_motor_ON()
+void brush_motor_ON()
 {
 	BRUSHMOTOR_ON_OFF = 1;
 }
 
-void Brush_motor_OFF()
+void brush_motor_OFF()
 {
 	BRUSHMOTOR_ON_OFF = 0;
 }
 
-void Brush_motor_set_pwm(unsigned int pwm)
+void brush_motor_set_pwm(unsigned int pwm)
 {
 	BRUSHMOTOR_PWM_WIDTH = pwm;
 }

@@ -1,17 +1,17 @@
 /*
- * ShieldCtrl.h
+ * shield_ctrl.h
  *
  *  Created on: Oct 25, 2012
  *      Author: Zhizhou Li
  */
 
-#ifndef SHIELDCTRL_H_
-#define SHIELDCTRL_H_
+#ifndef SHIELD_CTRL_H_
+#define SHIELD_CTRL_H_
 
 #define SHIELD_CTRL_ADDRESS 0x200
 #define SHIELD_CTRL_BASE    (SHIELD_CTRL_ADDRESS/4)
 #define SHIELD_CTRL    *((volatile int*) FPGA_SYS_BASE+SHIELD_CTRL_BASE)
 
-extern void ShieldCtrl_init();
+extern void shield_ctrl_init();
 
-#endif /* SHIELDCTRL_H_ */
+#endif /* SHIELD_CTRL_H_ */
