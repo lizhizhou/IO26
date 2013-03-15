@@ -7,13 +7,12 @@
 #include "step_motor.h"
 #include "FPGA.h"
 #include <math.h>
-#define STEPMOTOR_CTRL_ADDRESS stepmotor_address//0x240
-#define STEPMOTOR_CTRL_BASE    (STEPMOTOR_CTRL_ADDRESS/4)
-#define STEPMOTOR_PWM_FREQUENCE *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE)
-#define STEPMOTOR_PWM_WIDTH_A   *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE+1)
-#define STEPMOTOR_PWM_WIDTH_B   *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE+2)
-#define STEPMOTOR_STEP          *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE+3)
-#define STEPMOTOR_FORWARD_BACK  *((volatile int*) FPGA_SYS_BASE+STEPMOTOR_CTRL_BASE+4)
+#define STEPMOTOR_CTRL_ADDRESS stepmotor_address
+#define STEPMOTOR_PWM_FREQUENCE *((volatile int*) STEPMOTOR_CTRL_ADDRESS)
+#define STEPMOTOR_PWM_WIDTH_A   *((volatile int*) STEPMOTOR_CTRL_ADDRESS+1)
+#define STEPMOTOR_PWM_WIDTH_B   *((volatile int*) STEPMOTOR_CTRL_ADDRESS+2)
+#define STEPMOTOR_STEP          *((volatile int*) STEPMOTOR_CTRL_ADDRESS+3)
+#define STEPMOTOR_FORWARD_BACK  *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
 
 const int frequent = 1000; // PWM frequence
 const int duty_cycle =50;  // PWM duty_cycle
