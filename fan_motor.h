@@ -7,8 +7,8 @@
 
 #ifndef FAN_MOTOR_H_
 #define FAN_MOTOR_H_
-extern void fan_motor_init();
-extern void fan_ON();
-extern void fan_motor_set_pwm(unsigned int pwm);
+extern void fan_motor_init(unsigned int fan_address);
+extern void fan_ON(unsigned int fan_address);
+extern void fan_motor_set_pwm(unsigned int fan_address, unsigned int pwm);
 
 #endif /* FAN_MOTOR_H_ */
