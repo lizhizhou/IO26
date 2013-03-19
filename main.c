@@ -18,9 +18,14 @@ int main(int argn, char* argv[])
 {
 	  fpga_open();
 	  shield_ctrl_init();
+	  AM2301_init(AM2301_0);
 	  AM2301_init(AM2301_1);
-	  //brush_motor_init();
-	  //fan_motor_init();
+	  brush_motor_init(BRUSH_MOTOR_0);
+	  brush_motor_init(BRUSH_MOTOR_1);
+	  brush_motor_init(BRUSH_MOTOR_2);
+	  brush_motor_init(BRUSH_MOTOR_3);
+	  fan_motor_init(FAN_MOTOR_0);
+	  step_motor_init(STEP_MOTOR_0);
 	  step_motor_init(STEP_MOTOR_1);
 	  //IOA_OE      = 0xffffffff;
 	  //IOB_OE      = 0xffffffff;
@@ -29,10 +34,6 @@ int main(int argn, char* argv[])
 //	  syringe_run_forward();
 //	  syringe_run_back();
 	  printf("syringe done\n");
-	  printf("address 0x%x\n",FPGA_SYS_BASE);
-	  printf("address 0x%x\n",FPGA_MOD_BASE);
-	  printf("address 0x%x\n",QSYS_ADDRESS_TO_LINUX_ADDRESS(0x10000340));
-	  printf("address 0x%x\n",AM2301_1);
 	  while(1) {
 //		  Brush_motor_ON();
 //		  fan_ON();
@@ -46,7 +47,9 @@ int main(int argn, char* argv[])
 //		  printf("Position is %d\n",get_position());
 //		  printf("Direction is %s\n",get_direction()?"forword":"backword");
 		  usleep(2000);
+		  step_motor_move_step_forward(STEP_MOTOR_0);
 //		  step_motor_move_step_forward(STEP_MOTOR_1);
+//		  step_motor_move_step_back(STEP_MOTOR_0);
 		  step_motor_move_step_back(STEP_MOTOR_1);
 	  }
 	  fpga_close();
