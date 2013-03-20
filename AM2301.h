@@ -8,7 +8,7 @@
 #ifndef AM2301_H_
 #define AM2301_H_
 
-extern void AM2301_init();
+extern void AM2301_init(void* AM2301_address);
 
 
 #endif /* AM2301_H_ */

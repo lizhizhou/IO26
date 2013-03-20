@@ -17,18 +17,18 @@
 #define PWM_DUTYCYCLE_EN  *((volatile char*) PWM_STATE+2)
 #define PWM_GATE_EN       *((volatile char*) PWM_STATE+3)
 
-void PWM_init(unsigned int pwm_address)
+void PWM_init(void* pwm_address)
 {
 	PWM_RESET   = 0;
 	PWM_OUT_INV = 0;
 }
 
-void PWM_SET_GATE(unsigned int pwm_address, unsigned int gate)
+void PWM_SET_GATE(void* pwm_address, unsigned int gate)
 {
 	PWM_GATE    = gate;
 }
 
-void PWM_SET_DUTY_CYCLE(unsigned int pwm_address, unsigned int duty)
+void PWM_SET_DUTY_CYCLE(void* pwm_address, unsigned int duty)
 {
 	PWM_DUTYCYCLE = duty;
 }

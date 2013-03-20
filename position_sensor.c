@@ -7,16 +7,16 @@
 
 #include "FPGA.h"
 #define POSITITON_SENSOR_ADDRESS sensor_address //0x280
-#define POSITITON_SENSOR_ADDRESS_ID           *((volatile int*) (POSITITON_SENSOR_ADDRESS))
-#define POSITITON_SENSOR_ADDRESS_POSTITION    *((volatile int*) (POSITITON_SENSOR_ADDRESS+1))
-#define POSITITON_SENSOR_ADDRESS_DIRECTION    *((volatile int*) (POSITITON_SENSOR_ADDRESS+2))
+#define POSITITON_SENSOR_ADDRESS_ID           *((volatile int*) POSITITON_SENSOR_ADDRESS)
+#define POSITITON_SENSOR_ADDRESS_POSTITION    *((volatile int*) POSITITON_SENSOR_ADDRESS+1)
+#define POSITITON_SENSOR_ADDRESS_DIRECTION    *((volatile int*) POSITITON_SENSOR_ADDRESS+2)
 
-int get_position(unsigned int sensor_address)
+int get_position(void* sensor_address)
 {
 	return POSITITON_SENSOR_ADDRESS_POSTITION;
 }
 
-int get_direction(unsigned int sensor_address)
+int get_direction(void* sensor_address)
 {
 	return POSITITON_SENSOR_ADDRESS_DIRECTION;
 }

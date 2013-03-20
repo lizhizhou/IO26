@@ -10,7 +10,7 @@
 #define AM2301_DATA    *((volatile int*) AM2301_address+3)
 #define AM2301_READY   *((volatile int*) AM2301_address+4)
 
-void AM2301_init(unsigned int AM2301_address)
+void AM2301_init(void* AM2301_address)
 {
 	  short temperature_data;
 	  float temperature;

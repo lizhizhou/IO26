@@ -16,24 +16,24 @@
 const static int frequent   = 1000; // PWM frequence
 const static int duty_cycle = 50;   // PWM duty_cycle
 
-void fan_motor_init(unsigned int fan_address)
+void fan_motor_init(void* fan_address)
 {
 	FANMOTOR_PWM_FREQUENCE = frequent * 0x100000000 / 200000000;
 	FANMOTOR_PWM_WIDTH = 0xFFFFFFFF / 100 * duty_cycle;
 	FANMOTOR_ON_OFF = 1; 
 }
 
-void fan_ON(unsigned int fan_address)
+void fan_ON(void* fan_address)
 {
 	FANMOTOR_ON_OFF = 1; 
 }
 
-void fan_OFF(unsigned int fan_address)
+void fan_OFF(void* fan_address)
 {
 	FANMOTOR_ON_OFF = 0; 
 }
 
-void fan_motor_set_pwm(unsigned int fan_address, unsigned int pwm)
+void fan_motor_set_pwm(void* fan_address, unsigned int pwm)
 {
 	FANMOTOR_PWM_WIDTH = pwm;
 }

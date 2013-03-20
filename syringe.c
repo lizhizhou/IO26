@@ -5,6 +5,7 @@
  *      Author: lizhizhou
  */
 #include <unistd.h>
+#include <stdio.h>
 #include "platform.h"
 #include "position_sensor.h"
 #include "step_motor.h"
