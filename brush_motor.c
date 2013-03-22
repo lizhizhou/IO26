@@ -20,6 +20,7 @@ void brush_motor_init(void* brushmotor_address)
 {
 	BRUSHMOTOR_PWM_FREQUENCE = frequent * 0x100000000 / 200000000;
 	BRUSHMOTOR_PWM_WIDTH = 0xFFFFFFFF / 100 * duty_cycle;
+	BRUSHMOTOR_FORWARD_BACK = 1;
 	BRUSHMOTOR_ON_OFF = 1; 
 }
 

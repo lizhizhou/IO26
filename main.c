@@ -22,6 +22,7 @@ int main(int argn, char* argv[])
 	  AM2301_init(AM2301_1);
 	  brush_motor_init(BRUSH_MOTOR_0);
 	  brush_motor_init(BRUSH_MOTOR_1);
+	  brush_motor_back(BRUSH_MOTOR_1);
 	  brush_motor_init(BRUSH_MOTOR_2);
 	  brush_motor_init(BRUSH_MOTOR_3);
 	  fan_motor_init(FAN_MOTOR_0);
@@ -46,11 +47,13 @@ int main(int argn, char* argv[])
 //		  getchar();
 //		  printf("Position is %d\n",get_position());
 //		  printf("Direction is %s\n",get_direction()?"forword":"backword");
-		  usleep(2000);
+		  usleep(5000);
 		  step_motor_move_step_forward(STEP_MOTOR_0);
 //		  step_motor_move_step_forward(STEP_MOTOR_1);
 //		  step_motor_move_step_back(STEP_MOTOR_0);
 		  step_motor_move_step_back(STEP_MOTOR_1);
+		  printf("Temperature is %.2f C", AM2301_get_temperature(AM2301_0));
+		  printf("\tTemperature is %.2f C\r", AM2301_get_temperature(AM2301_1));
 	  }
 	  fpga_close();
 	  //trace_back();

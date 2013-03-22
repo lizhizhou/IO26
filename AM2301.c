@@ -5,6 +5,7 @@
  *      Author: lizhizhou
  */
 #include "FPGA.h"
+#include "AM2301.h"
 #define AM2301_ADDRESS AM2301_address//0x220
 #define AM2301_ID      *((volatile int*) AM2301_address+1)
 #define AM2301_DATA    *((volatile int*) AM2301_address+3)
@@ -12,18 +13,27 @@
 
 void AM2301_init(void* AM2301_address)
 {
+//	  printf("AM2301 ID   =0x%x\n", AM2301_ID);
+//	  printf("AM2301_DATA =0x%x\n", AM2301_DATA);
+//	  printf("AM2301_READY=0x%x\n", AM2301_READY);
+//	  printf("Moisture=%.1f%%\n", AM2301_get_moisture(AM2301_address));
+//	  printf("Temperature=%.1fC\n", AM2301_get_temperature(AM2301_address));
+}
+
+float AM2301_get_temperature(void* AM2301_address)
+{
 	  short temperature_data;
 	  float temperature;
-	  short moisture_data;
-	  float moisture;
-	  printf("AM2301 ID   =0x%x\n", AM2301_ID);
-	  printf("AM2301_DATA =0x%x\n", AM2301_DATA);
-	  printf("AM2301_READY=0x%x\n", AM2301_READY);
-	  moisture_data    =  AM2301_DATA >> 16;
-	  printf("moisture_data=%d\n", moisture_data);
-	  moisture     = moisture_data/10.0;
-	  printf("Moisture=%.1f%%\n", moisture);
 	  temperature_data = 0xffff & AM2301_DATA;
 	  temperature  = temperature_data/10.0;
-	  printf("Temperature=%.1fC\n", temperature);
+	  return (temperature);
+}
+
+float AM2301_get_moisture(void* AM2301_address)
+{
+	  short moisture_data;
+	  float moisture;
+	  moisture_data    =  AM2301_DATA >> 16;
+	  moisture     = moisture_data/10.0;
+	  return (moisture);
 }
