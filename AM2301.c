@@ -24,6 +24,7 @@ float AM2301_get_temperature(void* AM2301_address)
 {
 	  short temperature_data;
 	  float temperature;
+	  while(AM2301_READY!=1);
 	  temperature_data = 0xffff & AM2301_DATA;
 	  temperature  = temperature_data/10.0;
 	  return (temperature);
@@ -33,6 +34,7 @@ float AM2301_get_moisture(void* AM2301_address)
 {
 	  short moisture_data;
 	  float moisture;
+	  while(AM2301_READY!=1);
 	  moisture_data    =  AM2301_DATA >> 16;
 	  moisture     = moisture_data/10.0;
 	  return (moisture);
