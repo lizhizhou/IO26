@@ -47,7 +47,6 @@ int main(int argn, char* argv[])
 //		  getchar();
 //		  printf("Position is %d\n",get_position());
 //		  printf("Direction is %s\n",get_direction()?"forword":"backword");
-		  usleep(5000);
 		  step_motor_move_step_forward(STEP_MOTOR_0);
 //		  step_motor_move_step_forward(STEP_MOTOR_1);
 //		  step_motor_move_step_back(STEP_MOTOR_0);

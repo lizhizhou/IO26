@@ -6,6 +6,7 @@
  */
 #include "step_motor.h"
 #include "FPGA.h"
+#include <unistd.h>
 #include <math.h>
 #define STEPMOTOR_CTRL_ADDRESS stepmotor_address
 #define STEPMOTOR_PWM_FREQUENCE *((volatile int*) STEPMOTOR_CTRL_ADDRESS)
@@ -14,6 +15,7 @@
 #define STEPMOTOR_STEP          *((volatile int*) STEPMOTOR_CTRL_ADDRESS+3)
 #define STEPMOTOR_FORWARD_BACK  *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
 
+const int interval_time_us = 2000;
 const int frequent = 1000; // PWM frequence
 const int duty_cycle =50;  // PWM duty_cycle
 
@@ -31,6 +33,7 @@ void step_motor_move_step_forward(void* stepmotor_address)
 	STEPMOTOR_FORWARD_BACK=1;
 	STEPMOTOR_STEP=1;
 	STEPMOTOR_STEP=0;
+    usleep(5000);
 }
 
 void step_motor_move_step_back(void* stepmotor_address)
@@ -38,6 +41,7 @@ void step_motor_move_step_back(void* stepmotor_address)
 	STEPMOTOR_FORWARD_BACK=0;
 	STEPMOTOR_STEP=1;
 	STEPMOTOR_STEP=0;
+    usleep(5000);
 }
 
 void setp_motor_subdivision(void* stepmotor_address, unsigned int subdivision)
