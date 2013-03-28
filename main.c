@@ -47,12 +47,13 @@ int main(int argn, char* argv[])
 //		  getchar();
 //		  printf("Position is %d\n",get_position());
 //		  printf("Direction is %s\n",get_direction()?"forword":"backword");
+		  sleep(1);
 		  step_motor_move_step_forward(STEP_MOTOR_0);
 //		  step_motor_move_step_forward(STEP_MOTOR_1);
 //		  step_motor_move_step_back(STEP_MOTOR_0);
 		  step_motor_move_step_back(STEP_MOTOR_1);
 		  printf("Temperature is %.2f C", AM2301_get_temperature(AM2301_0));
-		  printf("\tTemperature is %.2f C\r", AM2301_get_temperature(AM2301_1));
+		  printf("\tTemperature is %.2f C\n", AM2301_get_temperature(AM2301_1));
 	  }
 	  fpga_close();
 	  //trace_back();
