@@ -9,10 +9,11 @@
 #include "platform.h"
 #include "position_sensor.h"
 #include "step_motor.h"
-#define PARAMETER  10
-#define STEP_PER_MOVVE 10
-#define POSITITON_SENSNOR POSITITON_SENSNOR_1
-#define STEP_MOTOR        STEP_MOTOR_1
+#define MM_PRE_STEP  2.65/100
+#define STUCK_STEP 20
+#define FAST_STEP  20
+#define POSITITON_SENSNOR POSITITON_SENSNOR_3
+#define STEP_MOTOR        STEP_MOTOR_0
 static int syringe_start=0;
 static int syringe_target=0;
 static int syringe_diameter=0;
@@ -25,7 +26,7 @@ void syringe_set_target(int m_litre, int u_litre)
 {
     syringe_target = syringe_start -
     		m_litre;
-    		//(1000* m_litre + u_litre) / syringe_diameter * PARAMETER;
+    		//(1000* m_litre + u_litre) / syringe_diameter * MM_PRE_STEP;
 }
 
 void syringe_set_diameter(int m_meter)
@@ -37,16 +38,20 @@ int syringe_run_forward()
 {
     int i=0;
     int position = get_position(POSITITON_SENSNOR);
-    //printf("syringe_target = %d\n", syringe_target);
+    printf("syringe_target = %d\n", syringe_target);
     while(position > syringe_target) {
-    	//printf("position = %d\n", position);
-    	for(i=0; i < STEP_PER_MOVVE; i++)
-    	    step_motor_move_step_forward(STEP_MOTOR);
+    	printf("position = %d\n", position);
+   	    step_motor_move_step_forward(STEP_MOTOR);
         if (get_position(POSITITON_SENSNOR) == position) {
-            return (0);
+        	i++;
+        	if(i > STUCK_STEP)
+        		return (0);
+        } else {
+        	i = 0;
         }
         position = get_position(POSITITON_SENSNOR);
     }
+	printf("position = %d\n", position);
     return (1);
 }
 
@@ -54,45 +59,45 @@ int syringe_run_back()
 {
     int i=0;
     int position = get_position(POSITITON_SENSNOR);
-    //printf("syringe_target = %d", syringe_target);
+    printf("syringe_target = %d\n", syringe_target);
     while(position > syringe_target) {
-    	//printf("position = %d", position);
-        for(i=0; i < STEP_PER_MOVVE; i++)
-            step_motor_move_step_back(STEP_MOTOR);
+    	printf("position = %d\n", position);
+    	step_motor_move_step_back(STEP_MOTOR);
         if (get_position(POSITITON_SENSNOR) == position) {
-            return (0);
+        	i++;
+        	if(i > STUCK_STEP)
+        		return (0);
+        } else {
+        	i = 0;
         }
         position = get_position(POSITITON_SENSNOR);
     }
+	printf("position = %d\n", position);
     return (1);
 }
 
 int syringe_faster_forward()
 {
-    int i=0;
-    int position = 0;
-    while(position < syringe_target) {
-        for(i=0; i < STEP_PER_MOVVE; i++)
-            step_motor_move_step_forward(STEP_MOTOR);
-        if (get_position(POSITITON_SENSNOR) == position) {
-            return (0);
-        }
-        position = get_position(POSITITON_SENSNOR);
+	int i;
+    int position = get_position(POSITITON_SENSNOR);
+	for(i = 0; i < FAST_STEP; i++)
+		step_motor_move_step_forward(STEP_MOTOR);
+	printf("position = %d\n", position);
+    if (get_position(POSITITON_SENSNOR) == position) {
+    		return (0);
     }
     return (1);
 }
 
 int syringe_faster_back()
 {
-    int i=0;
-    int position = 0;
-    while(position < syringe_target) {
-        for(i=0; i < STEP_PER_MOVVE; i++)
-            step_motor_move_step_back(STEP_MOTOR);
-        if (get_position(POSITITON_SENSNOR) == position) {
-            return (0);
-        }
-        position = get_position(POSITITON_SENSNOR);
+	int i;
+    int position = get_position(POSITITON_SENSNOR);
+	for(i = 0; i < FAST_STEP; i++)
+		step_motor_move_step_back(STEP_MOTOR);
+	printf("position = %d\n", position);
+    if (get_position(POSITITON_SENSNOR) == position) {
+    		return (0);
     }
     return (1);
 }
