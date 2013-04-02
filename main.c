@@ -13,13 +13,15 @@
 #include "syringe.h"
 #include "debug.h"
 
-void thermal_test()
+void AM2301_test()
 {
 	while(1)
 	{
 		sleep(1);
 		printf("Temperature is %.2f C", AM2301_get_temperature(AM2301_0));
 		printf("\tTemperature is %.2f C\n", AM2301_get_temperature(AM2301_1));
+		printf("Moisture is %.2f%%", AM2301_get_moisture(AM2301_0));
+		printf("\tMoisture is %.2f%% \n", AM2301_get_moisture(AM2301_1));
 	}
 }
 
@@ -58,8 +60,8 @@ int main(int argn, char* argv[])
 	  //IOA_OE      = 0xffffffff;
 	  //IOB_OE      = 0xffffffff;
 
-	  syringe_test();
-
+//	  syringe_test();
+	  AM2301_test();
 
 	  while(1) {
 //		  Brush_motor_ON();
