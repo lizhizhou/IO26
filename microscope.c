@@ -9,11 +9,16 @@
 #include "platform.h"
 #include "position_sensor.h"
 #include "step_motor.h"
-#define STEP_MOTOR_X        STEP_MOTOR_1
-#define STEP_MOTOR_Y        STEP_MOTOR_2
+#define STEP_MOTOR_X        STEP_MOTOR_0
+#define STEP_MOTOR_Y        STEP_MOTOR_1
 static int get_edge_sensor()
 {
-    return (1);
+    return (0);
+}
+void microscope_init()
+{
+	step_motor_init(STEP_MOTOR_X, 511, 50);
+	step_motor_init(STEP_MOTOR_Y, 511, 50);
 }
 
 int microscope_up(int step)
@@ -22,8 +27,10 @@ int microscope_up(int step)
     for(i = 0; i < step; i++)
     {
         step_motor_move_step_forward(STEP_MOTOR_Y);
+        if (get_edge_sensor())
+        	return (0);
     }
-    return get_edge_sensor();
+    return (1);
 }
 int microscope_down(int step)
 {
@@ -31,24 +38,30 @@ int microscope_down(int step)
     for(i = 0; i < step; i++)
     {
         step_motor_move_step_back(STEP_MOTOR_Y);
+        if (get_edge_sensor())
+        	return (0);
     }
-    return get_edge_sensor();
+    return (1);
 }
 int microscope_left(int step)
 {
     int i;
     for(i = 0; i < step; i++)
     {
-        step_motor_move_step_back(STEP_MOTOR_X);
+        step_motor_move_step_forward(STEP_MOTOR_X);
+        if (get_edge_sensor())
+        	return (0);
     }
-    return get_edge_sensor();
+    return (1);
 }
 int microscope_right(int step)
 {
     int i;
     for(i = 0; i < step; i++)
     {
-        step_motor_move_step_forward(STEP_MOTOR_X);
+        step_motor_move_step_back(STEP_MOTOR_X);
+        if (get_edge_sensor())
+        	return (0);
     }
-    return get_edge_sensor();
+    return (1);
 }

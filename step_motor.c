@@ -17,14 +17,14 @@
 #define STEPMOTOR_FORWARD_BACK  *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
 
 const int interval_time_us = 5000;
-const int frequent = 1000; // PWM frequence
-const int duty_cycle = 20;  // PWM duty_cycle
+//const int frequent = 2000; // PWM frequence
+//const int duty_cycle = 50;  // PWM duty_cycle
 
 #define MAX_SUBDIVISION 0xFFFFFFFF
 
-void step_motor_init(void* stepmotor_address)
+void step_motor_init(void* stepmotor_address, unsigned int frequence, unsigned int duty_cycle)
 {
-	STEPMOTOR_PWM_FREQUENCE = frequent * 0x100000000 / 200000000;
+	STEPMOTOR_PWM_FREQUENCE = frequence * 0x100000000 / 200000000;
 	STEPMOTOR_PWM_WIDTH_A = 0xFFFFFFFF / 100 * duty_cycle;
 	STEPMOTOR_PWM_WIDTH_B = 0xFFFFFFFF / 100 * duty_cycle;
 }
@@ -45,7 +45,7 @@ void step_motor_move_step_back(void* stepmotor_address)
     usleep(TIME_DELAY);
 }
 
-void setp_motor_subdivision(void* stepmotor_address, unsigned int subdivision)
+void setp_motor_subdivision(void* stepmotor_address, unsigned int subdivision, unsigned int duty_cycle)
 {
 	subdivision &= MAX_SUBDIVISION;
 	STEPMOTOR_PWM_WIDTH_A = 0xFFFFFFFF / 100 * duty_cycle - 0xFFFFFFFF * subdivision /2 / MAX_SUBDIVISION;

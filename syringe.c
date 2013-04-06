@@ -104,5 +104,5 @@ int syringe_faster_back()
 
 void syringe_init()
 {
-    step_motor_init(STEP_MOTOR);
+    step_motor_init(STEP_MOTOR, 2000, 20);
 }
