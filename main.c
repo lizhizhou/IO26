@@ -62,10 +62,27 @@ void step_motmor_test()
 void microscope_test()
 {
 	microscope_init();
-	microscope_up(200);
-	microscope_down(200);
+	microscope_up(500);
+	microscope_down(500);
 	microscope_left(500);
 	microscope_right(500);
+}
+
+void wheel_plate_test()
+{
+	int i;
+	int position1 = get_position(POSITITON_SENSNOR_0);
+	int position2;
+	step_motor_init(STEP_MOTOR_0, 2000, 50);
+	printf("p1 = %d\n", position1);
+	for(i = 0; i < 20; i++)
+		step_motor_move_step_forward(STEP_MOTOR_0);
+	position2 = get_position(POSITITON_SENSNOR_0);
+	printf("p2 = %d\n", position2);
+	if (position2 - position1 > 1000)
+		printf("moving step1 %d\n", position2 - 1000 - position1);
+	else
+		printf("moving step2 %d\n", position1 - position2);
 }
 
 int main(int argn, char* argv[])
@@ -82,13 +99,15 @@ int main(int argn, char* argv[])
 	  fan_motor_init(FAN_MOTOR_0);
 	  //IOA_OE      = 0xffffffff;
 	  //IOB_OE      = 0xffffffff;
-
+	  // Unit_test
 //	  syringe_test();
 //	  AM2301_test();
 //	  step_motmor_test();
 	  microscope_test();
+//	  wheel_plate_test();
 	  printf("done\n");
-	  while(1) {
+
+//	  while(1) {
 //		  Brush_motor_ON();
 //		  fan_ON();
 //		  Brush_motor_forward();
@@ -98,10 +117,11 @@ int main(int argn, char* argv[])
 //		  Brush_motor_OFF();
 //		  fan_OFF();
 //		  getchar();
-//		  printf("Position is %d\n",get_position());
-//		  printf("Direction is %s\n",get_direction()?"forword":"backword");
+//		  step_motor_move_step_forward(STEP_MOTOR_0);
+//		  printf("Position is %d\n",get_position(POSITITON_SENSNOR_0));
+//		  printf("Direction is %s\n",get_direction(POSITITON_SENSNOR_0)?"forword":"backword");
 
-	  }
+//	  }
 	  fpga_close();
 	  //trace_back();
 	  return 0;
