@@ -5,7 +5,6 @@
  *      Author: Zhizhou LI
  */
 
-#include "FPGA.h"
 //Algorithm:  Discrete PID algorithm
 //    y[n] = y[n-1] + A0 * x[n] + A1 * x[n-1] + A2 * x[n-2]
 //    A0 = Kp + Ki + Kd

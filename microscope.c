@@ -65,3 +65,8 @@ int microscope_right(int step)
     }
     return (1);
 }
+
+void microscope_calibration(void)
+{
+
+}

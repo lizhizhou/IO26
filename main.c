@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
-
+#include <pthread.h>
 #include "platform.h"
 #include "PIO26.h"
 #include "shield_ctrl.h"
@@ -12,6 +12,7 @@
 #include "fan_motor.h"
 #include "syringe.h"
 #include "microscope.h"
+#include "moisture.h"
 #include "debug.h"
 
 void AM2301_test()
@@ -87,27 +88,28 @@ void wheel_plate_test()
 
 int main(int argn, char* argv[])
 {
-	  fpga_open();
-	  shield_ctrl_init();
-	  AM2301_init(AM2301_0);
-	  AM2301_init(AM2301_1);
-	  brush_motor_init(BRUSH_MOTOR_0);
-	  brush_motor_init(BRUSH_MOTOR_1);
-	  brush_motor_back(BRUSH_MOTOR_1);
-	  brush_motor_init(BRUSH_MOTOR_2);
-	  brush_motor_init(BRUSH_MOTOR_3);
-	  fan_motor_init(FAN_MOTOR_0);
-	  //IOA_OE      = 0xffffffff;
-	  //IOB_OE      = 0xffffffff;
-	  // Unit_test
+    pthread_t pid;
+	fpga_open();
+	shield_ctrl_init();
+	AM2301_init(AM2301_0);
+	AM2301_init(AM2301_1);
+	brush_motor_init(BRUSH_MOTOR_0);
+	brush_motor_init(BRUSH_MOTOR_1);
+	brush_motor_back(BRUSH_MOTOR_1);
+	brush_motor_init(BRUSH_MOTOR_2);
+	brush_motor_init(BRUSH_MOTOR_3);
+	fan_motor_init(FAN_MOTOR_0);
+	//IOA_OE      = 0xffffffff;
+	//IOB_OE      = 0xffffffff;
+	// Unit_test
 //	  syringe_test();
 //	  AM2301_test();
 //	  step_motmor_test();
-	  microscope_test();
+	microscope_test();
 //	  wheel_plate_test();
-	  printf("done\n");
-
-//	  while(1) {
+	printf("done\n");
+	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
+	while(1) {
 //		  Brush_motor_ON();
 //		  fan_ON();
 //		  Brush_motor_forward();
@@ -121,8 +123,8 @@ int main(int argn, char* argv[])
 //		  printf("Position is %d\n",get_position(POSITITON_SENSNOR_0));
 //		  printf("Direction is %s\n",get_direction(POSITITON_SENSNOR_0)?"forword":"backword");
 
-//	  }
-	  fpga_close();
-	  //trace_back();
-	  return 0;
+    }
+	fpga_close();
+	//trace_back();
+	return 0;
 }
