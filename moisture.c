@@ -4,6 +4,8 @@
  *  Created on: Apr 11, 2013
  *      Author: lizhizhou
  */
+#include <stdio.h>
+#include <unistd.h>
 #include "AM2301.h"
 #include "platform.h"
 #include "PIO26.h"
@@ -40,8 +42,9 @@ void* moisture_regulating_process(void *arg)
     float moisture;
 
     while(1) {
-        moisture_1 = AM2301_get_moisture(AM2301_0);
-        moisture_2 = AM2301_get_moisture(AM2301_1);
+    	printf("moisture_regulating_process wake up\n");
+        //moisture_1 = AM2301_get_moisture(AM2301_0);
+        //moisture_2 = AM2301_get_moisture(AM2301_1);
         moisture = moisture_1 + moisture_2;
         if (moisture < target_moisture)
         {
@@ -58,5 +61,7 @@ void* moisture_regulating_process(void *arg)
             humidifier_off();
             exhaust_off();
         }
+        sleep(1);
     }
+    return (NULL);
 }

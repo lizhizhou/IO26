@@ -103,13 +103,14 @@ int main(int argn, char* argv[])
 	//IOB_OE      = 0xffffffff;
 	// Unit_test
 //	  syringe_test();
-//	  AM2301_test();
+    AM2301_test();
 //	  step_motmor_test();
-	microscope_test();
+//	microscope_test();
 //	  wheel_plate_test();
 	printf("done\n");
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 	while(1) {
+		printf("main loop wake up\n");
 //		  Brush_motor_ON();
 //		  fan_ON();
 //		  Brush_motor_forward();
@@ -122,7 +123,7 @@ int main(int argn, char* argv[])
 //		  step_motor_move_step_forward(STEP_MOTOR_0);
 //		  printf("Position is %d\n",get_position(POSITITON_SENSNOR_0));
 //		  printf("Direction is %s\n",get_direction(POSITITON_SENSNOR_0)?"forword":"backword");
-
+		sleep(1);
     }
 	fpga_close();
 	//trace_back();
