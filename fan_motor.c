@@ -14,7 +14,7 @@
 #define FANMOTOR_ON_OFF        *((volatile int*) FANMOTOR_CTRL_ADDRESS+3)
 
 const static int frequent   = 1000; // PWM frequence
-const static int duty_cycle = 50;   // PWM duty_cycle
+const static int duty_cycle = 100;   // PWM duty_cycle
 
 void fan_motor_init(void* fan_address)
 {
@@ -30,7 +30,7 @@ void fan_ON(void* fan_address)
 
 void fan_OFF(void* fan_address)
 {
-	FANMOTOR_ON_OFF = 0; 
+	FANMOTOR_ON_OFF = 0;
 }
 
 void fan_motor_set_pwm(void* fan_address, unsigned int pwm)

@@ -9,25 +9,27 @@
 #include "AM2301.h"
 #include "platform.h"
 #include "PIO26.h"
+#include "fan_motor.h"
 static float target_moisture;
+static float threshold = 0.05;
 static void humidifier_on(void)
 {
-    IOA_IO_2 =1;
+    IOA_IO_1 =0;
 }
 
 static void humidifier_off(void)
 {
-    IOA_IO_2 =0;
+    IOA_IO_1 =1;
 }
 
 static void exhaust_on(void)
 {
-    IOA_IO_2 =1;
+	fan_ON(FAN_MOTOR_0);
 }
 
 static void exhaust_off(void)
 {
-    IOA_IO_2 =0;
+	fan_OFF(FAN_MOTOR_0);
 }
 
 void set_moisture_target(float moisture)
@@ -37,30 +39,37 @@ void set_moisture_target(float moisture)
 
 void* moisture_regulating_process(void *arg)
 {
-    float moisture_1;
-    float moisture_2;
     float moisture;
+
+    fan_motor_init(FAN_MOTOR_0);
+	IOA_OE      = 0xffffffff;
 
     while(1) {
     	printf("moisture_regulating_process wake up\n");
-        //moisture_1 = AM2301_get_moisture(AM2301_0);
-        //moisture_2 = AM2301_get_moisture(AM2301_1);
-        moisture = moisture_1 + moisture_2;
-        if (moisture < target_moisture)
+        moisture = AM2301_get_moisture(AM2301_0);
+        printf("moisture is %.2f%%\n", moisture);
+        if (moisture < target_moisture - target_moisture * threshold)
         {
+        	printf("moisture goes up\n");
             humidifier_on();
             exhaust_off();
+            sleep(1);
         }
-        else if(moisture > target_moisture)
+        else if(moisture > target_moisture + target_moisture * threshold)
         {
+        	printf("moisture goes down\n");
             humidifier_off();
-            exhaust_on();
+            //exhaust_on();
+            sleep(1);
         }
         else
         {
+        	printf("moisture keeps\n");
             humidifier_off();
             exhaust_off();
         }
+        humidifier_off();
+        exhaust_off();
         sleep(1);
     }
     return (NULL);

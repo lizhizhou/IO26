@@ -9,6 +9,7 @@
 #define FAN_MOTOR_H_
 extern void fan_motor_init(void* fan_address);
 extern void fan_ON(void* fan_address);
+extern void fan_OFF(void* fan_address);
 extern void fan_motor_set_pwm(void* fan_address, unsigned int pwm);
 
 #endif /* FAN_MOTOR_H_ */
