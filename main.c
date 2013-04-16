@@ -86,6 +86,8 @@ void wheel_plate_test()
 		printf("moving step2 %d\n", position1 - position2);
 }
 
+extern void exhaust_regulating(float i);
+
 int main(int argn, char* argv[])
 {
 	float i;
@@ -100,6 +102,7 @@ int main(int argn, char* argv[])
 	brush_motor_init(BRUSH_MOTOR_2);
 	brush_motor_init(BRUSH_MOTOR_3);
 	fan_motor_init(FAN_MOTOR_0);
+	fan_motor_init(FAN_MOTOR_1);
 	//IOA_OE      = 0xffffffff;
 	//IOB_OE      = 0xffffffff;
 	// Unit_test
@@ -108,14 +111,18 @@ int main(int argn, char* argv[])
 //	  step_motmor_test();
 //	microscope_test();
 //	  wheel_plate_test();
+	if(argn != 2) {
+		printf("arg error\n");
+		return 0;
+	}
 	printf(argv[1]);
 	sscanf(argv[1],"%f", &i);
 	printf("target is %0.2f%%\n", i);
     set_moisture_target(i);
-
 	printf("done\n");
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 	while(1) {
+
 //		printf("main loop wake up\n");
 //		  Brush_motor_ON();
 //		  fan_ON();
