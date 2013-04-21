@@ -63,27 +63,31 @@ void set_moisture_target(float moisture)
 void* moisture_regulating_process(void *arg)
 {
     float moisture;
-    float moisture_d;
-    float moisture_d_d;
+    float error = 0;
+    float error_d = 0;
+    float error_d_d = 0;
+	FILE* fp;
     fan_motor_init(FAN_MOTOR_0);
     fan_motor_init(FAN_MOTOR_1);
 
-    moisture = moisture_d = moisture_d_d = AM2301_get_moisture(AM2301_0);
+    moisture = AM2301_get_moisture(AM2301_0);
 
     while(1) {
     	printf("moisture_regulating_process wake up\n");
-    	moisture_d_d = moisture_d;
-    	moisture_d = moisture;
         moisture = AM2301_get_moisture(AM2301_0);
-
+        error_d_d = error_d;
+        error_d = error;
+        error = (target_moisture - moisture)/target_moisture;
+    	fp = fopen("log","a");
+        fprintf(fp, "%f ", moisture);
+        fclose(fp);
         printf("moisture is %.2f%%\n", moisture);
         if (moisture < target_moisture - target_moisture * threshold)
         {
         	printf("moisture goes up\n");
             humidifier_on();
-            //humidifier_regulating(5*(target_moisture - moisture)/target_moisture);
-            //humidifier_regulating(PID(moisture,moisture_d,moisture_d_d), 5 ,0 ,0);
-            printf("delta %f", PID(moisture,moisture_d,moisture_d_d, 0.5 ,0 ,0));
+            humidifier_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
             exhaust_off();
         }
         else if(moisture > target_moisture + target_moisture * threshold)
@@ -91,8 +95,8 @@ void* moisture_regulating_process(void *arg)
         	printf("moisture goes down\n");
             humidifier_off();
             exhaust_on();
-            exhaust_regulating(3*(moisture - target_moisture)/target_moisture);
-            printf("delta %f", PID(moisture,moisture_d,moisture_d_d, 0.5 ,0 ,0));
+            exhaust_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
         }
         else
         {

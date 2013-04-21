@@ -17,8 +17,8 @@ static int get_edge_sensor()
 }
 void microscope_init()
 {
-	step_motor_init(STEP_MOTOR_X, 511, 50);
-	step_motor_init(STEP_MOTOR_Y, 511, 50);
+	step_motor_init(STEP_MOTOR_X, 8000, 30);
+	step_motor_init(STEP_MOTOR_Y, 8000, 30);
 }
 
 int microscope_up(int step)

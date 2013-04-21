@@ -13,6 +13,7 @@
 #include "syringe.h"
 #include "microscope.h"
 #include "moisture.h"
+#include "PID.h"
 #include "debug.h"
 
 void AM2301_test()
@@ -65,8 +66,9 @@ void microscope_test()
 	microscope_init();
 	microscope_up(500);
 	microscope_down(500);
-	microscope_left(500);
+
 	microscope_right(500);
+	microscope_left(500);
 }
 
 void wheel_plate_test()
@@ -86,7 +88,27 @@ void wheel_plate_test()
 		printf("moving step2 %d\n", position1 - position2);
 }
 
-extern void exhaust_regulating(float i);
+void PID_test()
+{
+	int i;
+	float target =100;
+	float current = 0;
+	float current_d =0;
+	float current_d_d = 0;
+	float error;
+	float error_d;
+	float error_d_d;
+	for(i=0; i < 100; i++)
+	{
+		current_d_d = current_d;
+		current_d = current;
+		error_d_d = error_d;
+		error_d = error;
+		error = target - current_d_d;
+		current = current + PID(error, error_d, error_d_d, 0.2, 0.01, 0.03);
+		printf("current is %f\n",current);
+	}
+}
 
 int main(int argn, char* argv[])
 {
@@ -109,8 +131,11 @@ int main(int argn, char* argv[])
 //	  syringe_test();
 //    AM2301_test();
 //	  step_motmor_test();
-//	microscope_test();
-//	  wheel_plate_test();
+	microscope_test();
+//	wheel_plate_test();
+//	PID_test();
+
+
 	if(argn != 2) {
 		printf("arg error\n");
 		return 0;
@@ -119,9 +144,11 @@ int main(int argn, char* argv[])
 	sscanf(argv[1],"%f", &i);
 	printf("target is %0.2f%%\n", i);
     set_moisture_target(i);
+	//pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 	printf("done\n");
-	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 	while(1) {
+
+
 
 //		printf("main loop wake up\n");
 //		  Brush_motor_ON();
