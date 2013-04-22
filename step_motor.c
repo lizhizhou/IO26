@@ -15,6 +15,7 @@
 #define STEPMOTOR_PWM_WIDTH_B   *((volatile int*) STEPMOTOR_CTRL_ADDRESS+2)
 #define STEPMOTOR_STEP          *((volatile int*) STEPMOTOR_CTRL_ADDRESS+3)
 #define STEPMOTOR_FORWARD_BACK  *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
+#define STEPMOTOR_ON_OFF        *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
 
 const int interval_time_us = 5000;
 //const int frequent = 2000; // PWM frequence
@@ -27,6 +28,17 @@ void step_motor_init(void* stepmotor_address, unsigned int frequence, unsigned i
 	STEPMOTOR_PWM_FREQUENCE = frequence * 0x100000000 / 200000000;
 	STEPMOTOR_PWM_WIDTH_A = 0xFFFFFFFF / 100 * duty_cycle;
 	STEPMOTOR_PWM_WIDTH_B = 0xFFFFFFFF / 100 * duty_cycle;
+    STEPMOTOR_ON_OFF = 1;
+}
+
+void step_motor_on(void* stepmotor_address)
+{
+    STEPMOTOR_ON_OFF = 1;
+}
+
+void step_motor_off(void* stepmotor_address)
+{
+    STEPMOTOR_ON_OFF = 0;
 }
 
 void step_motor_move_step_forward(void* stepmotor_address)

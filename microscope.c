@@ -15,6 +15,11 @@ static int get_edge_sensor()
 {
     return (0);
 }
+static int get_infrared_sensor()
+{
+    return (0);
+}
+
 void microscope_init()
 {
 	step_motor_init(STEP_MOTOR_X, 8000, 30);
@@ -68,5 +73,17 @@ int microscope_right(int step)
 
 void microscope_calibration(void)
 {
+    get_infrared_sensor();
+}
 
+void microscope_manual_calibration_on(void)
+{
+    step_motor_off(STEP_MOTOR_X);
+    step_motor_off(STEP_MOTOR_Y);
+}
+
+void microscope_manual_calibration_off(void)
+{
+    step_motor_on(STEP_MOTOR_X);
+    step_motor_on(STEP_MOTOR_Y);
 }

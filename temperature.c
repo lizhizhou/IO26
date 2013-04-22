@@ -11,6 +11,26 @@
 #include "PWM.h"
 #include "PID.h"
 static float target_temperature;
+static void cooler_on()
+{
+
+}
+
+static void cooler_off()
+{
+
+}
+
+static void heater_on()
+{
+
+}
+
+static void heater_off()
+{
+
+}
+
 void set_temperature_target(float temperature)
 {
     target_temperature = temperature;
