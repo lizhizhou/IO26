@@ -131,7 +131,7 @@ int main(int argn, char* argv[])
 //	  syringe_test();
 //    AM2301_test();
 //	  step_motmor_test();
-	microscope_test();
+//	microscope_test();
 //	wheel_plate_test();
 //	PID_test();
 
@@ -144,7 +144,7 @@ int main(int argn, char* argv[])
 	sscanf(argv[1],"%f", &i);
 	printf("target is %0.2f%%\n", i);
     set_moisture_target(i);
-	//pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
+	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 	printf("done\n");
 	while(1) {
 

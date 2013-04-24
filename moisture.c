@@ -81,7 +81,9 @@ void* moisture_regulating_process(void *arg)
     	fp = fopen("log","a");
         fprintf(fp, "%f ", moisture);
         fclose(fp);
-        printf("moisture is %.2f%%\n", moisture);
+        printf("moisture is %.2f%% out is %.2f%%\n", moisture, AM2301_get_moisture(AM2301_1));
+        printf("temperature is %.2fC out is %.2fC\n", AM2301_get_temperature(AM2301_0),
+        		AM2301_get_temperature(AM2301_1));
         if (moisture < target_moisture - target_moisture * threshold)
         {
         	printf("moisture goes up\n");

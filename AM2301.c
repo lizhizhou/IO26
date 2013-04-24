@@ -4,6 +4,7 @@
  *  Created on: Oct 26, 2012
  *      Author: lizhizhou
  */
+#include <stdint.h>
 #include "FPGA.h"
 #include "AM2301.h"
 #define AM2301_ADDRESS AM2301_address//0x220
@@ -23,10 +24,15 @@ void AM2301_init(void* AM2301_address)
 float AM2301_get_temperature(void* AM2301_address)
 {
 	  short temperature_data;
+	  int   sign;
 	  float temperature;
 	  while(AM2301_READY!=1);
-	  temperature_data = 0xffff & AM2301_DATA;
-	  temperature  = temperature_data/10.0;
+	  sign             = 0x1 & (AM2301_DATA>>15);
+	  temperature_data = 0x7fff & AM2301_DATA;
+	  if (sign)
+		  temperature  = temperature_data/-10.0;
+	  else
+		  temperature  = temperature_data/10.0;
 	  return (temperature);
 }
 
