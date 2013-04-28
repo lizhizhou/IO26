@@ -61,14 +61,15 @@ void step_motmor_test()
 	}
 }
 
-void microscope_test()
+void microscope_test()  // 10um per step
 {
 	microscope_init();
-	microscope_up(500);
-	microscope_down(500);
-
-	microscope_right(500);
-	microscope_left(500);
+	microscope_x_plus(500);
+	microscope_y_minus(500);
+	sleep(5);
+	microscope_x_plus(500);
+	microscope_y_minus(500);
+	microscope_manual_calibration_on();
 }
 
 void wheel_plate_test()
@@ -131,12 +132,12 @@ int main(int argn, char* argv[])
 //	  syringe_test();
 //    AM2301_test();
 //	  step_motmor_test();
-//	microscope_test();
+	microscope_test();
 //	wheel_plate_test();
 //	PID_test();
 
 
-	if(argn != 2) {
+	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
 	}
@@ -144,7 +145,7 @@ int main(int argn, char* argv[])
 	sscanf(argv[1],"%f", &i);
 	printf("target is %0.2f%%\n", i);
     set_moisture_target(i);
-	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
+	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");*/
 	printf("done\n");
 	while(1) {
 

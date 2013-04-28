@@ -15,11 +15,7 @@
 #define STEPMOTOR_PWM_WIDTH_B   *((volatile int*) STEPMOTOR_CTRL_ADDRESS+2)
 #define STEPMOTOR_STEP          *((volatile int*) STEPMOTOR_CTRL_ADDRESS+3)
 #define STEPMOTOR_FORWARD_BACK  *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
-#define STEPMOTOR_ON_OFF        *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
-
-const int interval_time_us = 5000;
-//const int frequent = 2000; // PWM frequence
-//const int duty_cycle = 50;  // PWM duty_cycle
+#define STEPMOTOR_ON_OFF        *((volatile int*) STEPMOTOR_CTRL_ADDRESS+5)
 
 #define MAX_SUBDIVISION 0xFFFFFFFF
 
