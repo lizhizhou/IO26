@@ -79,17 +79,28 @@ void brush_motor_test()
 void microscope_test()  // 10um per step
 {
     coordinates target;
-    target.x = 100;
-    target.y = 200;
-    target.z = 50;
+    target.x = 1000;
+    target.y = -2000;
+    target.z = 500;
     microscope_init();
-    microscope_x_plus(500);
-    microscope_y_minus(500);
-    sleep(5);
-    microscope_x_plus(500);
-    microscope_y_minus(500);
+    micorscope_run_to_coordinates(target);
+    target.x = -1000;
+    target.y = 1000;
+    target.z = -500;
+    micorscope_run_to_coordinates(target);
+    target.x = -2000;
+    target.y = -2000;
+    target.z = -500;
+    micorscope_run_to_coordinates(target);
+    target.x = 2000;
+    target.y = 2000;
+    target.z = -500;
+    micorscope_run_to_coordinates(target);
+    target.x=0;
+    target.y=0;
+    target.z=0;
+    micorscope_run_to_coordinates(target);
     microscope_manual_calibration_on();
-    sleep(5);
 
 }
 

@@ -43,7 +43,7 @@ int main(int argn, char* argv[])
     set_moisture_target(i);
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");*/
 	printf("done\n");
-	while(1) {
+//	while(1) {
 
 //		printf("main loop wake up\n");
 //		  Brush_motor_ON();
@@ -59,7 +59,7 @@ int main(int argn, char* argv[])
 //		  printf("Position is %d\n",get_position(POSITITON_SENSNOR_0));
 //		  printf("Direction is %s\n",get_direction(POSITITON_SENSNOR_0)?"forword":"backword");
 
-    }
+//  }
 	fpga_close();
 	//trace_back();
 	return 0;
