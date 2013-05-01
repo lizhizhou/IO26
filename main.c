@@ -15,101 +15,7 @@
 #include "moisture.h"
 #include "PID.h"
 #include "debug.h"
-
-void AM2301_test()
-{
-	while(1)
-	{
-		sleep(1);
-		printf("Temperature is %.2f C", AM2301_get_temperature(AM2301_0));
-		printf("\tTemperature is %.2f C\n", AM2301_get_temperature(AM2301_1));
-		printf("Moisture is %.2f%%", AM2301_get_moisture(AM2301_0));
-		printf("\tMoisture is %.2f%% \n", AM2301_get_moisture(AM2301_1));
-	}
-}
-
-void syringe_test()
-{
-	syringe_init();
-	//	while(syringe_faster_back());
-	//	printf("syringe stuck\n");
-	while(syringe_faster_forward());
-	printf("syringe stuck\n");
-	syringe_mark_start();
-	syringe_set_target(200,0);
-	syringe_run_back();
-	printf("syringe done\n");
-	sleep(5);
-	syringe_mark_start();
-	syringe_set_target(100,0);
-	syringe_run_forward();
-	printf("syringe done\n");
-}
-
-void step_motmor_test()
-{
-	int i;
-	step_motor_init(STEP_MOTOR_0, 1100, 50);
-	step_motor_init(STEP_MOTOR_1, 1100, 50);
-	for(i = 0; i < 1000; i++) {
-		step_motor_move_step_forward(STEP_MOTOR_0);
-		step_motor_move_step_forward(STEP_MOTOR_1);
-	}
-	for(i = 0; i < 1000; i++) {
-		step_motor_move_step_back(STEP_MOTOR_0);
-		step_motor_move_step_back(STEP_MOTOR_1);
-	}
-}
-
-void microscope_test()  // 10um per step
-{
-	microscope_init();
-	microscope_x_plus(500);
-	microscope_y_minus(500);
-	sleep(5);
-	microscope_x_plus(500);
-	microscope_y_minus(500);
-	microscope_manual_calibration_on();
-}
-
-void wheel_plate_test()
-{
-	int i;
-	int position1 = get_position(POSITITON_SENSNOR_0);
-	int position2;
-	step_motor_init(STEP_MOTOR_0, 2000, 50);
-	printf("p1 = %d\n", position1);
-	for(i = 0; i < 20; i++)
-		step_motor_move_step_forward(STEP_MOTOR_0);
-	position2 = get_position(POSITITON_SENSNOR_0);
-	printf("p2 = %d\n", position2);
-	if (position2 - position1 > 1000)
-		printf("moving step1 %d\n", position2 - 1000 - position1);
-	else
-		printf("moving step2 %d\n", position1 - position2);
-}
-
-void PID_test()
-{
-	int i;
-	float target =100;
-	float current = 0;
-	float current_d =0;
-	float current_d_d = 0;
-	float error;
-	float error_d;
-	float error_d_d;
-	for(i=0; i < 100; i++)
-	{
-		current_d_d = current_d;
-		current_d = current;
-		error_d_d = error_d;
-		error_d = error;
-		error = target - current_d_d;
-		current = current + PID(error, error_d, error_d_d, 0.2, 0.01, 0.03);
-		printf("current is %f\n",current);
-	}
-}
+#include "unit_test.h"
 
 int main(int argn, char* argv[])
 {
@@ -117,25 +23,15 @@ int main(int argn, char* argv[])
     pthread_t pid;
 	fpga_open();
 	shield_ctrl_init();
-	AM2301_init(AM2301_0);
-	AM2301_init(AM2301_1);
-	brush_motor_init(BRUSH_MOTOR_0);
-	brush_motor_init(BRUSH_MOTOR_1);
-	brush_motor_back(BRUSH_MOTOR_1);
-	brush_motor_init(BRUSH_MOTOR_2);
-	brush_motor_init(BRUSH_MOTOR_3);
-	fan_motor_init(FAN_MOTOR_0);
-	fan_motor_init(FAN_MOTOR_1);
-	//IOA_OE      = 0xffffffff;
-	//IOB_OE      = 0xffffffff;
+
 	// Unit_test
-//	  syringe_test();
-//    AM2301_test();
-//	  step_motmor_test();
-	microscope_test();
+
+//	syringe_test();
+//	AM2301_test();
+//	step_motmor_test();
 //	wheel_plate_test();
 //	PID_test();
-
+    microscope_test();
 
 	/*if(argn != 2) {
 		printf("arg error\n");
@@ -148,8 +44,6 @@ int main(int argn, char* argv[])
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");*/
 	printf("done\n");
 	while(1) {
-
-
 
 //		printf("main loop wake up\n");
 //		  Brush_motor_ON();
