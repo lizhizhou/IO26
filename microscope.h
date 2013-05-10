@@ -23,8 +23,9 @@ extern unsigned int microscope_z_plus(unsigned int step);
 extern unsigned int microscope_z_minus(unsigned int step);
 extern void microscope_manual_calibration_on(void);
 extern void microscope_manual_calibration_off(void);
-coordinates micorscope_run_to_coordinates(coordinates p);
-void micorscope_set_coordinates_zero(void);
+extern coordinates micorscope_run_to_coordinates(coordinates p);
+extern coordinates micorscope_get_coordinates(void);
+extern void micorscope_set_coordinates_zero(void);
 
 
 #endif /* MICROSCOPE_H_ */

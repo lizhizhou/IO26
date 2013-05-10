@@ -184,6 +184,11 @@ coordinates micorscope_run_to_coordinates(coordinates target)
     return current;
 }
 
+coordinates micorscope_get_coordinates(void)
+{
+    return current;
+}
+
 void micorscope_set_coordinates_zero(void)
 {
     current.x = 0;

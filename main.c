@@ -13,6 +13,7 @@
 #include "syringe.h"
 #include "microscope.h"
 #include "moisture.h"
+#include "temperature.h"
 #include "PID.h"
 #include "debug.h"
 #include "unit_test.h"
