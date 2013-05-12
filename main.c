@@ -32,8 +32,9 @@ int main(int argn, char* argv[])
 //	step_motmor_test();
 //	wheel_plate_test();
 //	PID_test();
-    microscope_test();
+//  microscope_test();
 
+	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
