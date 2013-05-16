@@ -92,7 +92,7 @@ int set_moisture(int argc,char* argv[])
         printf("Error command");
         return (0);
     }
-    sscanf(argv[1],"%f", &moisture);
+    sscanf(argv[0],"%f", &moisture);
     set_moisture_target(moisture);
     return (1);
 }
@@ -108,21 +108,34 @@ int show_microscop_position(int argc,char* argv[])
 int set_microscop_position(int argc,char* argv[])
 {
     coordinates p;
-    if(argc >5) {
+    if(argc < 3) {
         printf("Error command");
         return (0);
     }
-    sscanf(argv[1], "%d %d %d", &p.x, &p.y, &p.z);
+    sscanf(argv[0], "%d %d %d", &p.x, &p.y, &p.z);
     p = micorscope_run_to_coordinates(p);
     printf("The position is %d %d %d\n", p.x, p.y, p.z);
     return (1);
 }
 
-int microscope_manual_calibration(int argc,char* argv[])
+int manual_calibration(int argc,char* argv[])
 {
-    microscope_manual_calibration_on();
-    microscope_manual_calibration_off();
+    char buf[255];
+    if(argc < 1) {
+        printf("Error command");
+        return (0);
+    }
+    sscanf(argv[0], "%s", buf);
+    if(!strcmp(buf,"on"))
+        microscope_manual_calibration_on();
+    else if(!strcmp(buf,"off"))
+        microscope_manual_calibration_off();
     return 0;
+}
+
+int syringe_control(int argc,char* argv[])
+{
+
 }
 
 static int cli_help (int argc, char *argv[])
@@ -138,9 +151,14 @@ static int cli_help (int argc, char *argv[])
 }
 
 shell_cmd_func_t shell_cmd_func_list[] = {
-	{"help",      "Print Help Manual",                  cli_help},
-    {"temp",      "show the temperature",               show_temperature},
-    {"moist",     "show the moisture",                  show_moisture},
+	{"help",      "Print Help Manual",                 cli_help},
+    {"temp",      "show the temperature",              show_temperature},
+    {"moist",     "show the moisture",                 show_moisture},
+    {"tempt",     "Set the target temperature",        set_temperature},
+    {"moistt",    "Set the target temperature",        set_moisture},
+    {"scope",     "set the coordinates of the micro scope",set_microscop_position},
+    {"manual",    "Manual regulate the micro scope",   manual_calibration},
+    {"Syringe",   "Syringe control",                   syringe_control},
     {NULL, NULL, NULL}
 };
 
@@ -225,11 +243,11 @@ int cli() {
         argc = parser_cli(buffer,argv);
         if (argc == 0)
             continue;
-        //UTSHL_DEBUG("argc=%d\n",argc);
+        debuginf("argc=%d\n",argc);
         while(i < argc ) {
             char cmd_name[256];
             sscanf(argv[i],"%256s ", cmd_name);
-            //UTSHL_DEBUG("arg[%d] = %s\n", i, cmd_name);
+            debuginf("arg[%d] = %s\n", i, cmd_name);
             i++;
         }
         if(strcmp(buffer,"exit")==0)
