@@ -6,6 +6,7 @@
  */
 #include <unistd.h>
 #include <stdio.h>
+#include <pthread.h>
 #include "AM2301.h"
 #include "platform.h"
 #include "PWM.h"
@@ -49,4 +50,11 @@ void* temperature_regulating_process(void* arg)
         temperature = temperature_1 + temperature_2;
     }
     return (NULL);
+}
+
+void init_temperature_subsystem(float temperature)
+{
+	pthread_t pid;
+	set_temperature_target(temperature);
+	pthread_create(&pid, NULL, temperature_regulating_process, "temperature");
 }

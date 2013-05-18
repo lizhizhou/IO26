@@ -17,8 +17,6 @@
 #define STEPMOTOR_FORWARD_BACK  *((volatile int*) STEPMOTOR_CTRL_ADDRESS+4)
 #define STEPMOTOR_ON_OFF        *((volatile int*) STEPMOTOR_CTRL_ADDRESS+5)
 
-#define MAX_SUBDIVISION 0xFFFFFFFF
-
 void step_motor_init(void* stepmotor_address, unsigned int frequence, unsigned int duty_cycle)
 {
 	STEPMOTOR_PWM_FREQUENCE = frequence * 0x100000000 / 200000000;
@@ -53,9 +51,12 @@ void step_motor_move_step_back(void* stepmotor_address)
     usleep(TIME_DELAY);
 }
 
-void setp_motor_subdivision(void* stepmotor_address, unsigned int subdivision, unsigned int duty_cycle)
+void setp_motor_subdivision(void* stepmotor_address, unsigned int substep,
+		unsigned int division, unsigned int duty_cycle)
 {
-	subdivision &= MAX_SUBDIVISION;
-	STEPMOTOR_PWM_WIDTH_A = 0xFFFFFFFF / 100 * duty_cycle - 0xFFFFFFFF * subdivision /2 / MAX_SUBDIVISION;
-	STEPMOTOR_PWM_WIDTH_B = 0xFFFFFFFF / 100 * duty_cycle + 0xFFFFFFFF * subdivision /2 / MAX_SUBDIVISION;	
+	if (substep > division)
+		return;
+	STEPMOTOR_PWM_WIDTH_A = 0xFFFFFFFF / 100 * duty_cycle * substep / division ;
+	STEPMOTOR_PWM_WIDTH_B = 0xFFFFFFFF / 100 * duty_cycle * (division - substep) / division;
 }
+

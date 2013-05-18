@@ -13,6 +13,7 @@ extern void step_motor_on(void* stepmotor_address);
 extern void step_motor_off(void* stepmotor_address);
 extern void step_motor_move_step_forward(void* stepmotor_address);
 extern void step_motor_move_step_back(void* stepmotor_address);
-extern void setp_motor_subdivision(void* stepmotor_address, unsigned int subdivision, unsigned int duty_cycle);
+extern void setp_motor_subdivision(void* stepmotor_address, unsigned int substep,
+		unsigned int division, unsigned int duty_cycle);
 
 #endif /* STEPMOTOR_H_ */

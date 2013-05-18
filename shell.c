@@ -6,6 +6,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -23,6 +24,8 @@
 #include "microscope.h"
 #include "moisture.h"
 #include "temperature.h"
+#include "unit_test.h"
+#include "debug.h"
 
 typedef int (*shell_cmd_func)(int argc, char *argv[]);
 typedef struct shell_cmd_t {
@@ -38,7 +41,7 @@ int show_temperature(int argc,char* argv[])
     float temperature;
     if(argc >1) {
         printf("Error command");
-        return (0);
+        return (false);
     }
     sscanf(argv[0],"%d",&i);
     switch(i) {
@@ -78,7 +81,7 @@ int set_temperature(int argc,char* argv[])
     float temperature;
     if(argc >1) {
         printf("Error command\n");
-        return (0);
+        return (false);
     }
     sscanf(argv[0],"%f", &temperature);
     set_temperature_target(temperature);
@@ -90,11 +93,11 @@ int set_moisture(int argc,char* argv[])
     float moisture;
     if(argc >1) {
         printf("Error command");
-        return (0);
+        return (false);
     }
     sscanf(argv[0],"%f", &moisture);
     set_moisture_target(moisture);
-    return (1);
+    return (true);
 }
 
 int show_microscop_position(int argc,char* argv[])
@@ -102,7 +105,7 @@ int show_microscop_position(int argc,char* argv[])
     coordinates p;
     p = micorscope_get_coordinates();
     printf("The position is %d %d %d\n", p.x, p.y, p.z);
-    return (1);
+    return (true);
 }
 
 int set_microscop_position(int argc,char* argv[])
@@ -110,12 +113,12 @@ int set_microscop_position(int argc,char* argv[])
     coordinates p;
     if(argc < 3) {
         printf("Error command");
-        return (0);
+        return (false);
     }
     sscanf(argv[0], "%d %d %d", &p.x, &p.y, &p.z);
     p = micorscope_run_to_coordinates(p);
     printf("The position is %d %d %d\n", p.x, p.y, p.z);
-    return (1);
+    return (true);
 }
 
 int manual_calibration(int argc,char* argv[])
@@ -123,19 +126,62 @@ int manual_calibration(int argc,char* argv[])
     char buf[255];
     if(argc < 1) {
         printf("Error command");
-        return (0);
+        return (false);
     }
     sscanf(argv[0], "%s", buf);
     if(!strcmp(buf,"on"))
         microscope_manual_calibration_on();
     else if(!strcmp(buf,"off"))
         microscope_manual_calibration_off();
-    return 0;
+    return (true);
 }
 
 int syringe_control(int argc,char* argv[])
 {
+	return (true);
+}
 
+int unit_test(int argc,char* argv[])
+{
+	// Unit_test
+	int i;
+	printf("1:AM2301_test\n");
+	printf("2:syringe_test\n");
+	printf("3:step_motmor_test\n");
+	printf("4:brush_motor_test\n");
+	printf("5:microscope_test\n");
+	printf("6:wheel_plate_test\n");
+	printf("7:PID_test\n");
+	printf("8:PIO_test\n");
+	printf("Input choose\n");
+	scanf("%d",&i);
+	switch(i) {
+		case 1:
+			AM2301_test();
+			break;
+		case 2:
+			syringe_test();
+			break;
+		case 3:
+			step_motmor_test();
+			break;
+		case 4:
+			brush_motor_test();
+			break;
+		case 5:
+			microscope_test();
+			break;
+		case 6:
+			wheel_plate_test();
+			break;
+		case 7:
+			PID_test();
+			break;
+		case 8:
+			PIO_test();
+			break;
+	}
+	return (true);
 }
 
 static int cli_help (int argc, char *argv[])
@@ -147,7 +193,7 @@ static int cli_help (int argc, char *argv[])
         printf("%s: %s\n", func->name, func->help);
         func++;
     };
-    return 1;
+    return (true);
 }
 
 shell_cmd_func_t shell_cmd_func_list[] = {
@@ -159,6 +205,7 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"scope",     "set the coordinates of the micro scope",set_microscop_position},
     {"manual",    "Manual regulate the micro scope",   manual_calibration},
     {"Syringe",   "Syringe control",                   syringe_control},
+    {"ut",        "Unit test of the system",           unit_test},
     {NULL, NULL, NULL}
 };
 
@@ -190,7 +237,7 @@ static int cmd_distribution (int argc, char *argv[])
     if (state == 0) {
         printf("%s: argument error!\n", arg);
     }
-    return 1;
+    return (true);
 }
 
 static int parser_cli(char* buffer, char* argv[])
@@ -257,6 +304,6 @@ int cli() {
             cmd_distribution(argc, argv);
         }
     }
-    return (0);
+    return (true);
 }
 

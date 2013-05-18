@@ -18,7 +18,7 @@
 
 extern int* FPGA_MOD_BASE;
 extern int* FPGA_SYS_BASE;
-extern void fpga_open();
+extern int fpga_open();
 extern void fpga_close();
 
 

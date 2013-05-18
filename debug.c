@@ -4,10 +4,10 @@
  *  Created on: Oct 26, 2012
  *      Author: Zhizhou Li
  */
-
+#include<stdio.h>
 #include<stdlib.h>
 #include<stdarg.h>
-#include <execinfo.h>
+#include<execinfo.h>
 
 #define LOG_BUFFER_SIZE 2048
 char log_buffer[LOG_BUFFER_SIZE];
@@ -28,6 +28,7 @@ int print_log()
 	int i;
 	for(i=0;i<LOG_BUFFER_SIZE || log_buffer[i] == '\0';i++)
 		putchar(log_buffer[i]);
+	return (i);
 }
 #define TRACE_BUFFER_SIZE 2048
 void trace_back()

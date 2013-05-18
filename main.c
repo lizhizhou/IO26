@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <pthread.h>
 #include "platform.h"
@@ -21,19 +22,11 @@
 int main(int argn, char* argv[])
 {
 	float i;
-    pthread_t pid;
-	fpga_open();
+	if (!fpga_open()) {
+		printf("FPGA open error\n");
+		exit(1);
+	}
 	shield_ctrl_init();
-
-	// Unit_test
-
-//	syringe_test();
-//	AM2301_test();
-//	step_motmor_test();
-//	wheel_plate_test();
-//	PID_test();
-//  microscope_test();
-
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
@@ -42,9 +35,9 @@ int main(int argn, char* argv[])
 	printf(argv[1]);
 	sscanf(argv[1],"%f", &i);
 	printf("target is %0.2f%%\n", i);
-    set_moisture_target(i);
-	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");*/
-	printf("done\n");
+    init_moisture_subsystem(i);
+	printf("done\n");*/
+
 //	while(1) {
 
 //		printf("main loop wake up\n");

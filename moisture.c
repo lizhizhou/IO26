@@ -6,6 +6,7 @@
  */
 #include <stdio.h>
 #include <unistd.h>
+#include <pthread.h>
 #include "AM2301.h"
 #include "platform.h"
 #include "PIO26.h"
@@ -109,4 +110,11 @@ void* moisture_regulating_process(void *arg)
         sleep(1);
     }
     return (NULL);
+}
+
+void init_moisture_subsystem(float moisture)
+{
+	pthread_t pid;
+	set_moisture_target(moisture);
+	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 }
