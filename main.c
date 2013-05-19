@@ -27,7 +27,7 @@ int main(int argn, char* argv[])
 		exit(1);
 	}
 	shield_ctrl_init();
-	cli();
+	//cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
@@ -37,7 +37,13 @@ int main(int argn, char* argv[])
 	printf("target is %0.2f%%\n", i);
     init_moisture_subsystem(i);
 	printf("done\n");*/
-
+	{
+		int i;
+		step_motor_init(STEP_MOTOR_2, 8000, 50);
+		for(i = 0; i < 10; i++)
+			step_motor_move_step_back(STEP_MOTOR_2);
+		//setp_motor_subdivision(STEP_MOTOR_2, 8, 16 ,80);
+	}
 //	while(1) {
 
 //		printf("main loop wake up\n");

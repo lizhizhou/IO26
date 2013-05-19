@@ -36,13 +36,11 @@ static int get_edge_sensor_y_minus()
 }
 static int get_edge_sensor_z_plus()
 {
-    //return (IOB_IO_20);
-    return (0);
+	return (!IOB_IO_16);
 }
 static int get_edge_sensor_z_minus()
 {
-    //return (IOB_IO_21);
-    return (0);
+    return (IOB_IO_17);
 }
 
 static int get_infrared_sensor_x()
@@ -65,7 +63,7 @@ static int get_infrared_sensor_z()
 
 void microscope_init()
 {
-    IOB_OE      = 0xffffffff;  // init IO
+    IOB_OE      = 0x00000000;  // init IOB as inport
 	step_motor_init(STEP_MOTOR_X, 10000, 30);
 	step_motor_init(STEP_MOTOR_Y, 10000, 30);
 	step_motor_init(STEP_MOTOR_Z, 10000, 30);

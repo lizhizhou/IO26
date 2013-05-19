@@ -54,9 +54,14 @@ void step_motor_move_step_back(void* stepmotor_address)
 void setp_motor_subdivision(void* stepmotor_address, unsigned int substep,
 		unsigned int division, unsigned int duty_cycle)
 {
+	int x,y;
 	if (substep > division)
 		return;
-	STEPMOTOR_PWM_WIDTH_A = 0xFFFFFFFF / 100 * duty_cycle * substep / division ;
-	STEPMOTOR_PWM_WIDTH_B = 0xFFFFFFFF / 100 * duty_cycle * (division - substep) / division;
+	x = 0xFFFFFFFF / 100 * duty_cycle * substep / division ;
+	printf("x = %d", x);
+	y = 0xFFFFFFFF / 100 * duty_cycle * (division - substep) / division;
+	printf("y = %d", y);
+	STEPMOTOR_PWM_WIDTH_A = x;
+	STEPMOTOR_PWM_WIDTH_B = y;
 }
 
