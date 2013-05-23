@@ -115,6 +115,7 @@ int set_microscop_position(int argc,char* argv[])
         printf("Error command");
         return (false);
     }
+    microscope_init();
     sscanf(argv[0], "%d %d %d", &p.x, &p.y, &p.z);
     p = micorscope_run_to_coordinates(p);
     printf("The position is %d %d %d\n", p.x, p.y, p.z);

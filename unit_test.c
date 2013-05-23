@@ -68,7 +68,7 @@ void step_motmor_test()
         step_motor_move_step_back(STEP_MOTOR_1);
         step_motor_move_step_back(STEP_MOTOR_2);
     }
-    setp_motor_subdivision(STEP_MOTOR_2, 6, 16 ,50);
+
 }
 
 void brush_motor_test()
@@ -155,4 +155,21 @@ void PIO_test()
     IOB_IO_0    = 1;
     IOA_IO_1    = 0;
     IOB_IO_1    = 1;
+}
+
+void subdivision_step_motor_test()
+{
+	int i;
+	step_motor_init(SUBDIVISION_STEP_MOTOR_0, 10000, 30);
+	step_motor_move_step_back(SUBDIVISION_STEP_MOTOR_0);
+	while(1) {
+		for (i = 0; i< 64 ; i++) {
+			setp_motor_subdivision(SUBDIVISION_STEP_MOTOR_0, i, 64 ,30);
+			usleep(100000);
+		}
+		for (i = 64; i >=0 ; i--) {
+			setp_motor_subdivision(SUBDIVISION_STEP_MOTOR_0, i, 64 ,30);
+			usleep(100000);
+		}
+	}
 }
