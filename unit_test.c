@@ -19,6 +19,7 @@
 #include "microscope.h"
 #include "moisture.h"
 #include "PID.h"
+#include "coordinate.h"
 
 void AM2301_test()
 {
@@ -172,4 +173,25 @@ void subdivision_step_motor_test()
 			usleep(100000);
 		}
 	}
+}
+
+void coordinate_test()
+{
+    rectangular r;
+    cylindroid  c;
+    spheroid    s;
+    r.x = 100;
+    r.y = 100;
+    r.z = 100;
+    c = rectangular_to_cylindroid(r);
+    r = cylindroid_to_rectangular(c);
+    printf("x = %f, y = %f, z = %f\n", r.x, r.y, r.z);
+    s = rectangular_to_spheroid(r);
+    r = spheroid_to_rectangular(s);
+    printf("x = %f, y = %f, z = %f\n", r.x, r.y, r.z);
+    s = cylindroid_to_spheroid(c);
+    c = spheroid_to_cylindroid(s);
+    r = cylindroid_to_rectangular(c);
+    printf("x = %f, y = %f, z = %f\n", r.x, r.y, r.z);
+    printf("30 = %f", radian_to_angle(angle_to_radian(30)));
 }

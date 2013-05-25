@@ -33,6 +33,7 @@
 <tool command="arm-none-linux-gnueabi-gcc" id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1624304766" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
 <option id="gnu.c.link.option.libs.325436529" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 <listOptionValue builtIn="false" value="pthread"/>
+<listOptionValue builtIn="false" value="m"/>
 </option>
 <inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1692134916" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 <additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

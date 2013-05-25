@@ -15,4 +15,5 @@ void microscope_test();
 void wheel_plate_test();
 void PID_test();
 void PIO_test();
+void coordinate_test();
 #endif /* UNIT_TEST_H_ */

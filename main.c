@@ -27,6 +27,9 @@ int main(int argn, char* argv[])
 		exit(1);
 	}
 	shield_ctrl_init();
+
+//	coordinate_test();
+
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
