@@ -45,5 +45,5 @@ extern rectangular cylindroid_to_rectangular (cylindroid n);
 extern spheroid cylindroid_to_spheroid(cylindroid n);
 extern cylindroid spheroid_to_cylindroid(spheroid n);
 extern rectangular spheroid_to_rectangular(spheroid n);
-
+extern float distence(rectangular n1, rectangular n2);
 #endif /* COORDINATE_H_ */

@@ -7,7 +7,7 @@
 
 #ifndef MICROSCOPE_H_
 #define MICROSCOPE_H_
-
+#include "coordinate.h"
 typedef struct coordinates_t {
   int x;
   int y;
@@ -26,6 +26,6 @@ extern void microscope_manual_calibration_off(void);
 extern coordinates micorscope_run_to_coordinates(coordinates p);
 extern coordinates micorscope_get_coordinates(void);
 extern void micorscope_set_coordinates_zero(void);
-
-
+extern coordinates rectangular_to_coordinates(rectangular n);
+extern rectangular coordinates_to_rectangular(coordinates n);
 #endif /* MICROSCOPE_H_ */

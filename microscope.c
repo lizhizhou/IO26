@@ -193,3 +193,21 @@ void micorscope_set_coordinates_zero(void)
     current.y = 0;
     current.z = 0;
 }
+
+coordinates rectangular_to_coordinates(rectangular n)
+{
+	coordinates r;
+	r.x = n.x;
+	r.y = n.y;
+	r.z = n.z;
+	return (r);
+}
+
+rectangular coordinates_to_rectangular(coordinates n)
+{
+	rectangular r;
+	r.x = n.x;
+	r.y = n.y;
+	r.z = n.z;
+	return (r);
+}

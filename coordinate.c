@@ -60,3 +60,10 @@ rectangular spheroid_to_rectangular(spheroid n)
     return (r);
 }
 
+float distence(rectangular n1, rectangular n2)
+{
+	int delta_x = n1.x-n2.x;
+	int delta_y = n1.y-n2.y;
+	int delta_z = n1.z-n1.z;
+	return (sqrt(delta_x * delta_x + delta_y * delta_y + delta_z * delta_z));
+}

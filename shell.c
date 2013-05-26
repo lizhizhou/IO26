@@ -115,10 +115,86 @@ int set_microscop_position(int argc,char* argv[])
         printf("Error command");
         return (false);
     }
-    microscope_init();
     sscanf(argv[0], "%d %d %d", &p.x, &p.y, &p.z);
     p = micorscope_run_to_coordinates(p);
     printf("The position is %d %d %d\n", p.x, p.y, p.z);
+    return (true);
+}
+
+int microscop_x(int argc,char* argv[])
+{
+    coordinates p;
+    int x;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    p = micorscope_get_coordinates();
+    sscanf(argv[0], "%d", &x);
+    p.x+=x;
+    p = micorscope_run_to_coordinates(p);
+    printf("The position is %d %d %d\n", p.x, p.y, p.z);
+    return (true);
+}
+
+int microscop_y(int argc,char* argv[])
+{
+    coordinates p;
+    int y;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    p = micorscope_get_coordinates();
+    sscanf(argv[0], "%d", &y);
+    p.y+=y;
+    p = micorscope_run_to_coordinates(p);
+    printf("The position is %d %d %d\n", p.x, p.y, p.z);
+    return (true);
+}
+
+
+
+coordinates r[4];
+int microscop_ref(int argc,char* argv[])
+{
+    int i;
+    int d[3];
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    if(i > 4)
+    	return (false);
+    r[i] = micorscope_get_coordinates();
+    printf("The ref point 1 is %d %d\n", r[0].x, r[0].y);
+    printf("The ref point 2 is %d %d\n", r[1].x, r[1].y);
+    printf("The ref point 3 is %d %d\n", r[2].x, r[2].y);
+    printf("The ref point 4 is %d %d\n", r[3].x, r[3].y);
+    d[0] = distence(coordinates_to_rectangular(r[0]),coordinates_to_rectangular(r[1]));
+    d[1] = distence(coordinates_to_rectangular(r[1]),coordinates_to_rectangular(r[2]));
+    d[2] = distence(coordinates_to_rectangular(r[2]),coordinates_to_rectangular(r[0]));
+    if (d[2] > d[1] && d[2] > d[0])
+    {
+    	int x  = (r[0].x+r[2].x) /2;
+    	int y =  (r[0].y+r[2].y) /2;
+    	printf("The orignial point is %d %d\n", x, y);
+    	printf("The angle is %f ",angle_to_radian(atan2(r[0].y ,r[0].x)));
+    } else if (d[1] > d[0] && d[1] > d[2])
+    {
+    	int x  = (r[1].x+r[2].x) /2;
+    	int y =  (r[1].y+r[2].y) /2;
+    	printf("The orignial point is %d %d\n", x, y);
+    	printf("The angle is %f ",angle_to_radian(atan2(r[1].y ,r[1].x)));
+    }
+    else
+    {
+    	int x  = (r[0].x+r[1].x) /2;
+    	int y =  (r[0].y+r[1].y) /2;
+    	printf("The orignial point is %d %d\n", x, y);
+    	printf("The angle is %f ",angle_to_radian(atan2(r[0].y ,r[0].x)));
+    }
     return (true);
 }
 
@@ -206,6 +282,9 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"scope",     "set the coordinates of the micro scope",set_microscop_position},
     {"manual",    "Manual regulate the micro scope",   manual_calibration},
     {"Syringe",   "Syringe control",                   syringe_control},
+    {"x",         "regular x of micro scope",          microscop_x},
+    {"y",         "regular y of micro scope",          microscop_y},
+    {"ref",       "set the reference point of micro scope", microscop_ref},
     {"ut",        "Unit test of the system",           unit_test},
     {NULL, NULL, NULL}
 };
@@ -281,6 +360,8 @@ int gets_s(char* buffer, int buf_size)
 int cli() {
     char buffer[CLI_BUFFER_SIZE];
     char *argv[ARG_LIST_SIZE];
+
+    microscope_init();
 
     while(1)
     {
