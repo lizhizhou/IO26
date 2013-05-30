@@ -6,6 +6,7 @@
  */
 #include <unistd.h>
 #include <stdio.h>
+#include <math.h>
 #include "platform.h"
 #include "PIO26.h"
 #include "step_motor.h"
@@ -194,6 +195,13 @@ void micorscope_set_coordinates_zero(void)
     current.z = 0;
 }
 
+void micorscope_set_coordinates(coordinates n)
+{
+    current.x = n.x;
+    current.y = n.y;
+    current.z = n.z;
+}
+
 coordinates rectangular_to_coordinates(rectangular n)
 {
 	coordinates r;
@@ -210,4 +218,48 @@ rectangular coordinates_to_rectangular(coordinates n)
 	r.y = n.y;
 	r.z = n.z;
 	return (r);
+}
+
+void microscope_original_angle(coordinates ref_point[], coordinates* original, float* angle)
+{
+    int d[3];
+    int org_x, org_y;
+    int x, y;
+    d[0] = distence(coordinates_to_rectangular(ref_point[0]),coordinates_to_rectangular(ref_point[1]));
+    d[1] = distence(coordinates_to_rectangular(ref_point[1]),coordinates_to_rectangular(ref_point[2]));
+    d[2] = distence(coordinates_to_rectangular(ref_point[2]),coordinates_to_rectangular(ref_point[0]));
+    if (d[2] > d[1] && d[2] > d[0])
+    {
+    	org_x  = (ref_point[0].x+ref_point[2].x) /2;
+    	org_y =  (ref_point[0].y+ref_point[2].y) /2;
+    } else if (d[1] > d[0] && d[1] > d[2])
+    {
+    	org_x  = (ref_point[1].x+ref_point[2].x) /2;
+    	org_y =  (ref_point[1].y+ref_point[2].y) /2;
+    }
+    else
+    {
+    	org_x  = (ref_point[0].x+ref_point[1].x) /2;
+     	org_y =  (ref_point[0].y+ref_point[1].y) /2;
+    }
+    original->x = org_x;
+    original->y = org_y;
+    if (d[2] < d[1] && d[2] < d[0])
+    {
+    	x = (ref_point[0].y+ref_point[2].y)/2 - org_x;
+    	y = (ref_point[0].x+ref_point[2].x)/2 - org_y;
+     	*angle = radian_to_angle(atan2(y,x));
+    }
+    else if (d[1] < d[0] && d[1] < d[2])
+    {
+     	x = (ref_point[1].y+ref_point[2].y)/2 - org_x;
+     	y = (ref_point[1].x+ref_point[2].x)/2 - org_y;
+     	*angle = radian_to_angle(atan2(y,x));
+    }
+    else
+    {
+     	x = (ref_point[0].y+ref_point[1].y)/2 - org_x;
+     	y = (ref_point[0].x+ref_point[1].x)/2 - org_y;
+     	*angle = radian_to_angle(atan2(y,x));
+    }
 }

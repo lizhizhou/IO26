@@ -195,3 +195,30 @@ void coordinate_test()
     printf("x = %f, y = %f, z = %f\n", r.x, r.y, r.z);
     printf("30 = %f", radian_to_angle(angle_to_radian(30)));
 }
+
+void microscope_original_angle_unit_test(void)
+{
+    coordinates o;
+    float angle;
+	coordinates r[3];
+	// Case 1 for unit only
+   	r[0].x = 0;
+   	r[0].y = 100;
+   	r[1].x = 100;
+   	r[1].y = 200;
+   	r[2].x = 100;
+   	r[2].y = 0;
+    microscope_original_angle(r, &o, &angle);
+    printf("The orignial point is %d %d\n", o.x, o.y);
+   	printf("The angle is %f\n", angle);
+	// Case 2 for unit only
+	r[0].x = -305;
+	r[0].y = 340;
+	r[1].x = -755;
+	r[1].y = 1390;
+	r[2].x = -1095;
+	r[2].y = 840;
+    microscope_original_angle(r, &o, &angle);
+    printf("The orignial point is %d %d\n", o.x, o.y);
+   	printf("The angle is %f\n", angle);
+}

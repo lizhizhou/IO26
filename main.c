@@ -28,7 +28,7 @@ int main(int argn, char* argv[])
 	}
 	shield_ctrl_init();
 
-//	coordinate_test();
+
 //	{
 //		int i;
 //		cylindroid  c;

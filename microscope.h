@@ -26,6 +26,8 @@ extern void microscope_manual_calibration_off(void);
 extern coordinates micorscope_run_to_coordinates(coordinates p);
 extern coordinates micorscope_get_coordinates(void);
 extern void micorscope_set_coordinates_zero(void);
+extern void micorscope_set_coordinates(coordinates n);
 extern coordinates rectangular_to_coordinates(rectangular n);
 extern rectangular coordinates_to_rectangular(coordinates n);
+extern void microscope_original_angle(coordinates ref_point[], coordinates* original, float* angle);
 #endif /* MICROSCOPE_H_ */
