@@ -156,10 +156,16 @@ int microscop_y(int argc,char* argv[])
 
 
 coordinates r[4];
+
 int microscop_ref(int argc,char* argv[])
 {
     int i;
     int d[3];
+
+    int org_x;
+    int org_y;
+    float angle;
+
     if(argc < 1) {
         printf("Error command");
         return (false);
@@ -168,33 +174,72 @@ int microscop_ref(int argc,char* argv[])
     if(i > 4)
     	return (false);
     r[i] = micorscope_get_coordinates();
-    printf("The ref point 1 is %d %d\n", r[0].x, r[0].y);
-    printf("The ref point 2 is %d %d\n", r[1].x, r[1].y);
-    printf("The ref point 3 is %d %d\n", r[2].x, r[2].y);
-    printf("The ref point 4 is %d %d\n", r[3].x, r[3].y);
+//    {// Case 1 for unit only
+//    	r[0].x = -305;
+//    	r[0].y = 340;
+//    	r[1].x = -755;
+//    	r[1].y = 1390;
+//    	r[2].x = -1095;
+//    	r[2].y = 840;
+//    }
+    {// Case 2 for unit only
+       	r[0].x = 0;
+       	r[0].y = 100;
+       	r[1].x = 100;
+       	r[1].y = 200;
+       	r[2].x = 100;
+       	r[2].y = 0;
+       }
+    printf("The ref point 0 is %d %d\n", r[0].x, r[0].y);
+    printf("The ref point 1 is %d %d\n", r[1].x, r[1].y);
+    printf("The ref point 2 is %d %d\n", r[2].x, r[2].y);
+    printf("The ref point 3 is %d %d\n", r[3].x, r[3].y);
     d[0] = distence(coordinates_to_rectangular(r[0]),coordinates_to_rectangular(r[1]));
     d[1] = distence(coordinates_to_rectangular(r[1]),coordinates_to_rectangular(r[2]));
     d[2] = distence(coordinates_to_rectangular(r[2]),coordinates_to_rectangular(r[0]));
+    printf("d[0] = %d ", d[0]);
+    printf("d[1] = %d ", d[1]);
+    printf("d[2] = %d\n", d[2]);
     if (d[2] > d[1] && d[2] > d[0])
     {
-    	int x  = (r[0].x+r[2].x) /2;
-    	int y =  (r[0].y+r[2].y) /2;
-    	printf("The orignial point is %d %d\n", x, y);
-    	printf("The angle is %f ",angle_to_radian(atan2(r[0].y ,r[0].x)));
+    	org_x  = (r[0].x+r[2].x) /2;
+    	org_y =  (r[0].y+r[2].y) /2;
+
     } else if (d[1] > d[0] && d[1] > d[2])
     {
-    	int x  = (r[1].x+r[2].x) /2;
-    	int y =  (r[1].y+r[2].y) /2;
-    	printf("The orignial point is %d %d\n", x, y);
-    	printf("The angle is %f ",angle_to_radian(atan2(r[1].y ,r[1].x)));
+    	org_x  = (r[1].x+r[2].x) /2;
+    	org_y =  (r[1].y+r[2].y) /2;
     }
     else
     {
-    	int x  = (r[0].x+r[1].x) /2;
-    	int y =  (r[0].y+r[1].y) /2;
-    	printf("The orignial point is %d %d\n", x, y);
-    	printf("The angle is %f ",angle_to_radian(atan2(r[0].y ,r[0].x)));
+    	org_x  = (r[0].x+r[1].x) /2;
+    	org_y =  (r[0].y+r[1].y) /2;
     }
+
+    if (d[2] < d[1] && d[2] < d[0])
+    {
+    	int x = (r[0].y+r[2].y)/2 - org_x;
+    	int y = (r[0].x+r[2].x)/2 - org_y;
+    	angle = radian_to_angle(atan2(y,x));
+    	printf("x=%d y=%d\n", x, y);
+    }
+    else if (d[1] < d[0] && d[1] < d[2])
+    {
+    	int x = (r[1].y+r[2].y)/2 - org_x;
+    	int y = (r[1].x+r[2].x)/2 - org_y;
+    	angle = radian_to_angle(atan2(y,x));
+    	printf("x=%d y=%d\n", x, y);
+    }
+    else
+    {
+    	int x = (r[0].y+r[1].y)/2 - org_x;
+    	int y = (r[0].x+r[1].x)/2 - org_y;
+    	angle = radian_to_angle(atan2(y,x));
+    	printf("x=%d y=%d\n", x, y);
+    }
+	printf("The orignial point is %d %d\n", org_x, org_y);
+   	printf("The angle is %f ", angle);
+
     return (true);
 }
 
