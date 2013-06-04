@@ -29,5 +29,8 @@ extern void micorscope_set_coordinates_zero(void);
 extern void micorscope_set_coordinates(coordinates n);
 extern coordinates rectangular_to_coordinates(rectangular n);
 extern rectangular coordinates_to_rectangular(coordinates n);
-extern void microscope_original_angle(coordinates ref_point[], coordinates* original, float* angle);
+extern void microscope_original_angle(coordinates ref_point[],
+        coordinates* original, float* angle);
+extern void microscope_move_to_sample(int index,
+        coordinates ref_original, float ref_angle);
 #endif /* MICROSCOPE_H_ */

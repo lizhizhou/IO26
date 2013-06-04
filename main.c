@@ -28,25 +28,6 @@ int main(int argn, char* argv[])
 	}
 	shield_ctrl_init();
 
-
-//	{
-//		int i;
-//		cylindroid  c;
-//	    microscope_init();
-//		c.phi = 0;
-//		c.r   = 1450;
-//		c.z   = 0;
-//		for(i = 0; i < 25 ; i++) {
-//			micorscope_run_to_coordinates(rectangular_to_coordinates(cylindroid_to_rectangular(c)));
-//			c.phi += angle_to_radian(14.4);
-//			sleep(1);
-//		}
-//		c.phi = 0;
-//		c.r   = 0;
-//		c.z   = 0;
-//		micorscope_run_to_coordinates(rectangular_to_coordinates(cylindroid_to_rectangular(c)));
-//	}
-
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");

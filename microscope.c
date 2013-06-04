@@ -220,14 +220,18 @@ rectangular coordinates_to_rectangular(coordinates n)
 	return (r);
 }
 
-void microscope_original_angle(coordinates ref_point[], coordinates* original, float* angle)
+void microscope_original_angle(coordinates ref_point[], coordinates* original,
+        float* angle)
 {
     int d[3];
     int org_x, org_y;
     int x, y;
-    d[0] = distence(coordinates_to_rectangular(ref_point[0]),coordinates_to_rectangular(ref_point[1]));
-    d[1] = distence(coordinates_to_rectangular(ref_point[1]),coordinates_to_rectangular(ref_point[2]));
-    d[2] = distence(coordinates_to_rectangular(ref_point[2]),coordinates_to_rectangular(ref_point[0]));
+    d[0] = distence(coordinates_to_rectangular(ref_point[0]),
+            coordinates_to_rectangular(ref_point[1]));
+    d[1] = distence(coordinates_to_rectangular(ref_point[1]),
+            coordinates_to_rectangular(ref_point[2]));
+    d[2] = distence(coordinates_to_rectangular(ref_point[2]),
+            coordinates_to_rectangular(ref_point[0]));
     if (d[2] > d[1] && d[2] > d[0])
     {
     	org_x  = (ref_point[0].x+ref_point[2].x) /2;
@@ -262,4 +266,24 @@ void microscope_original_angle(coordinates ref_point[], coordinates* original, f
      	y = (ref_point[0].x+ref_point[1].x)/2 - org_y;
      	*angle = radian_to_angle(atan2(y,x));
     }
+}
+
+#define RADIUS 1437
+#define FIRST  -73.78
+void microscope_move_to_sample(int index,
+        coordinates ref_original, float ref_angle)
+{
+    cylindroid  c;
+    coordinates target ;
+    if(index > 24 || index < 0)
+        return ;
+    c.phi = angle_to_radian(14.4 * index + ref_angle + FIRST);
+    c.r   = RADIUS;
+    c.z   = 0;
+    target =  rectangular_to_coordinates(cylindroid_to_rectangular(c));
+    target.x += ref_original.x;
+    target.y += ref_original.y;
+    target.z += ref_original.z;
+    micorscope_run_to_coordinates(target);
+    printf("x = %d, y = %d, z = %d\n", target.x, target.y, target.z);
 }

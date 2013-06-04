@@ -154,11 +154,11 @@ int microscop_y(int argc,char* argv[])
 }
 
 coordinates r[4];
+coordinates o;
+float angle;
 int microscop_ref(int argc,char* argv[])
 {
     int i;
-    coordinates o;
-    float angle;
 
     if(argc < 1) {
         printf("Error command");
@@ -175,6 +175,18 @@ int microscop_ref(int argc,char* argv[])
     microscope_original_angle(r, &o, &angle);
     printf("The orignial point is %d %d\n", o.x, o.y);
    	printf("The angle is %f ", angle);
+    return (true);
+}
+
+int microscop_move(int argc,char* argv[])
+{
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    microscope_move_to_sample(i, o, angle);
     return (true);
 }
 
