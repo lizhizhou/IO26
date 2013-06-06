@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <math.h>
+#include <pthread.h>
 #include "platform.h"
 #include "PIO26.h"
 #include "step_motor.h"
@@ -161,17 +162,59 @@ void microscope_manual_calibration_off(void)
     step_motor_on(STEP_MOTOR_Y);
     step_motor_on(STEP_MOTOR_Z);
 }
+#ifdef PARALLEL
+void* microscope_x_task(void* arg)
+{
+	int x = *(int*)arg;
+	printf("x=%d", x);
+//	if(x > 0)
+//		current.x += microscope_x_plus(x);
+//	else
+//		current.x -= microscope_x_minus(-x);
+	return 0;
+}
 
+void* microscope_y_task(void* arg)
+{
+	int y = *(int*)arg;
+	printf("y=%d", y);
+//	if(y > 0)
+//		current.y += microscope_y_plus(y);
+//	else
+//		current.y -= microscope_y_minus(-y);
+	return 0;
+}
+
+void* microscope_z_task(void* arg)
+{
+	int z = *(int*)arg;
+	printf("z=%d", z);
+//	if(z > 0)
+//		current.z += microscope_z_plus(z);
+//	else
+//		current.z -= microscope_z_minus(-z);
+	return 0;
+}
+#endif
 coordinates micorscope_run_to_coordinates(coordinates target)
 {
     coordinates delta;
-    delta.x = target.x - current.x;
+#ifdef PARALLEL
+	pthread_t x, y, z;
+#endif
+	delta.x = target.x - current.x;
     delta.y = target.y - current.y;
     delta.z = target.z - current.z;
+
+#ifdef PARALLEL
+	pthread_create(&x, NULL, microscope_x_task, &delta.x);
+	pthread_create(&y, NULL, microscope_y_task, &delta.y);
+	pthread_create(&z, NULL, microscope_z_task, &delta.z);
+#else
     if(delta.x > 0)
-        current.x += microscope_x_plus(delta.x);
-    else
-        current.x -= microscope_x_minus(-delta.x);
+		current.x += microscope_x_plus(delta.x);
+	else
+		current.x -= microscope_x_minus(-delta.x);
     if(delta.y > 0)
         current.y += microscope_y_plus(delta.y);
     else
@@ -180,6 +223,7 @@ coordinates micorscope_run_to_coordinates(coordinates target)
         current.z += microscope_z_plus(delta.z);
     else
         current.z -= microscope_z_minus(-delta.z);
+#endif
     return current;
 }
 
@@ -268,7 +312,7 @@ void microscope_original_angle(coordinates ref_point[], coordinates* original,
     }
 }
 
-#define RADIUS 1437
+#define RADIUS 1700//1450
 #define FIRST  -73.78
 void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle)

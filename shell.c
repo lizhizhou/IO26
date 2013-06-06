@@ -153,9 +153,25 @@ int microscop_y(int argc,char* argv[])
     return (true);
 }
 
+int microscop_z(int argc,char* argv[])
+{
+    coordinates p;
+    int z;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    p = micorscope_get_coordinates();
+    sscanf(argv[0], "%d", &z);
+    p.z+=z;
+    p = micorscope_run_to_coordinates(p);
+    printf("The position is %d %d %d\n", p.x, p.y, p.z);
+    return (true);
+}
+
 coordinates r[4];
 coordinates o;
-float angle;
+float angle = 0 ;
 int microscop_ref(int argc,char* argv[])
 {
     int i;
@@ -276,6 +292,8 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"Syringe",   "Syringe control",                   syringe_control},
     {"x",         "regular x of micro scope",          microscop_x},
     {"y",         "regular y of micro scope",          microscop_y},
+    {"z",         "regular z of micro scope",          microscop_z},
+    {"move",      "Move to the sample",                microscop_move},
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"ut",        "Unit test of the system",           unit_test},
     {NULL, NULL, NULL}

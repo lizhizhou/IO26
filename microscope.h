@@ -8,6 +8,7 @@
 #ifndef MICROSCOPE_H_
 #define MICROSCOPE_H_
 #include "coordinate.h"
+//#define PARALLEL
 typedef struct coordinates_t {
   int x;
   int y;
