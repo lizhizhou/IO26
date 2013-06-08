@@ -165,8 +165,9 @@ void microscope_manual_calibration_off(void)
 #ifdef PARALLEL
 void* microscope_x_task(void* arg)
 {
-	int x = *(int*)arg;
-	printf("x=%d", x);
+    coordinates* delta = (coordinates* )arg;
+    int x = delta->x;
+	printf("x=%d\n", x);
 //	if(x > 0)
 //		current.x += microscope_x_plus(x);
 //	else
@@ -176,8 +177,9 @@ void* microscope_x_task(void* arg)
 
 void* microscope_y_task(void* arg)
 {
-	int y = *(int*)arg;
-	printf("y=%d", y);
+    coordinates* delta = (coordinates* )arg;
+	int y = delta->y;
+	printf("y=%d\n", y);
 //	if(y > 0)
 //		current.y += microscope_y_plus(y);
 //	else
@@ -187,8 +189,9 @@ void* microscope_y_task(void* arg)
 
 void* microscope_z_task(void* arg)
 {
-	int z = *(int*)arg;
-	printf("z=%d", z);
+    coordinates* delta = (coordinates* )arg;
+	int z = delta->z;
+	printf("z=%d\n", z);
 //	if(z > 0)
 //		current.z += microscope_z_plus(z);
 //	else
@@ -207,9 +210,12 @@ coordinates micorscope_run_to_coordinates(coordinates target)
     delta.z = target.z - current.z;
 
 #ifdef PARALLEL
-	pthread_create(&x, NULL, microscope_x_task, &delta.x);
-	pthread_create(&y, NULL, microscope_y_task, &delta.y);
-	pthread_create(&z, NULL, microscope_z_task, &delta.z);
+	pthread_create(&x, NULL, microscope_x_task, (void *)&delta);
+	pthread_create(&y, NULL, microscope_y_task, (void *)&delta);
+	pthread_create(&z, NULL, microscope_z_task, (void *)&delta);
+	pthread_join(x, NULL);
+	pthread_join(y, NULL);
+	pthread_join(z, NULL);
 #else
     if(delta.x > 0)
 		current.x += microscope_x_plus(delta.x);
