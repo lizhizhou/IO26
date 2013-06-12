@@ -168,10 +168,10 @@ void* microscope_x_task(void* arg)
     coordinates* delta = (coordinates* )arg;
     int x = delta->x;
 	printf("x=%d\n", x);
-//	if(x > 0)
-//		current.x += microscope_x_plus(x);
-//	else
-//		current.x -= microscope_x_minus(-x);
+	if(x > 0)
+		current.x += microscope_x_plus(x);
+	else
+		current.x -= microscope_x_minus(-x);
 	return 0;
 }
 
@@ -180,10 +180,10 @@ void* microscope_y_task(void* arg)
     coordinates* delta = (coordinates* )arg;
 	int y = delta->y;
 	printf("y=%d\n", y);
-//	if(y > 0)
-//		current.y += microscope_y_plus(y);
-//	else
-//		current.y -= microscope_y_minus(-y);
+	if(y > 0)
+		current.y += microscope_y_plus(y);
+	else
+		current.y -= microscope_y_minus(-y);
 	return 0;
 }
 
@@ -192,10 +192,10 @@ void* microscope_z_task(void* arg)
     coordinates* delta = (coordinates* )arg;
 	int z = delta->z;
 	printf("z=%d\n", z);
-//	if(z > 0)
-//		current.z += microscope_z_plus(z);
-//	else
-//		current.z -= microscope_z_minus(-z);
+	if(z > 0)
+		current.z += microscope_z_plus(z);
+	else
+		current.z -= microscope_z_minus(-z);
 	return 0;
 }
 #endif
