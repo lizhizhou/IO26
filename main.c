@@ -7,6 +7,7 @@
 #include "shield_ctrl.h"
 #include "FPGA.h"
 #include "AM2301.h"
+#include "sht1x.h"
 #include "position_sensor.h"
 #include "step_motor.h"
 #include "brush_motor.h"
@@ -28,9 +29,10 @@ int main(int argn, char* argv[])
 	}
 	shield_ctrl_init();
 
+	sht1x_init(SHT1X_0);
 	printf("Temp %fC\n", sht1x_get_temperature(SHT1X_0));
-
-	cli();
+	printf("Mois %f%%\n", sht1x_get_moisture(SHT1X_0));
+	//cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
