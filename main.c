@@ -28,6 +28,8 @@ int main(int argn, char* argv[])
 	}
 	shield_ctrl_init();
 
+	printf("Temp %fC\n", sht1x_get_temperature(SHT1X_0));
+
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
