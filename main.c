@@ -29,11 +29,13 @@ int main(int argn, char* argv[])
 	}
 	shield_ctrl_init();
 
-	sht1x_init(SHT1X_0);
-	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
-			sht1x_get_moisture(SHT1X_0));
-	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
-			sht1x_get_moisture(SHT1X_1));
+	printf("The data is %d",  *((volatile int*) MSE));
+
+//	sht1x_init(SHT1X_0);
+//	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
+//			sht1x_get_moisture(SHT1X_0));
+//	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
+//			sht1x_get_moisture(SHT1X_1));
 	//cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
