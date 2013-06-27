@@ -13,7 +13,7 @@
 #include "FPGA.h"
 int* FPGA_MOD_BASE;
 int* FPGA_SYS_BASE;
-const int ADDRESS_LENGTH = 4096;
+const int ADDRESS_LENGTH = 4096;  //The driver only support one page of memory.
 
 int sysid_check()
 {
