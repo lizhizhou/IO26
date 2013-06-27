@@ -51,9 +51,9 @@ int main(int argn, char* argv[])
 	printf("done\n");*/
 	//subdivision_step_motor_test();
 	while(1) {
-		printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
+		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
 				sht1x_get_moisture(SHT1X_0));
-		printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
+		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
 				sht1x_get_moisture(SHT1X_1));
 		sleep(1);
 //		printf("main loop wake up\n");
