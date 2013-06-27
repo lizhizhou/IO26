@@ -30,11 +30,8 @@ int main(int argn, char* argv[])
 	shield_ctrl_init();
 
 	sht1x_init(SHT1X_0);
-	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
-			sht1x_get_moisture(SHT1X_0));
-	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
-			sht1x_get_moisture(SHT1X_1));
-	//cli();
+
+	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
@@ -45,8 +42,12 @@ int main(int argn, char* argv[])
     init_moisture_subsystem(i);
 	printf("done\n");*/
 	//subdivision_step_motor_test();
-//	while(1) {
-
+	while(1) {
+		printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
+				sht1x_get_moisture(SHT1X_0));
+		printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
+				sht1x_get_moisture(SHT1X_1));
+		sleep(1);
 //		printf("main loop wake up\n");
 //		  Brush_motor_ON();
 //		  fan_ON();
@@ -61,7 +62,7 @@ int main(int argn, char* argv[])
 //		  printf("Position is %d\n",get_position(POSITITON_SENSNOR_0));
 //		  printf("Direction is %s\n",get_direction(POSITITON_SENSNOR_0)?"forword":"backword");
 
-//  }
+    }
 	fpga_close();
 	//trace_back();
 	return 0;

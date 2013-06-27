@@ -38,11 +38,13 @@ static int get_edge_sensor_y_minus()
 }
 static int get_edge_sensor_z_plus()
 {
-	return (!IOB_IO_16);
+	//return (!IOB_IO_16);
+	return (0);
 }
 static int get_edge_sensor_z_minus()
 {
-    return (IOB_IO_17);
+    //return (IOB_IO_17);
+	return (0);
 }
 
 static int get_infrared_sensor_x()

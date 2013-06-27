@@ -16,6 +16,7 @@
 #include "shield_ctrl.h"
 #include "FPGA.h"
 #include "AM2301.h"
+#include "sht1x.h"
 #include "position_sensor.h"
 #include "step_motor.h"
 #include "brush_motor.h"
@@ -39,18 +40,21 @@ int show_temperature(int argc,char* argv[])
 {
     int i;
     float temperature;
-    if(argc >1) {
+    if(argc < 1) {
         printf("Error command");
         return (false);
     }
     sscanf(argv[0],"%d",&i);
     switch(i) {
         case 1:
-            temperature = AM2301_get_temperature(AM2301_0);
+            temperature = sht1x_get_temperature(SHT1X_0);//AM2301_get_temperature(AM2301_0);
             break;
         case 2:
-            temperature = AM2301_get_temperature(AM2301_1);
+            temperature = sht1x_get_temperature(SHT1X_1);//AM2301_get_temperature(AM2301_1);
             break;
+        default:
+            printf("Error command");
+            return (0);
     }
     printf("Temperature is %.2f C\n", temperature);
     return (1);
@@ -59,18 +63,21 @@ int show_moisture(int argc,char* argv[])
 {
     int i;
     float moisture;
-    if(argc >1) {
+    if(argc < 1) {
         printf("Error command");
         return (0);
     }
     sscanf(argv[0],"%d",&i);
     switch(i) {
         case 1:
-            moisture = AM2301_get_moisture(AM2301_0);
+            moisture = sht1x_get_moisture(SHT1X_0);//AM2301_get_moisture(AM2301_0);
             break;
         case 2:
-            moisture = AM2301_get_moisture(AM2301_1);
+            moisture = sht1x_get_moisture(SHT1X_1);//AM2301_get_moisture(AM2301_1);
             break;
+        default:
+            printf("Error command");
+            return (0);
     }
     printf("TMoisture is %.2f%%\n", moisture);
     return (1);
