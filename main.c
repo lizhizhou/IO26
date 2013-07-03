@@ -29,8 +29,7 @@ int main(int argn, char* argv[])
 	}
 	shield_ctrl_init();
 
-	sht1x_init(SHT1X_0);
-
+//	sht1x_init(SHT1X_0);
 	cli();
 //	printf("The data is %d",  *((volatile int*) MSE));
 
@@ -39,7 +38,7 @@ int main(int argn, char* argv[])
 //			sht1x_get_moisture(SHT1X_0));
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
 //			sht1x_get_moisture(SHT1X_1));
-	//cli();
+//	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
@@ -51,24 +50,12 @@ int main(int argn, char* argv[])
 	printf("done\n");*/
 	//subdivision_step_motor_test();
 	while(1) {
-		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
-				sht1x_get_moisture(SHT1X_0));
-		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
-				sht1x_get_moisture(SHT1X_1));
+//		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
+//				sht1x_get_moisture(SHT1X_0));
+//		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
+//				sht1x_get_moisture(SHT1X_1));
 		sleep(1);
-//		printf("main loop wake up\n");
-//		  Brush_motor_ON();
-//		  fan_ON();
-//		  Brush_motor_forward();
-//		  getchar();
-//		  Brush_motor_back();
-//		  getchar();
-//		  Brush_motor_OFF();
-//		  fan_OFF();
-//		  getchar();
-//		  step_motor_move_step_forward(STEP_MOTOR_0);
-//		  printf("Position is %d\n",get_position(POSITITON_SENSNOR_0));
-//		  printf("Direction is %s\n",get_direction(POSITITON_SENSNOR_0)?"forword":"backword");
+		printf("main loop wake up\n");
 
     }
 	fpga_close();

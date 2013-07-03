@@ -59,6 +59,7 @@ int show_temperature(int argc,char* argv[])
     printf("Temperature is %.2f C\n", temperature);
     return (1);
 }
+
 int show_moisture(int argc,char* argv[])
 {
     int i;
@@ -228,8 +229,27 @@ int manual_calibration(int argc,char* argv[])
     return (true);
 }
 
-int syringe_control(int argc,char* argv[])
+int syringe_plus(int argc,char* argv[])
 {
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    syringe_forward_step(i);
+	return (true);
+}
+
+int syringe_minus(int argc,char* argv[])
+{
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    syringe_back_step(i);
 	return (true);
 }
 
@@ -296,12 +316,13 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"moistt",    "Set the target temperature",        set_moisture},
     {"scope",     "set the coordinates of the micro scope",set_microscop_position},
     {"manual",    "Manual regulate the micro scope",   manual_calibration},
-    {"Syringe",   "Syringe control",                   syringe_control},
     {"x",         "regular x of micro scope",          microscop_x},
     {"y",         "regular y of micro scope",          microscop_y},
     {"z",         "regular z of micro scope",          microscop_z},
     {"move",      "Move to the sample",                microscop_move},
     {"ref",       "set the reference point of micro scope", microscop_ref},
+    {"syf",       "syringe run forward",               syringe_plus},
+    {"syb",       "syringe run back",                  syringe_minus},
     {"ut",        "Unit test of the system",           unit_test},
     {NULL, NULL, NULL}
 };
@@ -379,6 +400,7 @@ int cli() {
     char *argv[ARG_LIST_SIZE];
 
     microscope_init();
+    syringe_init();
 
     while(1)
     {

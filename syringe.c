@@ -13,7 +13,13 @@
 #define STUCK_STEP 20
 #define FAST_STEP  20
 #define POSITITON_SENSNOR POSITITON_SENSNOR_3
-#define STEP_MOTOR        STEP_MOTOR_0
+#define STEP_MOTOR        STEP_MOTOR_3
+
+static int syringe_stuck_check()
+{
+	return (0);
+}
+
 static int syringe_start=0;
 static int syringe_target=0;
 static int syringe_diameter=0;
@@ -102,7 +108,31 @@ int syringe_faster_back()
     return (1);
 }
 
+unsigned int syringe_forward_step(unsigned int step)
+{
+    int i;
+    for(i = 0; i < step; i++)
+    {
+        step_motor_move_step_back(STEP_MOTOR);
+        if (syringe_stuck_check())
+        	return (step);
+    }
+    return (step);
+}
+unsigned int syringe_back_step(unsigned int step)
+{
+    int i;
+    for(i = 0; i < step; i++)
+    {
+        step_motor_move_step_forward(STEP_MOTOR);
+        if (syringe_stuck_check())
+        	return (step);
+    }
+    return (step);
+}
+
+
 void syringe_init()
 {
-    step_motor_init(STEP_MOTOR, 2000, 20);
+    step_motor_init(STEP_MOTOR, 10000, 30);
 }

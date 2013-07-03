@@ -68,9 +68,9 @@ static int get_infrared_sensor_z()
 void microscope_init()
 {
     IOB_OE      = 0x00000000;  // init IOB as inport
-	step_motor_init(STEP_MOTOR_X, 10000, 30);
-	step_motor_init(STEP_MOTOR_Y, 10000, 30);
-	step_motor_init(STEP_MOTOR_Z, 10000, 30);
+	step_motor_init(STEP_MOTOR_X, 50000, 20);
+	step_motor_init(STEP_MOTOR_Y, 50000, 20);
+	step_motor_init(STEP_MOTOR_Z, 50000, 20);
 }
 
 unsigned int microscope_x_plus(unsigned int step)

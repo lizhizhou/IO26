@@ -14,6 +14,8 @@ extern int syringe_run_forward();
 extern int syringe_run_back();
 extern int syringe_faster_forward();
 extern int syringe_faster_back();
+extern unsigned int syringe_forward_step(unsigned int step);
+extern unsigned int syringe_back_step(unsigned int step);
 extern void syringe_init();
 
 #endif /* SYRINGE_H_ */
