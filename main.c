@@ -20,6 +20,8 @@
 #include "debug.h"
 #include "unit_test.h"
 
+#define MSE_DATA      *((volatile int*) MSE)
+
 int main(int argn, char* argv[])
 {
 	float i;
@@ -30,8 +32,11 @@ int main(int argn, char* argv[])
 	shield_ctrl_init();
 
 //	sht1x_init(SHT1X_0);
-	cli();
-//	printf("The data is %d",  *((volatile int*) MSE));
+//	cli();
+	while(1){
+		MSE_DATA = 10;
+		printf("The data is %d",  MSE_DATA);
+	}
 
 //	sht1x_init(SHT1X_0);
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
