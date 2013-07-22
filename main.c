@@ -33,12 +33,13 @@ int main(int argn, char* argv[])
 		printf("FPGA open error\n");
 		exit(1);
 	}
+	getchar();
 	shield_ctrl_init();
 
 //	sht1x_init(SHT1X_0);
 //	cli();
 	while(1){
-		//usleep(100);
+		usleep(100);
 		printf("The data   is 0x%x\n",  MSE_DATA);
 		printf("The data+1 is 0x%x\n",  MSE_DATA1);
 		printf("The data+2 is 0x%x\n",  MSE_DATA2);
@@ -53,7 +54,7 @@ int main(int argn, char* argv[])
 //			sht1x_get_moisture(SHT1X_0));
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
 //			sht1x_get_moisture(SHT1X_1));
-//	cli();
+	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
