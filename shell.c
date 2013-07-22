@@ -253,6 +253,18 @@ int syringe_minus(int argc,char* argv[])
 	return (true);
 }
 
+int led(int argc,char* argv[])
+{
+    float i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%f", &i);
+//  led_set_light(, i);
+	return (true);
+}
+
 int unit_test(int argc,char* argv[])
 {
 	// Unit_test
@@ -323,6 +335,7 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"syf",       "syringe run forward",               syringe_plus},
     {"syb",       "syringe run back",                  syringe_minus},
+    {"led",       "LED light",                         led},
     {"ut",        "Unit test of the system",           unit_test},
     {NULL, NULL, NULL}
 };

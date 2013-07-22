@@ -20,7 +20,11 @@
 #include "debug.h"
 #include "unit_test.h"
 
-#define MSE_DATA      *((volatile int*) MSE)
+#define MSE_DATA       *((volatile int*) MSE)
+#define MSE_DATA1      *((volatile int*) MSE+1)
+#define MSE_DATA2      *((volatile int*) MSE+2)
+#define MSE_DATA3      *((volatile int*) MSE+3)
+#define MSE_DATA4      *((volatile int*) MSE+4)
 
 int main(int argn, char* argv[])
 {
@@ -34,8 +38,14 @@ int main(int argn, char* argv[])
 //	sht1x_init(SHT1X_0);
 //	cli();
 	while(1){
-		MSE_DATA = 10;
-		printf("The data is %d",  MSE_DATA);
+		//usleep(100);
+		printf("The data   is 0x%x\n",  MSE_DATA);
+		printf("The data+1 is 0x%x\n",  MSE_DATA1);
+		printf("The data+2 is 0x%x\n",  MSE_DATA2);
+		printf("The data+3 is 0x%x\n",  MSE_DATA3);
+		printf("The data+4 is 0x%x\n",  MSE_DATA4);
+		MSE_DATA4 = 0x2345;
+		MSE_DATA4 = 0x5432;
 	}
 
 //	sht1x_init(SHT1X_0);
