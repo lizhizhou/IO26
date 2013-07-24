@@ -25,10 +25,11 @@
 #define MSE_DATA2      *((volatile int*) MSE+2)
 #define MSE_DATA3      *((volatile int*) MSE+3)
 #define MSE_DATA4      *((volatile int*) MSE+4)
+#define TEST_REG_DATA  *((volatile int*) TEST_REG)
 
 int main(int argn, char* argv[])
 {
-	float i;
+	int i = 0;
 	if (!fpga_open()) {
 		printf("FPGA open error\n");
 		exit(1);
@@ -38,17 +39,19 @@ int main(int argn, char* argv[])
 
 //	sht1x_init(SHT1X_0);
 //	cli();
-	while(1){
-		usleep(100);
-		printf("The data   is 0x%x\n",  MSE_DATA);
-		printf("The data+1 is 0x%x\n",  MSE_DATA1);
-		printf("The data+2 is 0x%x\n",  MSE_DATA2);
-		printf("The data+3 is 0x%x\n",  MSE_DATA3);
-		printf("The data+4 is 0x%x\n",  MSE_DATA4);
-		MSE_DATA4 = 0x2345;
-		MSE_DATA4 = 0x5432;
+	while(i<10000){
+		MSE_DATA4 = i;
+		//usleep(10);
+		TEST_REG_DATA = i;
+		if(MSE_DATA  != 0xea680001){printf("MSE_DATA 0x%x error", MSE_DATA); break;}
+		if(MSE_DATA1 != 0){printf("MSE_DATA1 0x%x error", MSE_DATA1); break;}
+		if(MSE_DATA2 != 0xa5a5a5a5){printf("MSE_DATA2 0x%x error", MSE_DATA2); break;}
+		if(MSE_DATA3 != 0x5a5a5a5a){printf("MSE_DATA3 0x%x error", MSE_DATA3); break;}
+		if(MSE_DATA4 != i){printf("MSE_DATA4 %d error", MSE_DATA4); break;}
+		if(TEST_REG_DATA != i){printf("TEST_REG_DATA  %d error", TEST_REG_DATA); break;}
+		i++;
 	}
-
+	printf("i = %d", i);
 //	sht1x_init(SHT1X_0);
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
 //			sht1x_get_moisture(SHT1X_0));
