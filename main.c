@@ -20,28 +20,46 @@
 #include "debug.h"
 #include "unit_test.h"
 
-#define MSE_DATA      *((volatile int*) MSE)
+#define MSE_DATA       *((volatile int*) MSE)
+#define MSE_DATA1      *((volatile int*) MSE+1)
+#define MSE_DATA2      *((volatile int*) MSE+2)
+#define MSE_DATA3      *((volatile int*) MSE+3)
+#define MSE_DATA4      *((volatile int*) MSE+4)
+#define TEST_REG_DATA  *((volatile int*) TEST_REG)
 
 int main(int argn, char* argv[])
 {
-	float i;
+	int i = 0;
 	if (!fpga_open()) {
 		printf("FPGA open error\n");
 		exit(1);
 	}
+	getchar();
 	shield_ctrl_init();
 
 	while(1){
 		MSE_DATA = 10;
 		printf("The data is %d",  MSE_DATA);
-	}
 
+	while(i<10000){
+		MSE_DATA4 = i;
+		//usleep(10);
+		TEST_REG_DATA = i;
+		if(MSE_DATA  != 0xea680001){printf("MSE_DATA 0x%x error", MSE_DATA); break;}
+		if(MSE_DATA1 != 0){printf("MSE_DATA1 0x%x error", MSE_DATA1); break;}
+		if(MSE_DATA2 != 0xa5a5a5a5){printf("MSE_DATA2 0x%x error", MSE_DATA2); break;}
+		if(MSE_DATA3 != 0x5a5a5a5a){printf("MSE_DATA3 0x%x error", MSE_DATA3); break;}
+		if(MSE_DATA4 != i){printf("MSE_DATA4 %d error", MSE_DATA4); break;}
+		if(TEST_REG_DATA != i){printf("TEST_REG_DATA  %d error", TEST_REG_DATA); break;}
+		i++;
+	}
+	printf("i = %d", i);
 //	sht1x_init(SHT1X_0);
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
 //			sht1x_get_moisture(SHT1X_0));
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_1),
 //			sht1x_get_moisture(SHT1X_1));
-//	cli();
+	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
