@@ -134,5 +134,5 @@ unsigned int syringe_back_step(unsigned int step)
 
 void syringe_init()
 {
-    step_motor_init(STEP_MOTOR, 10000, 30);
+    step_motor_init(STEP_MOTOR, 10000, 40);
 }
