@@ -226,32 +226,47 @@ void microscope_original_angle_unit_test(void)
    	printf("The angle is %f\n", angle);
 }
 
-#define MSE_DATA       *((volatile int*) MSE)
-#define MSE_DATA1      *((volatile int*) MSE+1)
-#define MSE_DATA2      *((volatile int*) MSE+2)
-#define MSE_DATA3      *((volatile int*) MSE+3)
-#define MSE_DATA4      *((volatile int*) MSE+4)
+#define MSE_DATA       *((volatile int*) MSE_BASE)
+#define MSE_DATA1      *((volatile int*) MSE_BASE+1)
+#define MSE_DATA2      *((volatile int*) MSE_BASE+2)
+#define MSE_DATA3      *((volatile int*) MSE_BASE+3)
+#define MSE_DATA4      *((volatile int*) MSE_BASE+4)
 #define TEST_REG_DATA  *((volatile int*) TEST_REG)
 
 void qsys_serial_test(void)
 {
 	int i;
-	printf("The MSE_DATA is 0x%x\n",   MSE_DATA);
-	printf("The MSE_DATA1 is 0x%x\n",  MSE_DATA1);
-	printf("The MSE_DATA2 is 0x%x\n",  MSE_DATA2);
-	printf("The MSE_DATA3 is 0x%x\n",  MSE_DATA3);
-	printf("The MSE_DATA4 is 0x%x\n",  MSE_DATA4);
+//	while(1){
+//		MSE_DATA4 = i;
+		//usleep(10);
+//		TEST_REG_DATA = i;
+//		printf("The MSE_DATA is 0x%x\n",   MSE_DATA);
+//		printf("The MSE_DATA1 is 0x%x\n",  MSE_DATA1);
+//		printf("The MSE_DATA2 is 0x%x\n",  MSE_DATA2);
+//		printf("The MSE_DATA3 is 0x%x\n",  MSE_DATA3);
+//		printf("The MSE_DATA4 is 0x%x\n",  MSE_DATA4);
+//		i++;
+//	}
 
 	while(i<10000){
+		//mode 1
+//		MSE_DATA4 = i;
+//		TEST_REG_DATA = i;
+//		if(MSE_DATA  != 0xea680001){printf("MSE_DATA 0x%x error", MSE_DATA); break;}
+//		if(MSE_DATA1 != 0){printf("MSE_DATA1 0x%x error", MSE_DATA1); break;}
+//		if(MSE_DATA2 != 0xa5a5a5a5){printf("MSE_DATA2 0x%x error", MSE_DATA2); break;}
+//		if(MSE_DATA3 != 0x5a5a5a5a){printf("MSE_DATA3 0x%x error", MSE_DATA3); break;}
+//		if(MSE_DATA4 != i){printf("MSE_DATA4 %d error", MSE_DATA4); break;}
+//		if(TEST_REG_DATA != i){printf("TEST_REG_DATA  %d error", TEST_REG_DATA); break;}
+		//mode 2
 		MSE_DATA4 = i;
-		usleep(10);
-		//TEST_REG_DATA = i;
 		if(MSE_DATA  != 0xea680001){printf("MSE_DATA 0x%x error", MSE_DATA); break;}
 		if(MSE_DATA1 != 0){printf("MSE_DATA1 0x%x error", MSE_DATA1); break;}
+		TEST_REG_DATA = i;
 		if(MSE_DATA2 != 0xa5a5a5a5){printf("MSE_DATA2 0x%x error", MSE_DATA2); break;}
 		if(MSE_DATA3 != 0x5a5a5a5a){printf("MSE_DATA3 0x%x error", MSE_DATA3); break;}
 		if(MSE_DATA4 != i){printf("MSE_DATA4 %d error", MSE_DATA4); break;}
-		//if(TEST_REG_DATA != i){printf("TEST_REG_DATA  %d error", TEST_REG_DATA); break;}
+		if(TEST_REG_DATA != i){printf("TEST_REG_DATA  %d error", TEST_REG_DATA); break;}
 		i++;
 	}
 	printf("i = %d", i);

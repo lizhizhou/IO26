@@ -28,9 +28,8 @@ int main(int argn, char* argv[])
 		exit(1);
 	}
 	getchar();
+	qsys_serial_test();
 	shield_ctrl_init();
-
-//	qsys_serial_test();
 
 //	sht1x_init(SHT1X_0);
 //	printf("Temp %fC Mois %f%%\n\n", sht1x_get_temperature(SHT1X_0),
