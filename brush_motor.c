@@ -13,12 +13,9 @@
 #define BRUSHMOTOR_ON_OFF        *((volatile int*) BRUSHMOTOR_CTRL_ADDRESS+3)
 #define BRUSHMOTOR_FORWARD_BACK  *((volatile int*) BRUSHMOTOR_CTRL_ADDRESS+4)
 
-const static int frequent   = 30000; // PWM frequence
-const static int duty_cycle = 50;   // PWM duty_cycle
-
-void brush_motor_init(void* brushmotor_address)
+void brush_motor_init(void* brushmotor_address, int frequence ,int duty_cycle)
 {
-	BRUSHMOTOR_PWM_FREQUENCE = frequent * 0x100000000 / 200000000;
+	BRUSHMOTOR_PWM_FREQUENCE = frequence * 0x100000000 / 200000000;
 	BRUSHMOTOR_PWM_WIDTH = 0xFFFFFFFF / 100 * duty_cycle;
 	BRUSHMOTOR_FORWARD_BACK = 1;
 	BRUSHMOTOR_ON_OFF = 1; 

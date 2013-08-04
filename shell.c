@@ -261,7 +261,7 @@ int led(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0], "%f", &i);
-//  led_set_light(, i);
+    microscope_led_set_light(i);
 	return (true);
 }
 

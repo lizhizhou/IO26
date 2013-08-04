@@ -14,24 +14,28 @@
 #include "PID.h"
 static float target_moisture;
 static float threshold = 0;
+
+#define HUMIDIFIER  FAN_MOTOR_1
+#define EXHAUST     FAN_MOTOR_0
+
 static void humidifier_on(void)
 {
-	fan_ON(FAN_MOTOR_1);
+	fan_ON(HUMIDIFIER);
 }
 
 static void humidifier_off(void)
 {
-	fan_OFF(FAN_MOTOR_1);
+	fan_OFF(HUMIDIFIER);
 }
 
 static void exhaust_on(void)
 {
-	fan_ON(FAN_MOTOR_0);
+	fan_ON(EXHAUST);
 }
 
 static void exhaust_off(void)
 {
-	fan_OFF(FAN_MOTOR_0);
+	fan_OFF(EXHAUST);
 }
 
 static void humidifier_regulating(float i)
@@ -42,7 +46,7 @@ static void humidifier_regulating(float i)
 	else if (i < 0)
 		i = 0;
 	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
-	fan_motor_set_pwm(FAN_MOTOR_1, pwm);
+	fan_motor_set_pwm(HUMIDIFIER, pwm);
 }
 
 static void exhaust_regulating(float i)
@@ -53,7 +57,7 @@ static void exhaust_regulating(float i)
 	else if (i < 0)
 		i = 0;
 	pwm = (0xffffffff - 0x1fffffff)*i + 0x1fffffff;
-	fan_motor_set_pwm(FAN_MOTOR_0, pwm);
+	fan_motor_set_pwm(EXHAUST, pwm);
 }
 
 void set_moisture_target(float moisture)
@@ -68,8 +72,6 @@ void* moisture_regulating_process(void *arg)
     float error_d = 0;
     float error_d_d = 0;
 	FILE* fp;
-    fan_motor_init(FAN_MOTOR_0);
-    fan_motor_init(FAN_MOTOR_1);
 
     moisture = AM2301_get_moisture(AM2301_0);
 
@@ -115,6 +117,8 @@ void* moisture_regulating_process(void *arg)
 void init_moisture_subsystem(float moisture)
 {
 	pthread_t pid;
+    fan_motor_init(EXHAUST, 1000, 30);
+    fan_motor_init(HUMIDIFIER, 1000, 30);
 	set_moisture_target(moisture);
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 }

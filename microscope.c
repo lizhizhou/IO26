@@ -10,12 +10,17 @@
 #include <pthread.h>
 #include "platform.h"
 #include "PIO26.h"
+#include "PIO8.h"
 #include "step_motor.h"
+#include "fan_motor.h"
 #include "microscope.h"
+#define MICRO_MAGI 0x46427834
 #define STEP_MOTOR_X        STEP_MOTOR_0
 #define STEP_MOTOR_Y        STEP_MOTOR_1
 #define STEP_MOTOR_Z        STEP_MOTOR_2
+#define LED 			    FAN_MOTOR_0
 static coordinates current;
+static FILE* microscop_file;
 static int get_edge_sensor_x_plus()
 {
 	//return (IOB_IO_16);
@@ -71,6 +76,12 @@ void microscope_init()
 	step_motor_init(STEP_MOTOR_X, 50000, 20);
 	step_motor_init(STEP_MOTOR_Y, 50000, 20);
 	step_motor_init(STEP_MOTOR_Z, 50000, 20);
+	fan_motor_init(LED, 1000, 30);
+}
+
+void microscope_led_set_light(int light)
+{
+	fan_motor_set_pwm(LED, light);
 }
 
 unsigned int microscope_x_plus(unsigned int step)
@@ -338,4 +349,14 @@ void microscope_move_to_sample(int index,
     target.z += ref_original.z;
     micorscope_run_to_coordinates(target);
     printf("x = %d, y = %d, z = %d\n", target.x, target.y, target.z);
+}
+
+void microscope_save_the_data(FILE* file, void* data, int size)
+{
+
+}
+
+void micorscope_load_the_data(FILE* file, void* data, int size)
+{
+
 }

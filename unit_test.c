@@ -61,15 +61,15 @@ void step_motmor_test()
     step_motor_init(STEP_MOTOR_2, 50000, 20);
     step_motor_init(STEP_MOTOR_3, 10000, 30);
     for(i = 0; i < 1000; i++) {
-//        step_motor_move_step_forward(STEP_MOTOR_0);
-//        step_motor_move_step_forward(STEP_MOTOR_1);
-//        step_motor_move_step_forward(STEP_MOTOR_2);
+        step_motor_move_step_forward(STEP_MOTOR_0);
+        step_motor_move_step_forward(STEP_MOTOR_1);
+        step_motor_move_step_forward(STEP_MOTOR_2);
         step_motor_move_step_forward(STEP_MOTOR_3);
     }
     for(i = 0; i < 1000; i++) {
-//        step_motor_move_step_back(STEP_MOTOR_0);
-//        step_motor_move_step_back(STEP_MOTOR_1);
-//        step_motor_move_step_back(STEP_MOTOR_2);
+        step_motor_move_step_back(STEP_MOTOR_0);
+        step_motor_move_step_back(STEP_MOTOR_1);
+        step_motor_move_step_back(STEP_MOTOR_2);
         step_motor_move_step_back(STEP_MOTOR_3);
     }
 

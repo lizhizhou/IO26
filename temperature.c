@@ -9,45 +9,97 @@
 #include <pthread.h>
 #include "AM2301.h"
 #include "platform.h"
-#include "PWM.h"
+#include "brush_motor.h"
 #include "PID.h"
+
+#define SEMI_COOLER      BRUSH_MOTOR_0
+
 static float target_temperature;
-static void cooler_on()
-{
-
-}
-
-static void cooler_off()
-{
-
-}
-
-static void heater_on()
-{
-
-}
-
-static void heater_off()
-{
-
-}
-
+static float threshold = 0;
 void set_temperature_target(float temperature)
 {
     target_temperature = temperature;
 }
 
+static void wator_bump_on()
+{
+
+}
+
+static void wator_bump_off()
+{
+
+}
+
+static void semi_cooler_on()
+{
+
+}
+
+static void semi_cooler_off()
+{
+
+}
+
+
+static void semi_cooler_regulating(float i)
+{
+	unsigned int pwm;
+	if (i > 1)
+		i = 1;
+	else if (i < 0)
+		i = 0;
+	brush_motor_forward(SEMI_COOLER);
+	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
+	brush_motor_set_pwm(SEMI_COOLER, pwm);
+}
+
+static void semi_warmer_regulating(float i)
+{
+	unsigned int pwm;
+	if (i > 1)
+		i = 1;
+	else if (i < 0)
+		i = 0;
+	brush_motor_back(SEMI_COOLER);
+	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
+	brush_motor_set_pwm(SEMI_COOLER, pwm);
+}
+
+
 void* temperature_regulating_process(void* arg)
 {
-    float temperature_1;
-    float temperature_2;
     float temperature;
+    float error = 0;
+    float error_d = 0;
+    float error_d_d = 0;
 
     while(1) {
     	printf("temperature_regulating_process wake up\n");
-        temperature_1 = AM2301_get_temperature(AM2301_0);
-        temperature_2 = AM2301_get_temperature(AM2301_1);
-        temperature = temperature_1 + temperature_2;
+    	temperature = AM2301_get_temperature(AM2301_0);
+        error_d_d = error_d;
+        error_d = error;
+        error = (target_temperature - temperature)/target_temperature;
+        printf("temperature is %.2fC out is %.2fC\n", AM2301_get_temperature(AM2301_0),
+        		AM2301_get_temperature(AM2301_1));
+        if (temperature < target_temperature - target_temperature * threshold)
+        {
+        	printf("temperature goes up\n");
+            semi_warmer_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+        }
+        else if(temperature > target_temperature + target_temperature * threshold)
+        {
+        	printf("temperature goes down\n");
+            semi_cooler_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+        }
+        else
+        {
+        	printf("moisture keeps\n");
+
+        }
+        sleep(1);
     }
     return (NULL);
 }
@@ -55,6 +107,8 @@ void* temperature_regulating_process(void* arg)
 void init_temperature_subsystem(float temperature)
 {
 	pthread_t pid;
+	brush_motor_init(SEMI_COOLER, 1000, 30);
+	wator_bump_on();
 	set_temperature_target(temperature);
 	pthread_create(&pid, NULL, temperature_regulating_process, "temperature");
 }
