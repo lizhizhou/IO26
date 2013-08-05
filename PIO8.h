@@ -10,7 +10,7 @@
 #include"FPGA.h"
 #include"platform.h"
 
-#define PORT0_ADDRESS   0x0
+#define PORT0_ADDRESS   MSE_ADDRESS+0x0
 #define PORT0_BASE      (IOA_ADDRESS/4)
 #define PORT0           *((volatile int*)  FPGA_MOD_BASE+IOA_BASE)
 #define PORT0_ID        *((volatile int*)  FPGA_MOD_BASE+IOA_BASE+ 1)
@@ -26,7 +26,7 @@
 #define PORT0_IO_6      *((volatile char*) (FPGA_MOD_BASE+IOA_BASE+IOA_IO_BASE)+6)
 #define PORT0_IO_7      *((volatile char*) (FPGA_MOD_BASE+IOA_BASE+IOA_IO_BASE)+7)
 
-#define PORT1_ADDRESS   0x0
+#define PORT1_ADDRESS   MSE_ADDRESS+0x20
 #define PORT1_BASE      (IOA_ADDRESS/4)
 #define PORT1           *((volatile int*)  FPGA_MOD_BASE+IOA_BASE)
 #define PORT1_ID        *((volatile int*)  FPGA_MOD_BASE+IOA_BASE+ 1)

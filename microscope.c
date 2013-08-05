@@ -18,7 +18,7 @@
 #define STEP_MOTOR_X        STEP_MOTOR_0
 #define STEP_MOTOR_Y        STEP_MOTOR_1
 #define STEP_MOTOR_Z        STEP_MOTOR_2
-#define LED 			    FAN_MOTOR_0
+#define LED 			    MSE_FAN_MOTOR_0
 static coordinates current;
 static FILE* microscop_file;
 static int get_edge_sensor_x_plus()

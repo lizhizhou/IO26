@@ -77,11 +77,11 @@ void step_motmor_test()
 
 void brush_motor_test()
 {
-    brush_motor_init(BRUSH_MOTOR_0);
-    brush_motor_init(BRUSH_MOTOR_1);
+    brush_motor_init(BRUSH_MOTOR_0, 1000, 30);
+    brush_motor_init(BRUSH_MOTOR_1, 1000, 30);
     brush_motor_back(BRUSH_MOTOR_1);
-    brush_motor_init(BRUSH_MOTOR_2);
-    brush_motor_init(BRUSH_MOTOR_3);
+    brush_motor_init(BRUSH_MOTOR_2, 1000, 30);
+    brush_motor_init(BRUSH_MOTOR_3, 1000, 30);
 }
 
 void microscope_test()  // 10um per step

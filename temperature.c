@@ -12,7 +12,7 @@
 #include "brush_motor.h"
 #include "PID.h"
 
-#define SEMI_COOLER      BRUSH_MOTOR_0
+#define SEMI_COOLER      MSE_BRUSH_MOTOR_0
 
 static float target_temperature;
 static float threshold = 0;
