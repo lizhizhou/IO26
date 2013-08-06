@@ -76,12 +76,12 @@ void microscope_init()
 	step_motor_init(STEP_MOTOR_X, 50000, 20);
 	step_motor_init(STEP_MOTOR_Y, 50000, 20);
 	step_motor_init(STEP_MOTOR_Z, 50000, 20);
-	fan_motor_init(LED, 1000, 30);
+	fan_motor_init(LED, 5000, 1);
 }
 
 void microscope_led_set_light(int light)
 {
-	fan_motor_set_pwm(LED, light);
+	fan_motor_set_pwm(LED, 0xFFFFFFFF / 1000 * light);
 }
 
 unsigned int microscope_x_plus(unsigned int step)

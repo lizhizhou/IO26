@@ -255,12 +255,12 @@ int syringe_minus(int argc,char* argv[])
 
 int led(int argc,char* argv[])
 {
-    float i;
+    int i;
     if(argc < 1) {
         printf("Error command");
         return (false);
     }
-    sscanf(argv[0], "%f", &i);
+    sscanf(argv[0], "%d", &i);
     microscope_led_set_light(i);
 	return (true);
 }

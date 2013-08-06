@@ -34,4 +34,5 @@ extern void microscope_original_angle(coordinates ref_point[],
         coordinates* original, float* angle);
 extern void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle);
+extern void microscope_led_set_light(int light);
 #endif /* MICROSCOPE_H_ */
