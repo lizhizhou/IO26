@@ -16,8 +16,8 @@ static float target_moisture;
 static float threshold = 0;
 
 #define HUMIDIFIER      MSE_FAN_MOTOR_1
-#define HUMIDIFIER_FAN  MSE_FAN_MOTOR_2
-#define EXHAUST         MSE_FAN_MOTOR_3
+#define EXHAUST         MSE_FAN_MOTOR_2
+#define HUMIDIFIER_FAN
 
 static void humidifier_on(void)
 {

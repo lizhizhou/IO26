@@ -31,19 +31,6 @@ int main(int argn, char* argv[])
 	getchar();
 	//qsys_serial_test();
 	shield_ctrl_init();
-	PORT0_OE   = 0xff;
-	usleep(50);
-	PORT0_DATA = 0x00;
-	usleep(50);
-	printf("PORT0_ID is 0x%x\n", PORT0_ID);
-	printf("PORT0_OE is 0x%x\n", PORT0_OE);
-	printf("PORT0_DATA is 0x%x\n", PORT0_DATA);
-	getchar();
-	PORT0_DATA = 0x01;
-	usleep(50);
-	printf("PORT0_ID is 0x%x\n", PORT0_ID);
-	printf("PORT0_OE is 0x%x\n", PORT0_OE);
-	printf("PORT0_DATA is 0x%x\n", PORT0_DATA);
 //	sht1x_init(SHT1X_0);
 	cli();
 	/*if(argn != 2) {

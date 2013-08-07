@@ -10,6 +10,7 @@
 #include "AM2301.h"
 #include "platform.h"
 #include "brush_motor.h"
+#include "PIO8.h"
 #include "PID.h"
 
 #define SEMI_COOLER      MSE_BRUSH_MOTOR_0
@@ -23,22 +24,24 @@ void set_temperature_target(float temperature)
 
 static void wator_bump_on()
 {
-
+	PORT0_DATA  |= 0x1;
+	usleep(50);
 }
 
 static void wator_bump_off()
 {
-
+	PORT0_DATA  &= ~0x01;
+	usleep(50);
 }
 
 static void semi_cooler_on()
 {
-
+	brush_motor_ON(MSE_BRUSH_MOTOR_0);
 }
 
 static void semi_cooler_off()
 {
-
+	brush_motor_OFF(MSE_BRUSH_MOTOR_0);
 }
 
 
@@ -107,6 +110,8 @@ void* temperature_regulating_process(void* arg)
 void init_temperature_subsystem(float temperature)
 {
 	pthread_t pid;
+	PORT0_OE  |= 0x1;
+	usleep(50);
 	brush_motor_init(SEMI_COOLER, 1000, 30);
 	wator_bump_on();
 	set_temperature_target(temperature);
