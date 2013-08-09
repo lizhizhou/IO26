@@ -6,7 +6,7 @@ set lophilo_user     lophilo
 #the ip or hostname of lophilo board    
 set lophilo_password lab123      
 #the user name in lophilo board
-set lophilo_address  cnshaxem01    
+set lophilo_address  10.235.6.197    
 #the directory to store the program on lophilo board
 set lophilo_path     ~/test/          
 #download program

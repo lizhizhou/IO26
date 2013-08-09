@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "AM2301.h"
+#include "sht1x.h"
 #include "platform.h"
 #include "brush_motor.h"
 #include "PIO8.h"
@@ -79,12 +79,12 @@ void* temperature_regulating_process(void* arg)
 
     while(1) {
     	printf("temperature_regulating_process wake up\n");
-    	temperature = AM2301_get_temperature(AM2301_0);
+    	temperature = sht1x_get_temperature(SHT1X_1),
         error_d_d = error_d;
         error_d = error;
         error = (target_temperature - temperature)/target_temperature;
-        printf("temperature is %.2fC out is %.2fC\n", AM2301_get_temperature(AM2301_0),
-        		AM2301_get_temperature(AM2301_1));
+        printf("temperature is %.2fC", temperature);
+        printf("error = %f ", error);
         if (temperature < target_temperature - target_temperature * threshold)
         {
         	printf("temperature goes up\n");
@@ -99,7 +99,7 @@ void* temperature_regulating_process(void* arg)
         }
         else
         {
-        	printf("moisture keeps\n");
+        	printf("temperature keeps\n");
 
         }
         sleep(1);
@@ -112,7 +112,7 @@ void init_temperature_subsystem(float temperature)
 	pthread_t pid;
 	PORT0_OE  |= 0x1;
 	usleep(50);
-	brush_motor_init(SEMI_COOLER, 1000, 30);
+	brush_motor_init(SEMI_COOLER, 500000, 100);
 	wator_bump_on();
 	set_temperature_target(temperature);
 	pthread_create(&pid, NULL, temperature_regulating_process, "temperature");

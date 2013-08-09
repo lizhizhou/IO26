@@ -31,7 +31,7 @@ int main(int argn, char* argv[])
 	getchar();
 	//qsys_serial_test();
 	shield_ctrl_init();
-//	sht1x_init(SHT1X_0);
+
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");

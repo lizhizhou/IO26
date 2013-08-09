@@ -414,6 +414,8 @@ int cli() {
 
     microscope_init();
     syringe_init();
+    //init_temperature_subsystem(20.0);
+    init_moisture_subsystem(100.0);
 
     while(1)
     {

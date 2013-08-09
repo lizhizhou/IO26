@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
-#include "AM2301.h"
+#include "sht1x.h"
 #include "platform.h"
 #include "PIO26.h"
 #include "fan_motor.h"
@@ -74,20 +74,18 @@ void* moisture_regulating_process(void *arg)
     float error_d_d = 0;
 	FILE* fp;
 
-    moisture = AM2301_get_moisture(AM2301_0);
+    moisture = sht1x_get_moisture(SHT1X_1);
 
     while(1) {
     	printf("moisture_regulating_process wake up\n");
-        moisture = AM2301_get_moisture(AM2301_0);
+        moisture = sht1x_get_moisture(SHT1X_1);
         error_d_d = error_d;
         error_d = error;
         error = (target_moisture - moisture)/target_moisture;
     	fp = fopen("log","a");
         fprintf(fp, "%f ", moisture);
         fclose(fp);
-        printf("moisture is %.2f%% out is %.2f%%\n", moisture, AM2301_get_moisture(AM2301_1));
-        printf("temperature is %.2fC out is %.2fC\n", AM2301_get_temperature(AM2301_0),
-        		AM2301_get_temperature(AM2301_1));
+        printf("moisture is %.2f%%\n", moisture);
         if (moisture < target_moisture - target_moisture * threshold)
         {
         	printf("moisture goes up\n");
@@ -118,8 +116,8 @@ void* moisture_regulating_process(void *arg)
 void init_moisture_subsystem(float moisture)
 {
 	pthread_t pid;
-    fan_motor_init(EXHAUST, 1000, 30);
-    fan_motor_init(HUMIDIFIER, 1000, 30);
+    fan_motor_init(EXHAUST, 50000, 50);
+    fan_motor_init(HUMIDIFIER, 50000, 50);
 	set_moisture_target(moisture);
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 }

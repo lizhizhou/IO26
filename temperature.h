@@ -10,5 +10,5 @@
 
 extern void set_temperature_target(float temperature);
 extern void* temperature_regulating_process(void* arg);
-
+extern void init_temperature_subsystem(float temperature);
 #endif /* TEMPERATURE_H_ */
