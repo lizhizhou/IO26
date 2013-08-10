@@ -29,10 +29,10 @@ int main(int argn, char* argv[])
 		exit(1);
 	}
 	getchar();
-	//qsys_serial_test();
+	qsys_serial_test();
 	shield_ctrl_init();
 
-	cli();
+	//cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
