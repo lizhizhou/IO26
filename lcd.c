@@ -43,7 +43,10 @@ void lcd_init(void)
 
 void lcd_set_point(int x, int y, char red, char green, char blue)
 {
-	char *point = fbp + x*4 + 480 * y * 4;
+	char *point;
+	x = 480 - x;
+	y = 270 - y;
+	point = fbp + x*4 + 480 * y * 4;
 	*(point++) = blue;
 	*(point++) = green;
 	*point = red;
