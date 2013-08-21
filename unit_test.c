@@ -242,7 +242,7 @@ void qsys_serial_test(void)
 //	return;
 //	while(1){
 //		MSE_DATA4 = i;
-//  	MSE_DATA5 = i;
+//		MSE_DATA5 = i;
 //		TEST_REG_DATA = i;
 //		printf("The MSE_DATA is 0x%x\n",   MSE_DATA);
 //		printf("The MSE_DATA1 is 0x%x\n",  MSE_DATA1);
@@ -263,7 +263,8 @@ void qsys_serial_test(void)
 		if(MSE_DATA2 != 0xa5a5a5a5){printf("MSE_DATA2 0x%x error", MSE_DATA2); break;}
 		if(MSE_DATA3 != 0x5a5a5a5a){printf("MSE_DATA3 0x%x error", MSE_DATA3); break;}
 		if(MSE_DATA4 != i){printf("MSE_DATA4 %d error", MSE_DATA4); break;}
-		if(MSE_DATA5 != i){printf("MSE_DATA4 %d error", MSE_DATA5); break;}
+		usleep(50);
+		if(MSE_DATA5 != i){printf("MSE_DATA5 %d error", MSE_DATA5); break;}
 		if(TEST_REG_DATA != i){printf("TEST_REG_DATA  %d error", TEST_REG_DATA); break;}
 		//mode 2
 		MSE_DATA4 = i;
@@ -274,7 +275,7 @@ void qsys_serial_test(void)
 		if(MSE_DATA3 != 0x5a5a5a5a){printf("MSE_DATA3 0x%x error", MSE_DATA3); break;}
 		if(MSE_DATA4 != i){printf("MSE_DATA4 0x%x error", MSE_DATA4); break;}
 		if(TEST_REG_DATA != i){printf("TEST_REG_DATA  0x%x error", TEST_REG_DATA); break;}
-		if(MSE_DATA5 != i){printf("MSE_DATA4 %d error", MSE_DATA5); break;}
+		if(MSE_DATA5 != i){printf("MSE_DATA5 %d error", MSE_DATA5); break;}
 		i++;
 	}
 	printf("i = %d", i);

@@ -8,6 +8,6 @@
 #ifndef LED_H_
 #define LED_H_
 
-extern void set_rgb_led((void* led_address, char r, char g, char b);
+extern void set_rgb_led(void* led_address, char r, char g, char b);
 
 #endif /* LED_H_ */

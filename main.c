@@ -21,20 +21,25 @@
 #include "debug.h"
 #include "unit_test.h"
 #include "GUI.h"
+#include "led.h"
 
 int main(int argn, char* argv[])
 {
 	int i = 0;
-//	if (!fpga_open()) {
-//		printf("FPGA open error\n");
-//		exit(1);
-//	}
+	if (!fpga_open()) {
+		printf("FPGA open error\n");
+		exit(1);
+	}
 	lcd_init();
+	set_rgb_led(LED_0, 255, 0 , 0);
+	set_rgb_led(LED_1, 0, 255 , 0);
+	set_rgb_led(LED_2, 0, 0 , 255);
 	getchar();
+//	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
 //	shield_ctrl_init();
 	GUI_printf(10,10,RGBto16bit(255,0,0),Fixed_Font_16_8, "lizhizhou");
-	//cli();
+	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");
 		return 0;
@@ -45,16 +50,16 @@ int main(int argn, char* argv[])
     init_moisture_subsystem(i);
 	printf("done\n");*/
 	//subdivision_step_motor_test();
-//	while(1) {
-//		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
-//				sht1x_get_moisture(SHT1X_0));
-//		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
-//				sht1x_get_moisture(SHT1X_1));
-//		sleep(1);
-//		printf("main loop wake up\n");
-//
-//    }
-//	fpga_close();
+	while(1) {
+		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
+				sht1x_get_moisture(SHT1X_0));
+		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
+				sht1x_get_moisture(SHT1X_1));
+		sleep(1);
+		printf("main loop wake up\n");
+
+    }
+	fpga_close();
 	//trace_back();
 	return 0;
 }
