@@ -30,15 +30,12 @@ void lcd_init(void)
 	printf("screensize %d", screensize);
 	fbp = (char*) mmap(0, screensize, PROT_READ | PROT_WRITE, MAP_SHARED, fbfd,
 			0);
+	//clear the lcd
 	for(i = 0; i< screensize; i++)
 	{
 		*(fbp+i) = 0xff;
 	}
 	/*下面可通过 fbp指针读写缓冲区*/
-	//clear the lcd
-	for(i = 0; i< 200; i++) {
-		lcd_set_point(i,i,0,255,0);
-	}
 }
 
 void lcd_set_point(int x, int y, char red, char green, char blue)

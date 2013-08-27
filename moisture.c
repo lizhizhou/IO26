@@ -17,7 +17,7 @@ static float threshold = 0;
 
 #define HUMIDIFIER      MSE_FAN_MOTOR_1
 #define EXHAUST         MSE_FAN_MOTOR_2
-#define HUMIDIFIER_FAN
+#define HUMIDIFIER_FAN  MSE_FAN_MOTOR_3
 
 static void humidifier_on(void)
 {
@@ -119,5 +119,5 @@ void init_moisture_subsystem(float moisture)
     fan_motor_init(EXHAUST, 50000, 50);
     fan_motor_init(HUMIDIFIER, 50000, 50);
 	set_moisture_target(moisture);
-	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
+//	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 }

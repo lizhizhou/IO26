@@ -265,6 +265,30 @@ int led(int argc,char* argv[])
 	return (true);
 }
 
+//int fan(int argc,char* argv[])
+//{
+//    int i, j;
+//    if(argc < 2) {
+//        printf("Error command");
+//        return (false);
+//    }
+//    sscanf(argv[0], "%d", &i);
+//    sscanf(argv[j], "%d", &j);
+//    switch (j)
+//	{
+//    	case 0:
+//
+//    		break;
+//    	case 1:
+//    		break;
+//    	case 2:
+//    		break;
+//	}
+//
+//
+//	return (true);
+//}
+
 int unit_test(int argc,char* argv[])
 {
 	// Unit_test
@@ -414,8 +438,10 @@ int cli() {
 
     microscope_init();
     syringe_init();
-    //init_temperature_subsystem(20.0);
-    init_moisture_subsystem(100.0);
+    //init_temperature_subsystem(1.0);
+    //init_moisture_subsystem(100.0);
+    fan_motor_init(MSE_FAN_MOTOR_1, 5000, 10);
+    fan_motor_init(MSE_FAN_MOTOR_2, 5000, 10);
 
     while(1)
     {

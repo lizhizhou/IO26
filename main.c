@@ -34,6 +34,7 @@ int main(int argn, char* argv[])
 	set_rgb_led(LED_0, 255, 0 , 0);
 	set_rgb_led(LED_1, 0, 255 , 0);
 	set_rgb_led(LED_2, 0, 0 , 255);
+	brush_motor_init(MSE_BRUSH_MOTOR_0, 5000, 100);
 	getchar();
 //	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
