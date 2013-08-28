@@ -23,9 +23,164 @@
 #include "GUI.h"
 #include "led.h"
 
+
+
+/****************************************************************************
+* 名    称：void FuncCell_set(uint16_t number,const char* c,uint16_t offset,int selected)
+* 功    能：软按键内容
+* 入口参数：number	按键号码
+* 			char* c	打印字符串
+* 			offset	偏移量
+* 			selected是否被选中，选中为1，反色
+* 出口参数：无
+* 说    明：显示软按键的内容
+* 调用方法：FuncCell_set(4,"Return",20,0);
+****************************************************************************/
+void FuncCell_set(uint16_t number,const char* c,uint16_t offset,int selected)
+{
+	switch(number)
+	{
+		case 1:
+			{
+				if(selected) GUI_printf(offset,242,0x0000,Variational_Front_13,c);
+					else GUI_printf(offset,242,0xffff,Variational_Front_13,c);
+					break;
+			}
+		case 2:
+			{
+				if(selected) GUI_printf(offset+80,242,0x0000,Variational_Front_13,c);
+					else GUI_printf(offset+80,242,0xffff,Variational_Front_13,c);
+					break;
+			}
+		case 3:
+			{
+				if(selected) GUI_printf(offset+160,242,0x0000,Variational_Front_13,c);
+					else GUI_printf(offset+160,242,0xffff,Variational_Front_13,c);
+					break;
+			}
+		case 4:
+			{
+				if(selected) GUI_printf(offset+240,242,0x0000,Variational_Front_13,c);
+					else GUI_printf(offset+240,242,0xffff,Variational_Front_13,c);
+					break;
+			}
+		case 5:
+			{
+				if(selected) GUI_printf(offset+320,242,0x0000,Variational_Front_13,c);
+					else GUI_printf(offset+320,242,0xffff,Variational_Front_13,c);
+					break;
+			}
+		case 6:
+			{
+				if(selected) GUI_printf(offset+400,242,0x0000,Variational_Front_13,c);
+					else GUI_printf(offset+400,242,0xffff,Variational_Front_13,c);
+					break;
+			}
+		default:break;
+	}
+}
+/*******************************************************************************
+* Function Name  :   GUI_DrawCircle()
+* Description    :   Implementation of Bresenham's Circle variant algorithm
+* Input          :   u8 CENTER_x Circle Center x position
+                     u8 CENTER_y Circle Center y position
+                     u8 RADIUS_r Circle Radius
+                     u16 Color Line color of the Circle
+                     u16 Fill_Color Background of the Circle
+                     int Fill Defines if the circle is filled
+                     int Circle Defines if the circle is drawn
+* Return         :   None
+*******************************************************************************/
+
+void GUI_DrawCircle_Limit(uint16_t CENTER_x, uint16_t CENTER_y,uint16_t RADIUS_r, uint16_t Color, uint16_t Fill_Color, int Fill, int Circle)
+{
+   int ERROR = 1 - RADIUS_r;
+   int ddF_x = 0;
+   int ddF_y = -2 * RADIUS_r;
+   int x = 0;
+   int y = RADIUS_r;
+   if(Fill)
+      if(Circle){
+         Fill=FALSE;
+         GUI_DrawCircle_Limit(CENTER_x, CENTER_y, RADIUS_r,Color,Fill_Color, TRUE,FALSE );
+      }
+    if(Fill){
+      GUI_DrawLine(479, CENTER_y,CENTER_x - RADIUS_r,CENTER_y, Fill_Color );
+    }
+   if(Circle){
+      GUI_DrawPixel(CENTER_x - RADIUS_r, CENTER_y,Color);
+   }
+   while(x < y)
+   {
+      if(ERROR >= 0)
+      {
+       y--;
+       ddF_y += 2;
+       ERROR += ddF_y;
+      }
+      x++;
+      ddF_x += 2;
+      ERROR += ddF_x + 1;
+      if(Fill){
+         if((CENTER_x - x)<480)
+        	 GUI_DrawLine(CENTER_x - x, CENTER_y + y, CENTER_x - x, CENTER_y - y, Fill_Color );
+         if((CENTER_x - y)<480)
+        	 GUI_DrawLine(CENTER_x - y, CENTER_y + x, CENTER_x - y, CENTER_y - x, Fill_Color );
+         }
+      if(Circle){
+    	  if((CENTER_x - x)<480) {
+    		  GUI_DrawPixel(CENTER_x - x, CENTER_y + y,Color);
+    		  GUI_DrawPixel(CENTER_x - x, CENTER_y - y,Color);
+    	  }
+    	  if((CENTER_x - y)<480) {
+    		  GUI_DrawPixel(CENTER_x - y, CENTER_y + x,Color);
+    		  GUI_DrawPixel(CENTER_x - y, CENTER_y - x,Color);
+    	  }
+         }
+   }
+ }
+
+/****************************************************************************
+* 名    称：Window_Start()
+* 功    能：标题栏
+* 入口参数：无
+* 出口参数：无
+* 说    明：start window
+* 调用方法：Window_Start();
+****************************************************************************/
+
+void Window_Start()
+{
+	GUI_DrawLine(0,27,480,27,RGBto16bit(252,252,252));	   //亮x线
+	GUI_DrawLine(0,26,480,26,RGBto16bit(180,175,160));  //暗x线
+	GUI_printf(5,5,0x0000,Variational_Front_13,"Tempreture:");
+	GUI_printf(110,5,0x0000,Variational_Front_13,Temp_C);
+	GUI_printf(130,5,0x0000,Variational_Front_13,"Humidity:       %%");
+	GUI_DrawLine(240,0,240,26,RGBto16bit(180,175,160));  //暗x线
+	GUI_printf(245,5,0x0000,Variational_Front_13,"Tempreture:");
+	GUI_printf(350,5,0x0000,Variational_Front_13,Temp_C);
+	GUI_printf(370,5,0x0000,Variational_Front_13,"Humidity:       %%");
+
+	GUI_DrawCircle_Limit(560,120,120,0x0000,RGBto16bit(0,175,160),1,0);  // Draw circle
+	//GUI_DrawCircle_Limit(540,126,130,0x0000,RGBto16bit(0,175,160),0,1);
+
+	GUI_DrawSoft_Key(0,227,80,45,0);	 //软按键1
+	GUI_DrawSoft_Key(80,227,80,45,0);	 //软按键2
+	GUI_DrawSoft_Key(160,227,80,45,0);	 //软按键3
+	GUI_DrawSoft_Key(240,227,80,45,0);	 //软按键4
+	GUI_DrawSoft_Key(320,227,80,45,0);	 //软按键5
+	GUI_DrawSoft_Key(400,227,80,45,0);	 //软按键6
+	FuncCell_set(1,"< Syrng",13,1);		 //软按键区域内容  << Syringe
+	FuncCell_set(2,"Syrng >",15,1);	 //软按键区域内容  Syringe >>
+	FuncCell_set(3,"Light",26,1);		 //软按键区域内容  light
+	FuncCell_set(4,"Laser",25,1);		 //软按键区域内容  Laser
+	FuncCell_set(5,"User",28,1);		 //软按键区域内容  User
+	FuncCell_set(6,"IP Addr.",15,1);	 //软按键区域内容  Ip Address
+}
+
 int main(int argn, char* argv[])
 {
-	int i = 0;
+
 	if (!fpga_open()) {
 		printf("FPGA open error\n");
 		exit(1);
@@ -35,11 +190,14 @@ int main(int argn, char* argv[])
 	set_rgb_led(LED_1, 0, 255 , 0);
 	set_rgb_led(LED_2, 0, 0 , 255);
 	brush_motor_init(MSE_BRUSH_MOTOR_0, 5000, 100);
-	getchar();
 //	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
 //	shield_ctrl_init();
-	GUI_printf(10,10,RGBto16bit(255,0,0),Fixed_Font_16_8, "lizhizhou");
+	//GUI_printf(10,10,RGBto16bit(255,0,0),Fixed_Font_16_8, "lizhizhou");
+
+	//SSD1963_clear(0x0000);				  //清屏
+	//GUI_printf(245,55,0x0000,Variational_Front_13,Arrow_up);
+	Window_Start();
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");

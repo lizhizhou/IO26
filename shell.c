@@ -440,8 +440,8 @@ int cli() {
     syringe_init();
     //init_temperature_subsystem(1.0);
     //init_moisture_subsystem(100.0);
-    fan_motor_init(MSE_FAN_MOTOR_1, 5000, 10);
-    fan_motor_init(MSE_FAN_MOTOR_2, 5000, 10);
+    fan_motor_init(MSE_FAN_MOTOR_1, 5000, 100);
+    fan_motor_init(MSE_FAN_MOTOR_2, 5000, 100);
 
     while(1)
     {

@@ -11,6 +11,7 @@
 
 const	char Arrow_up[2] = {0x7f,0x00};
 const	char Arrow_down[2] = {0x80,0x00};
+const	char Temp_C[2] = {0x81,0x00};
 
 /* Private defines -----------------------------------------------------------*/
 

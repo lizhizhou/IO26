@@ -29,6 +29,7 @@
 
 extern const	char Arrow_up[2];
 extern const	char Arrow_down[2];
+extern const	char Temp_C[2];
 
 extern void GUI_putchar_vw(uint16_t x,uint16_t y,uint16_t charColor,char c);
 extern void GUI_puts_vw(uint16_t x,uint16_t y,uint16_t charColor,const char* c);
@@ -61,14 +62,13 @@ static __inline void GUI_DrawPixel(uint16_t x,uint16_t y,uint16_t Color)
 
 static __inline void GUI_ShowBmp(uint16_t x_star,uint16_t y_star,uint16_t length,uint16_t height,const unsigned short *buf)
 {
-//	ILI9481_ShowBmp(x_star,y_star,length,height,buf);
+
 //  SSD1963_ShowBmp(x_star,y_star,length,height,buf);
 }
 
 static __inline void GUI_DrawBox(uint16_t x,uint16_t y,uint16_t length, uint16_t height,uint16_t color)
 {
-	//SSD1963_ClearBox(x,y,x+length,y+height,color);
-//	SSD1963_ClearBox(x,y,length,height,color);
+	lcd_clear_box(x,y,length,height, (color>>8)&0xf8, (color>>3)&0xfc, (color<<3)&0xf8);
 }
 
 static __inline void GUI_putchar(uint16_t x,uint16_t y,uint16_t charColor,uint16_t font,uint8_t c)

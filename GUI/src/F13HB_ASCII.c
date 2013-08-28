@@ -1478,9 +1478,24 @@ GUI_CONST_STORAGE unsigned char acFont13HB_ASCII_0080[26] = { /* code 0080 */
   ______XX,XX______,
   _______X,X_______};
 
+GUI_CONST_STORAGE unsigned char acFont13HB_ASCII_0081[26] = { /* code 0081 */
+  ________,________,
+  ________,________,
+  ____XX__,_XXXXX__,
+  ___X__X_,XX____X_,
+  ___X__X_,XX____X_,
+  ____XX__,XX______,
+  ________,XX______,
+  ________,XX______,
+  ________,XX____X_,
+  ________,XX____X_,
+  ________,_XXXXX__,
+  ________,________,
+  ________,________};
 
 
-GUI_CONST_STORAGE GUI_CHARINFO GUI_Font13HB_ASCII_CharInfo[95+2] = {
+
+GUI_CONST_STORAGE GUI_CHARINFO GUI_Font13HB_ASCII_CharInfo[95+3] = {
    {   4,   4,  1, acFont13HB_ASCII_0020 } /* code 0020 */
   ,{   5,   5,  1, acFont13HB_ASCII_0021 } /* code 0021 */
   ,{   6,   6,  1, acFont13HB_ASCII_0022 } /* code 0022 */
@@ -1578,5 +1593,6 @@ GUI_CONST_STORAGE GUI_CHARINFO GUI_Font13HB_ASCII_CharInfo[95+2] = {
   ,{  11,  11,  2, acFont13HB_ASCII_007E } /* code 007E */
   ,{  16,  16 , 2, acFont13HB_ASCII_007F }
   ,{  16,  16 , 2, acFont13HB_ASCII_0080 }
+  ,{  16,  16 , 2, acFont13HB_ASCII_0081 }
 };
 
