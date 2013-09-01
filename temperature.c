@@ -12,6 +12,7 @@
 #include "brush_motor.h"
 #include "PIO8.h"
 #include "PID.h"
+#include "debug.h"
 
 #define SEMI_COOLER      MSE_BRUSH_MOTOR_0
 
@@ -60,8 +61,8 @@ static void semi_cooler_regulating(float i)
 static void semi_warmer_regulating(float i)
 {
 	unsigned int pwm;
-	if (i > 1)
-		i = 1;
+	if (i > 0.5)
+		i = 0.5;
 	else if (i < 0)
 		i = 0;
 	brush_motor_back(SEMI_COOLER);
@@ -78,28 +79,28 @@ void* temperature_regulating_process(void* arg)
     float error_d_d = 0;
 
     while(1) {
-    	printf("temperature_regulating_process wake up\n");
+    	debuginf("temperature_regulating_process wake up\n");
     	temperature = sht1x_get_temperature(SHT1X_1),
         error_d_d = error_d;
         error_d = error;
         error = (target_temperature - temperature)/target_temperature;
-        printf("temperature is %.2fC", temperature);
-        printf("error = %f ", error);
+        debuginf("temperature is %.2fC", temperature);
+        debuginf("error = %f ", error);
         if (temperature < target_temperature - target_temperature * threshold)
         {
-        	printf("temperature goes up\n");
+        	debuginf("temperature goes up\n");
             semi_warmer_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
         }
         else if(temperature > target_temperature + target_temperature * threshold)
         {
-        	printf("temperature goes down\n");
+        	debuginf("temperature goes down\n");
             semi_cooler_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
         }
         else
         {
-        	printf("temperature keeps\n");
+        	debuginf("temperature keeps\n");
 
         }
         sleep(1);

@@ -73,7 +73,6 @@ int get_host_addresses(const int domain, char* ip_address)
   return 1;
 }
 
-
 /****************************************************************************
 * 名    称：void FuncCell_set(uint16_t number,const char* c,uint16_t offset,int selected)
 * 功    能：软按键内容
@@ -219,7 +218,6 @@ void Window_Start()
 
 	GUI_DrawCircle_Limit(560,120,120,0x0000,RGBto16bit(30,50,64),1,0);  // Draw circle
 
-
 	GUI_DrawSoft_Key(0,227,80,45,0);	 //软按键1
 	GUI_DrawSoft_Key(80,227,80,45,0);	 //软按键2
 	GUI_DrawSoft_Key(160,227,80,45,0);	 //软按键3
@@ -238,51 +236,25 @@ void Window_Start()
 	GUI_printf(140,120,0xffff,Variational_Front_32,ip);
 }
 
-
-
 int main(int argn, char* argv[])
 {
-
 	if (!fpga_open()) {
 		printf("FPGA open error\n");
 		exit(1);
 	}
 	lcd_init();
-	set_rgb_led(LED_0, 255, 0 , 0);
-	set_rgb_led(LED_1, 0, 255 , 0);
-	set_rgb_led(LED_2, 0, 0 , 255);
 	brush_motor_init(MSE_BRUSH_MOTOR_0, 5000, 100);
 //	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
 //	shield_ctrl_init();
-	//GUI_printf(10,10,RGBto16bit(255,0,0),Fixed_Font_16_8, "lizhizhou");
-
-
-
-
 	Window_Start();
-	//GUI_DrawBox(0,0,10,10,0xffff);
-	//GUI_DrawBox(50,50,10,10,0xffff);
-
 	cli();
-	/*if(argn != 2) {
-		printf("arg error\n");
-		return 0;
-	}
-	printf(argv[1]);
-	sscanf(argv[1],"%f", &i);
-	printf("target is %0.2f%%\n", i);
-    init_moisture_subsystem(i);
-	printf("done\n");*/
-	//subdivision_step_motor_test();
 	while(1) {
 		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
 				sht1x_get_moisture(SHT1X_0));
 		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
 				sht1x_get_moisture(SHT1X_1));
 		sleep(1);
-		printf("main loop wake up\n");
-
     }
 	fpga_close();
 	//trace_back();

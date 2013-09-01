@@ -20,6 +20,7 @@
 #include "moisture.h"
 #include "PID.h"
 #include "coordinate.h"
+#include "led.h"
 
 void AM2301_test()
 {
@@ -224,6 +225,13 @@ void microscope_original_angle_unit_test(void)
     microscope_original_angle(r, &o, &angle);
     printf("The orignial point is %d %d\n", o.x, o.y);
    	printf("The angle is %f\n", angle);
+}
+
+void led_unit_test(void)
+{
+	set_rgb_led(LED_0, 255, 0 , 0);
+	set_rgb_led(LED_1, 0, 255 , 0);
+	set_rgb_led(LED_2, 0, 0 , 255);
 }
 
 #define MSE_DATA       *((volatile int*) MSE_BASE)

@@ -191,8 +191,14 @@ int microscop_ref(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0], "%d", &i);
-    if(i > 4)
+    if(i > 5)
     	return (false);
+    if(i == 4)
+    {
+    	micorscope_run_to_coordinates(o);
+    	micorscope_set_coordinates_zero();
+    	return (true);
+    }
     r[i] = micorscope_get_coordinates();
     printf("The ref point 0 is %d %d\n", r[0].x, r[0].y);
     printf("The ref point 1 is %d %d\n", r[1].x, r[1].y);
@@ -215,6 +221,19 @@ int microscop_move(int argc,char* argv[])
     microscope_move_to_sample(i, o, angle);
     return (true);
 }
+
+int microscop_set_radius(int argc,char* argv[])
+{
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    RADIUS = i;
+    return (true);
+}
+
 
 int manual_calibration(int argc,char* argv[])
 {
@@ -346,7 +365,23 @@ static int cli_help (int argc, char *argv[])
     return (true);
 }
 
+int cli_debug(int argc,char* argv[])
+{
+    char buf[255];
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%s", buf);
+    if(!strcmp(buf,"on"))
+    	debug_flag = 1;
+    else if(!strcmp(buf,"off"))
+    	debug_flag = 0;
+    return (true);
+}
+
 shell_cmd_func_t shell_cmd_func_list[] = {
+	{"debug",     "on/off the debug log",              cli_debug},
 	{"help",      "Print Help Manual",                 cli_help},
     {"temp",      "show the temperature",              show_temperature},
     {"moist",     "show the moisture",                 show_moisture},
@@ -357,6 +392,7 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"x",         "regular x of micro scope",          microscop_x},
     {"y",         "regular y of micro scope",          microscop_y},
     {"z",         "regular z of micro scope",          microscop_z},
+    {"rad",       "set the radius of the sample",      microscop_set_radius},
     {"move",      "Move to the sample",                microscop_move},
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"syf",       "syringe run forward",               syringe_plus},
@@ -440,7 +476,7 @@ int cli() {
 
     microscope_init();
     syringe_init();
-    //init_temperature_subsystem(1.0);
+    init_temperature_subsystem(20.0);
     //init_moisture_subsystem(100.0);
     fan_motor_init(MSE_FAN_MOTOR_1, 5000, 100);
     fan_motor_init(MSE_FAN_MOTOR_2, 5000, 100);

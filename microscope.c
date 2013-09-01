@@ -331,8 +331,9 @@ void microscope_original_angle(coordinates ref_point[], coordinates* original,
     }
 }
 
-#define RADIUS 1437
-#define FIRST  -73.78
+int RADIUS = 1437;
+int SAMPLES = 12;
+float FIRST = -73.78;
 void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle)
 {

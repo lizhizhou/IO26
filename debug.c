@@ -12,24 +12,45 @@
 #define LOG_BUFFER_SIZE 2048
 char log_buffer[LOG_BUFFER_SIZE];
 char* pbuffer = log_buffer;
+static int debug_flag = 0;
 int debuginf(const char* fmt,...)
 {
-	va_list argptr;
-	int cnt;
+	if(debug_flag)
+	{
+		va_list argptr;
+		int cnt;
 
-	va_start(argptr, fmt);
-	cnt = vsprintf(pbuffer, fmt, argptr);
-	va_end(argptr);
-	pbuffer+=cnt;
-	return(cnt);
+		va_start(argptr, fmt);
+		cnt = vprintf(fmt, argptr);
+		va_end(argptr);
+		return(cnt);
+	}
+	else
+		return (0);
 }
-int print_log()
-{
-	int i;
-	for(i=0;i<LOG_BUFFER_SIZE || log_buffer[i] == '\0';i++)
-		putchar(log_buffer[i]);
-	return (i);
-}
+//int debuginf(const char* fmt,...)
+//{
+//	if(debug_flag)
+//	{
+//		va_list argptr;
+//		int cnt;
+//
+//		va_start(argptr, fmt);
+//		cnt = vsprintf(pbuffer, fmt, argptr);
+//		va_end(argptr);
+//		pbuffer+=cnt;
+//		return(cnt);
+//	}
+//	else
+//		return (0);
+//}
+//int print_log()
+//{
+//	int i;
+//	for(i=0;i<LOG_BUFFER_SIZE || log_buffer[i] == '\0';i++)
+//		putchar(log_buffer[i]);
+//	return (i);
+//}
 #define TRACE_BUFFER_SIZE 2048
 void trace_back()
 {

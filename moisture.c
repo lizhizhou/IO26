@@ -77,7 +77,7 @@ void* moisture_regulating_process(void *arg)
     moisture = sht1x_get_moisture(SHT1X_1);
 
     while(1) {
-    	printf("moisture_regulating_process wake up\n");
+    	debuginf("moisture_regulating_process wake up\n");
         moisture = sht1x_get_moisture(SHT1X_1);
         error_d_d = error_d;
         error_d = error;
@@ -85,26 +85,26 @@ void* moisture_regulating_process(void *arg)
     	fp = fopen("log","a");
         fprintf(fp, "%f ", moisture);
         fclose(fp);
-        printf("moisture is %.2f%%\n", moisture);
+        debuginf("moisture is %.2f%%\n", moisture);
         if (moisture < target_moisture - target_moisture * threshold)
         {
-        	printf("moisture goes up\n");
+        	debuginf("moisture goes up\n");
             humidifier_on();
             humidifier_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
             exhaust_off();
         }
         else if(moisture > target_moisture + target_moisture * threshold)
         {
-        	printf("moisture goes down\n");
+        	debuginf("moisture goes down\n");
             humidifier_off();
             exhaust_on();
             exhaust_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            printf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
         }
         else
         {
-        	printf("moisture keeps\n");
+        	debuginf("moisture keeps\n");
             humidifier_off();
             exhaust_off();
         }
@@ -119,5 +119,5 @@ void init_moisture_subsystem(float moisture)
     fan_motor_init(EXHAUST, 50000, 50);
     fan_motor_init(HUMIDIFIER, 50000, 50);
 	set_moisture_target(moisture);
-//	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
+	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 }
