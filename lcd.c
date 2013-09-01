@@ -27,7 +27,7 @@ void lcd_clear(char red, char green, char blue)
 }
 void lcd_init(void)
 {
-	int i;
+	//int i;
 	struct fb_var_screeninfo vinfo;
 	struct fb_fix_screeninfo finfo;
 
@@ -49,8 +49,8 @@ void lcd_init(void)
 void lcd_set_point(int x, int y, char red, char green, char blue)
 {
 	char *point;
-	x = 480 - x;
-	y = 272 - y;
+	x = 479 - x;
+	y = 271 - y;
 	point = fbp + x*4 + 480 * y * 4;
 	*(point++) = blue;
 	*(point++) = green;
@@ -63,14 +63,14 @@ void lcd_clear_box(int x, int y,int length, int height, char red, char green, ch
 	char *p2;
 	char *p3;
 	int i, j;
-	x = 480 - x;
-	y = 272 - y;
+	x = 479 - x;
+	y = 271 - y;
 	p1 = fbp + x*4 + 480 * y * 4;
 	for (j = 0; j < height; j++) {
-		p2 = p1 + 480 * j * 4;
+		p2 = p1 - 480 * j * 4;
 		for (i = 0; i < length; i++)
 		{
-			p3  = p2 + 4*i;
+			p3  = p2 - 4*i;
 			*(p3++) = blue;
 			*(p3++) = green;
 			*p3 = red;
@@ -84,14 +84,14 @@ void lcd_show_bmp(int x, int y, int length, int height, char* buf)
 	char *p2;
 	char *p3;
 	int i, j;
-	x = 480 - x;
-	y = 272 - y;
+	x = 479 - x;
+	y = 271 - y;
 	p1 = fbp + x*4 + 480 * y * 4;
 	for (j = 0; j < height; j++) {
-		p2 = p1 + 480 * j * 4;
+		p2 = p1 - 480 * j * 4;
 		for (i = 0; i < length; i++)
 		{
-			p3  = p2 + 4*i;
+			p3  = p2 - 4*i;
 			*(p3++) = *(buf++);
 			*(p3++) = *(buf++);
 			*p3 = *(buf++);

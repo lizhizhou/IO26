@@ -714,6 +714,6 @@ void GUI_DrawSoft_Key(uint16_t START_x, uint16_t START_y, uint16_t length, uint1
 	if(selected)
 		GUI_DrawRounded_Rect(START_x+2,START_y+2,length-4,height-4,RGBto16bit(189,184,176),1);	
 	else
-		GUI_DrawRounded_Rect(START_x+2,START_y+2,length-4,height-4,RGBto16bit(78,76,78),1);	   	
+		GUI_DrawRounded_Rect(START_x+2,START_y+2,length-4,height-4,RGBto16bit(30,50,64),1);
 }
 

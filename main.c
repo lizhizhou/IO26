@@ -22,7 +22,56 @@
 #include "unit_test.h"
 #include "GUI.h"
 #include "led.h"
+#include "lcd.h"
 
+
+#include <stdio.h>
+#include <stropts.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <linux/netdevice.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <unistd.h>
+int get_host_addresses(const int domain, char* ip_address)
+{
+  int s;
+  struct ifconf ifconf;
+  struct ifreq ifr[50];
+  int ifs;
+  int i;
+
+  s = socket(domain, SOCK_STREAM, 0);
+  if (s < 0) {
+    perror("socket");
+    return 0;
+  }
+
+  ifconf.ifc_buf = (char *) ifr;
+  ifconf.ifc_len = sizeof ifr;
+
+  if (ioctl(s, SIOCGIFCONF, &ifconf) == -1) {
+    //perror("ioctl");
+    return 0;
+  }
+
+  ifs = ifconf.ifc_len / sizeof(ifr[0]);
+  for (i = 1; i < ifs; i++) {
+    char ip[INET_ADDRSTRLEN];
+    struct sockaddr_in *s_in = (struct sockaddr_in *) &ifr[i].ifr_addr;
+
+    if (!inet_ntop(domain, &s_in->sin_addr, ip, sizeof(ip))) {
+      perror("inet_ntop");
+      return 0;
+    }
+
+    sprintf(ip_address, "%s",ip);
+  }
+
+  close(s);
+
+  return 1;
+}
 
 
 /****************************************************************************
@@ -151,32 +200,45 @@ void GUI_DrawCircle_Limit(uint16_t CENTER_x, uint16_t CENTER_y,uint16_t RADIUS_r
 
 void Window_Start()
 {
-	GUI_DrawLine(0,27,480,27,RGBto16bit(252,252,252));	   //亮x线
-	GUI_DrawLine(0,26,480,26,RGBto16bit(180,175,160));  //暗x线
-	GUI_printf(5,5,0x0000,Variational_Front_13,"Tempreture:");
-	GUI_printf(110,5,0x0000,Variational_Front_13,Temp_C);
-	GUI_printf(130,5,0x0000,Variational_Front_13,"Humidity:       %%");
-	GUI_DrawLine(240,0,240,26,RGBto16bit(180,175,160));  //暗x线
-	GUI_printf(245,5,0x0000,Variational_Front_13,"Tempreture:");
-	GUI_printf(350,5,0x0000,Variational_Front_13,Temp_C);
-	GUI_printf(370,5,0x0000,Variational_Front_13,"Humidity:       %%");
+	char ip[30]= "10.235.6.197";
+	lcd_clear(0,0,0);
+	GUI_DrawLine(0,27,479,27,RGBto16bit(252,252,252));	   //亮x线
+	GUI_DrawLine(0,26,479,26,RGBto16bit(180,175,160));  //暗x线
+	GUI_printf(5,5,0xffff,Variational_Front_13,"IN:  Temp:");
+	GUI_printf(110,5,RGBto16bit(255,255,0),Variational_Front_13,Temp_C);
+	GUI_DrawDotted_Line(135,0,13,1,RGBto16bit(252,252,252),1);
+	GUI_printf(145,5,0xffff,Variational_Front_13,"Hum:");
+	GUI_printf(214,5,RGBto16bit(255,255,0),Variational_Front_13,"%%");
+	GUI_DrawLine(235,0,235,26,RGBto16bit(252,252,252));  //亮y线
+	GUI_DrawLine(236,0,236,26,RGBto16bit(252,252,252));  //亮y线
+	GUI_printf(245,5,0xffff,Variational_Front_13,"OUT:  Temp:");
+	GUI_printf(350,5,RGBto16bit(255,255,0),Variational_Front_13,Temp_C);
+	GUI_DrawDotted_Line(375,0,13,1,RGBto16bit(252,252,252),1);
+	GUI_printf(385,5,0xffff,Variational_Front_13,"Hum:");
+	GUI_printf(454,5,RGBto16bit(255,255,0),Variational_Front_13,"%%");
 
-	GUI_DrawCircle_Limit(560,120,120,0x0000,RGBto16bit(0,175,160),1,0);  // Draw circle
-	//GUI_DrawCircle_Limit(540,126,130,0x0000,RGBto16bit(0,175,160),0,1);
+	GUI_DrawCircle_Limit(560,120,120,0x0000,RGBto16bit(30,50,64),1,0);  // Draw circle
+
 
 	GUI_DrawSoft_Key(0,227,80,45,0);	 //软按键1
 	GUI_DrawSoft_Key(80,227,80,45,0);	 //软按键2
 	GUI_DrawSoft_Key(160,227,80,45,0);	 //软按键3
 	GUI_DrawSoft_Key(240,227,80,45,0);	 //软按键4
 	GUI_DrawSoft_Key(320,227,80,45,0);	 //软按键5
-	GUI_DrawSoft_Key(400,227,80,45,0);	 //软按键6
-	FuncCell_set(1,"< Syrng",13,1);		 //软按键区域内容  << Syringe
-	FuncCell_set(2,"Syrng >",15,1);	 //软按键区域内容  Syringe >>
-	FuncCell_set(3,"Light",26,1);		 //软按键区域内容  light
-	FuncCell_set(4,"Laser",25,1);		 //软按键区域内容  Laser
-	FuncCell_set(5,"User",28,1);		 //软按键区域内容  User
+	GUI_DrawSoft_Key(400,227,80,45,1);	 //软按键6
+	FuncCell_set(1,"< Syrng",13,0);		 //软按键区域内容  << Syringe
+	FuncCell_set(2,"Syrng >",15,0);	 	//软按键区域内容  Syringe >>
+	FuncCell_set(3,"Light",26,0);		 //软按键区域内容  light
+	FuncCell_set(4,"Laser",25,0);		 //软按键区域内容  Laser
+	FuncCell_set(5,"User",28,0);		 //软按键区域内容  User
 	FuncCell_set(6,"IP Addr.",15,1);	 //软按键区域内容  Ip Address
+
+	GUI_printf(70,70,0xffff,Variational_Front_32,"IP Address:");
+	get_host_addresses(AF_INET,ip);
+	GUI_printf(140,120,0xffff,Variational_Front_32,ip);
 }
+
+
 
 int main(int argn, char* argv[])
 {
@@ -195,9 +257,13 @@ int main(int argn, char* argv[])
 //	shield_ctrl_init();
 	//GUI_printf(10,10,RGBto16bit(255,0,0),Fixed_Font_16_8, "lizhizhou");
 
-	//SSD1963_clear(0x0000);				  //清屏
-	//GUI_printf(245,55,0x0000,Variational_Front_13,Arrow_up);
+
+
+
 	Window_Start();
+	//GUI_DrawBox(0,0,10,10,0xffff);
+	//GUI_DrawBox(50,50,10,10,0xffff);
+
 	cli();
 	/*if(argn != 2) {
 		printf("arg error\n");

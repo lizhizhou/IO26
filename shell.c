@@ -80,6 +80,8 @@ int show_moisture(int argc,char* argv[])
             printf("Error command");
             return (0);
     }
+    if (moisture >= 100)
+    	moisture = 99.99;
     printf("TMoisture is %.2f%%\n", moisture);
     return (1);
 }
