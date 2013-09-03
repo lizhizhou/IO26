@@ -195,6 +195,7 @@ int microscop_ref(int argc,char* argv[])
     	return (false);
     if(i == 4)
     {
+    	o.z = 0;
     	micorscope_run_to_coordinates(o);
     	r[0].x=0;
     	r[0].y=0;

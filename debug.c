@@ -12,7 +12,7 @@
 #define LOG_BUFFER_SIZE 2048
 char log_buffer[LOG_BUFFER_SIZE];
 char* pbuffer = log_buffer;
-static int debug_flag = 0;
+int debug_flag = 0;
 int debuginf(const char* fmt,...)
 {
 	if(debug_flag)

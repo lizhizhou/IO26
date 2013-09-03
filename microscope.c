@@ -341,7 +341,15 @@ void microscope_move_to_sample(int index,
     coordinates target ;
     if(index > 24 || index < 0)
         return ;
-    c.phi = angle_to_radian(14.4 * index + ref_angle + FIRST);
+    if(index == 0)
+    {
+        target.x = 0;
+        target.y = 0;
+        target.z = 0;
+        micorscope_run_to_coordinates(target);
+        return;
+    }
+    c.phi = angle_to_radian(14.4 * index-1 + ref_angle + FIRST);
     c.r   = RADIUS;
     c.z   = 0;
     target =  rectangular_to_coordinates(cylindroid_to_rectangular(c));

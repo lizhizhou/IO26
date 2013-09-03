@@ -7,7 +7,7 @@
 
 #ifndef DEBUG_H_
 #define DEBUG_H_
-static int debug_flag;
+extern int debug_flag;
 int debuginf(const char* fmt,...);
 void trace_back();
 #endif /* DEBUG_H_ */

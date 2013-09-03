@@ -243,7 +243,10 @@ int main(int argn, char* argv[])
 		exit(1);
 	}
 	lcd_init();
-	brush_motor_init(MSE_BRUSH_MOTOR_0, 5000, 100);
+	brush_motor_init(MSE_BRUSH_MOTOR_0, 10000, 50);
+	//brush_motor_back(MSE_BRUSH_MOTOR_0);
+	brush_motor_forward(MSE_BRUSH_MOTOR_0);
+
 //	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
 //	shield_ctrl_init();
