@@ -338,20 +338,21 @@ void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle)
 {
     cylindroid  c;
-    coordinates target ;
+    coordinates target;
+    coordinates current = micorscope_get_coordinates();;
     if(index > 24 || index < 0)
         return ;
     if(index == 0)
     {
         target.x = 0;
         target.y = 0;
-        target.z = 0;
+        target.z = current.z;
         micorscope_run_to_coordinates(target);
         return;
     }
     c.phi = angle_to_radian(14.4 * index-1 + ref_angle + FIRST);
     c.r   = RADIUS;
-    c.z   = 0;
+    c.z   = current.z;
     target =  rectangular_to_coordinates(cylindroid_to_rectangular(c));
     target.x += ref_original.x;
     target.y += ref_original.y;

@@ -57,19 +57,23 @@ static void semi_cooler_regulating(float i)
 		i = 1;
 	else if (i < 0)
 		i = 0;
+	debuginf("previous_pwm = %u\n", previous_pwm);
+	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
 	if(previous_state == 1)
 	{
 		unsigned int j;
-		printf("previous_pwm = %u\n", previous_pwm);
 		for(j = previous_pwm; j > DELTA ; j=j-DELTA) {
 			brush_motor_set_pwm(SEMI_COOLER, j);
 		  	debuginf("go down %u\n", j);
 		}
 		previous_state = 0;
+		brush_motor_forward(SEMI_COOLER);
+		for(j = 0; j < pwm - DELTA; j=j+DELTA) {
+			brush_motor_set_pwm(SEMI_COOLER, j);
+	    	debuginf("go up %u\n", j);
+		}
     	debuginf("buffer time for cooler\n");
 	}
-	brush_motor_forward(SEMI_COOLER);
-	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
 	brush_motor_set_pwm(SEMI_COOLER, pwm);
 	previous_pwm = pwm;
 }
@@ -81,24 +85,27 @@ static void semi_warmer_regulating(float i)
 		i = 0.5;
 	else if (i < 0)
 		i = 0;
+	debuginf("previous_pwm = %u\n", previous_pwm);
+	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
 	if(previous_state == 0)
 	{
 		unsigned int j;
-		printf("previous_pwm = %u\n", previous_pwm);
 		for(j = previous_pwm; j >DELTA; j=j-DELTA) {
 			brush_motor_set_pwm(SEMI_COOLER, j);
 	    	debuginf("go down %u\n", j);
 		}
+		brush_motor_back(SEMI_COOLER);
+		for(j = 0; j < pwm - DELTA; j=j+DELTA) {
+			brush_motor_set_pwm(SEMI_COOLER, j);
+	    	debuginf("go up %u\n", j);
+		}
 		previous_state = 1;
-    	debuginf("buffer time for warmer\n");
 	}
-	brush_motor_back(SEMI_COOLER);
-	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
 	brush_motor_set_pwm(SEMI_COOLER, pwm);
 	previous_pwm = pwm;
 }
 
-
+static float previous_temp;
 void* temperature_regulating_process(void* arg)
 {
     float temperature;
@@ -107,8 +114,12 @@ void* temperature_regulating_process(void* arg)
     float error_d_d = 0;
 
     while(1) {
-    	debuginf("temperature_regulating_process wake up\n");
-    	temperature = sht1x_get_temperature(SHT1X_1),
+    	temperature = sht1x_get_temperature(SHT1X_1);
+    	if(previous_temp - temperature > 5)
+    		continue;
+    	previous_temp = temperature;
+    	if( temperature > 38 || temperature < 0)
+    		continue;
         error_d_d = error_d;
         error_d = error;
         error = (target_temperature - temperature)/target_temperature;
@@ -117,17 +128,21 @@ void* temperature_regulating_process(void* arg)
         if (temperature < target_temperature - target_temperature * threshold)
         {
         	debuginf("temperature goes up\n");
-            semi_warmer_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+        	semi_cooler_off();
+        	//semi_cooler_on();
+            //semi_warmer_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
             debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
         }
         else if(temperature > target_temperature + target_temperature * threshold)
         {
         	debuginf("temperature goes down\n");
-            semi_cooler_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+        	semi_cooler_on();
+        	semi_cooler_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
             debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
         }
         else
         {
+        	semi_cooler_off();
         	debuginf("temperature keeps\n");
         }
         sleep(1);
@@ -140,7 +155,7 @@ void init_temperature_subsystem(float temperature)
 	pthread_t pid;
 	PORT0_OE  |= 0x1;
 	usleep(50);
-	brush_motor_init(SEMI_COOLER, 500000, 1);
+	brush_motor_init(SEMI_COOLER, 50000, 80);
 	wator_bump_on();
 	set_temperature_target(temperature);
 	pthread_create(&pid, NULL, temperature_regulating_process, "temperature");

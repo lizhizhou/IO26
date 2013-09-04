@@ -236,16 +236,27 @@ int microscop_move(int argc,char* argv[])
 
 int microscop_set_radius(int argc,char* argv[])
 {
-    int i;
+	float i;
     if(argc < 1) {
         printf("Error command");
         return (false);
     }
-    sscanf(argv[0], "%d", &i);
-    RADIUS = i;
+    sscanf(argv[0], "%f", &i);
+    RADIUS = i*100;
     return (true);
 }
 
+int microscop_set_angle(int argc,char* argv[])
+{
+    float i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%f", &i);
+    angle = i;
+    return (true);
+}
 
 int manual_calibration(int argc,char* argv[])
 {
@@ -405,6 +416,7 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"y",         "regular y of micro scope",          microscop_y},
     {"z",         "regular z of micro scope",          microscop_z},
     {"rad",       "set the radius of the sample",      microscop_set_radius},
+    {"angle",     "set the first angle of the sample", microscop_set_angle},
     {"move",      "Move to the sample",                microscop_move},
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"syf",       "syringe run forward",               syringe_plus},
@@ -489,7 +501,7 @@ int cli() {
     microscope_init();
     syringe_init();
     init_temperature_subsystem(20.0);
-    //init_moisture_subsystem(100.0);
+    init_moisture_subsystem(80.0);
     fan_motor_init(MSE_FAN_MOTOR_1, 5000, 100);
     fan_motor_init(MSE_FAN_MOTOR_2, 5000, 100);
 

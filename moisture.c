@@ -12,6 +12,7 @@
 #include "PIO26.h"
 #include "fan_motor.h"
 #include "PID.h"
+#include "debug.h"
 static float target_moisture;
 static float threshold = 0;
 
@@ -46,6 +47,7 @@ static void humidifier_regulating(float i)
 		i = 1;
 	else if (i < 0)
 		i = 0;
+	debuginf("i is %f\n",i);
 	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
 	fan_motor_set_pwm(HUMIDIFIER, pwm);
 }
@@ -57,6 +59,7 @@ static void exhaust_regulating(float i)
 		i = 1;
 	else if (i < 0)
 		i = 0;
+	debuginf("i is %f\n",i);
 	pwm = (0xffffffff - 0x1fffffff)*i + 0x1fffffff;
 	fan_motor_set_pwm(EXHAUST, pwm);
 }
@@ -77,7 +80,6 @@ void* moisture_regulating_process(void *arg)
     moisture = sht1x_get_moisture(SHT1X_1);
 
     while(1) {
-    	debuginf("moisture_regulating_process wake up\n");
         moisture = sht1x_get_moisture(SHT1X_1);
         error_d_d = error_d;
         error_d = error;
@@ -118,6 +120,6 @@ void init_moisture_subsystem(float moisture)
 	pthread_t pid;
     fan_motor_init(EXHAUST, 50000, 50);
     fan_motor_init(HUMIDIFIER, 50000, 50);
-	set_moisture_target(moisture);
+    set_moisture_target(moisture);
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
 }
