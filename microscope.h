@@ -17,6 +17,7 @@ typedef struct coordinates_t {
 
 extern int RADIUS;
 extern int SAMPLES;
+extern int HOLE;
 
 extern void microscope_init(void);
 extern unsigned int microscope_x_plus(unsigned int step);

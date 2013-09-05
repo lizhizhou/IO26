@@ -185,7 +185,7 @@ float angle = 0 ;
 int microscop_ref(int argc,char* argv[])
 {
     int i;
-
+    coordinates current = micorscope_get_coordinates();
     if(argc < 1) {
         printf("Error command");
         return (false);
@@ -195,7 +195,7 @@ int microscop_ref(int argc,char* argv[])
     	return (false);
     if(i == 4)
     {
-    	o.z = 0;
+    	o.z = current.z;
     	micorscope_run_to_coordinates(o);
     	r[0].x=0;
     	r[0].y=0;
@@ -209,6 +209,10 @@ int microscop_ref(int argc,char* argv[])
     	r[3].x=0;
     	r[3].y=0;
     	r[3].z=0;
+    	o.x = 0;
+    	o.y = 0;
+    	o.z = 0;
+    	micorscope_set_coordinates_zero();
     	return (true);
     }
     r[i] = micorscope_get_coordinates();
@@ -255,6 +259,30 @@ int microscop_set_angle(int argc,char* argv[])
     }
     sscanf(argv[0], "%f", &i);
     angle = i;
+    return (true);
+}
+
+int microscop_hole(int argc,char* argv[])
+{
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    microscope_move_to_input_hole(i, o, angle);
+    return (true);
+}
+
+int microscop_set_hole_radius(int argc,char* argv[])
+{
+	float i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%f", &i);
+    HOLE = i*100;
     return (true);
 }
 
@@ -418,6 +446,8 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"rad",       "set the radius of the sample",      microscop_set_radius},
     {"angle",     "set the first angle of the sample", microscop_set_angle},
     {"move",      "Move to the sample",                microscop_move},
+    {"hole",      "Move to the hole",                  microscop_hole},
+    {"holer",      "Set the hole radius",              microscop_set_hole_radius},
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"syf",       "syringe run forward",               syringe_plus},
     {"syb",       "syringe run back",                  syringe_minus},
@@ -500,7 +530,7 @@ int cli() {
 
     microscope_init();
     syringe_init();
-    init_temperature_subsystem(20.0);
+    //init_temperature_subsystem(20.0);
     init_moisture_subsystem(80.0);
     fan_motor_init(MSE_FAN_MOTOR_1, 5000, 100);
     fan_motor_init(MSE_FAN_MOTOR_2, 5000, 100);

@@ -48,7 +48,7 @@ static void humidifier_regulating(float i)
 	else if (i < 0)
 		i = 0;
 	debuginf("i is %f\n",i);
-	pwm = (0xffffffff - 0x30000000)*i + 0x30000000;
+	pwm = (0xffffffff - 0x50000000)*i + 0x50000000;
 	fan_motor_set_pwm(HUMIDIFIER, pwm);
 }
 
@@ -84,6 +84,7 @@ void* moisture_regulating_process(void *arg)
         error_d_d = error_d;
         error_d = error;
         error = (target_moisture - moisture)/target_moisture;
+        debuginf("error %f", error);
     	fp = fopen("log","a");
         fprintf(fp, "%f ", moisture);
         fclose(fp);
@@ -92,8 +93,8 @@ void* moisture_regulating_process(void *arg)
         {
         	debuginf("moisture goes up\n");
             humidifier_on();
-            humidifier_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            humidifier_regulating(1 * error);
+            debuginf("delta %f", error);
             exhaust_off();
         }
         else if(moisture > target_moisture + target_moisture * threshold)
@@ -101,8 +102,8 @@ void* moisture_regulating_process(void *arg)
         	debuginf("moisture goes down\n");
             humidifier_off();
             exhaust_on();
-            exhaust_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            exhaust_regulating(-1 * error);
+            debuginf("delta %f", error);
         }
         else
         {

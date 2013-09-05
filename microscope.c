@@ -23,56 +23,44 @@ static coordinates current;
 static FILE* microscop_file;
 static int get_edge_sensor_x_plus()
 {
-	//return (IOB_IO_16);
-    return (0);
+	return (PORT0_DATA & 0x4);
 }
 static int get_edge_sensor_x_minus()
 {
-	//return (IOB_IO_17);
-    return (0);
+	return (PORT0_DATA & 0x2);
+}
+static int get_infrared_sensor_x()
+{
+	return (PORT0_DATA & 0x8);
 }
 static int get_edge_sensor_y_plus()
 {
-    //return (IOB_IO_18);
-    return (0);
+	return (PORT0_DATA & 0x20);
 }
 static int get_edge_sensor_y_minus()
 {
-    //return (IOB_IO_19);
-    return (0);
+	return (PORT0_DATA & 0x10);
+}
+static int get_infrared_sensor_y()
+{
+	return (PORT0_DATA & 0x40);
 }
 static int get_edge_sensor_z_plus()
 {
-	//return (!IOB_IO_16);
-	return (0);
+	return (PORT0_DATA & 0x100);
 }
 static int get_edge_sensor_z_minus()
 {
-    //return (IOB_IO_17);
-	return (0);
+	return (PORT0_DATA & 0x80);
 }
-
-static int get_infrared_sensor_x()
-{
-    //return (IOB_IO_22);
-    return (1);
-}
-
-static int get_infrared_sensor_y()
-{
-    //return (IOB_IO_23);
-    return (1);
-}
-
 static int get_infrared_sensor_z()
 {
-    //return (IOB_IO_24);
-    return (1);
+	return (PORT0_DATA & 0x200);
 }
 
 void microscope_init()
 {
-    IOB_OE      = 0x00000000;  // init IOB as inport
+	PORT0_OE   &= ~0x3fe;  // init PORT0 1-9 as inport
 	step_motor_init(STEP_MOTOR_X, 50000, 20);
 	step_motor_init(STEP_MOTOR_Y, 50000, 20);
 	step_motor_init(STEP_MOTOR_Z, 50000, 20);
@@ -91,7 +79,7 @@ unsigned int microscope_x_plus(unsigned int step)
     {
         step_motor_move_step_forward(STEP_MOTOR_X);
         if (get_edge_sensor_x_plus())
-        	return (step);
+        	return (i);
     }
     return (step);
 }
@@ -102,7 +90,7 @@ unsigned int microscope_x_minus(unsigned int step)
     {
         step_motor_move_step_back(STEP_MOTOR_X);
         if (get_edge_sensor_x_minus())
-        	return (step);
+        	return (i);
     }
     return (step);
 }
@@ -113,7 +101,7 @@ unsigned int microscope_y_plus(unsigned int step)
     {
         step_motor_move_step_forward(STEP_MOTOR_Y);
         if (get_edge_sensor_y_plus())
-        	return (step);
+        	return (i);
     }
     return (step);
 }
@@ -124,7 +112,7 @@ unsigned int microscope_y_minus(unsigned int step)
     {
         step_motor_move_step_back(STEP_MOTOR_Y);
         if (get_edge_sensor_y_minus())
-        	return (step);
+        	return (i);
     }
     return (step);
 }
@@ -135,7 +123,7 @@ unsigned int microscope_z_plus(unsigned int step)
     {
         step_motor_move_step_forward(STEP_MOTOR_Z);
         if (get_edge_sensor_z_plus())
-        	return (step);
+        	return (i);
     }
     return (step);
 }
@@ -146,7 +134,7 @@ unsigned int microscope_z_minus(unsigned int step)
     {
         step_motor_move_step_back(STEP_MOTOR_Z);
         if (get_edge_sensor_z_minus())
-        	return (step);
+        	return (i);
     }
     return (step);
 }
@@ -334,12 +322,13 @@ void microscope_original_angle(coordinates ref_point[], coordinates* original,
 int RADIUS = 1437;
 int SAMPLES = 12;
 float FIRST = -73.78;
+int HOLE = 1437;
 void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle)
 {
     cylindroid  c;
     coordinates target;
-    coordinates current = micorscope_get_coordinates();;
+    coordinates current = micorscope_get_coordinates();
     if(index > 24 || index < 0)
         return ;
     if(index == 0)
@@ -359,6 +348,18 @@ void microscope_move_to_sample(int index,
     target.z += ref_original.z;
     micorscope_run_to_coordinates(target);
     printf("x = %d, y = %d, z = %d\n", target.x, target.y, target.z);
+}
+
+void microscope_move_to_input_hole(int index, coordinates ref_original, float ref_angle)
+{
+	int temp = RADIUS;
+    coordinates target;
+	RADIUS = HOLE;
+	microscope_move_to_sample(index, ref_original, ref_angle);
+    target = micorscope_get_coordinates();
+	target.x = target.x - 2500;
+    micorscope_run_to_coordinates(target);
+	RADIUS = temp;
 }
 
 void microscope_save_the_data(FILE* file, void* data, int size)
