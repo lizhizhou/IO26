@@ -252,13 +252,13 @@ int main(int argn, char* argv[])
 //	shield_ctrl_init();
 	Window_Start();
 	cli();
-	while(1) {
-		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
-				sht1x_get_moisture(SHT1X_0));
-		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
-				sht1x_get_moisture(SHT1X_1));
-		sleep(1);
-    }
+//	while(1) {
+//		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
+//				sht1x_get_moisture(SHT1X_0));
+//		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_1),
+//				sht1x_get_moisture(SHT1X_1));
+//		sleep(1);
+//    }
 	fpga_close();
 	//trace_back();
 	return 0;

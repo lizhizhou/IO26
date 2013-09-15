@@ -60,7 +60,7 @@ static void exhaust_regulating(float i)
 	else if (i < 0)
 		i = 0;
 	debuginf("i is %f\n",i);
-	pwm = (0xffffffff - 0x1fffffff)*i + 0x1fffffff;
+	pwm = (0xffffffff - 0x1fffffff)*i + 0xe0000000;
 	fan_motor_set_pwm(EXHAUST, pwm);
 }
 
@@ -120,7 +120,7 @@ void* moisture_regulating_process(void *arg)
 void init_moisture_subsystem(float moisture)
 {
 	pthread_t pid;
-    fan_motor_init(EXHAUST, 50000, 50);
+    fan_motor_init(EXHAUST, 500000, 50);
     fan_motor_init(HUMIDIFIER, 50000, 50);
     set_moisture_target(moisture);
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");

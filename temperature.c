@@ -115,9 +115,9 @@ void* temperature_regulating_process(void* arg)
 
     while(1) {
     	temperature = sht1x_get_temperature(SHT1X_1);
+    	previous_temp = temperature;
     	if(previous_temp - temperature > 5)
     		continue;
-    	previous_temp = temperature;
     	if( temperature > 38 || temperature < 0)
     		continue;
         error_d_d = error_d;

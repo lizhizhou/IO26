@@ -20,7 +20,7 @@
 #define STEP_MOTOR_Z        STEP_MOTOR_2
 #define LED 			    MSE_FAN_MOTOR_0
 static coordinates current;
-static FILE* microscop_file;
+//static FILE* microscop_file;
 static int get_edge_sensor_x_plus()
 {
 	return (PORT0_DATA & 0x4);
@@ -320,9 +320,8 @@ void microscope_original_angle(coordinates ref_point[], coordinates* original,
 }
 
 int RADIUS = 1437;
-int SAMPLES = 12;
-float FIRST = -73.78;
-int HOLE = 1437;
+int SAMPLES = 25;
+float FIRST = 108;
 void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle)
 {
@@ -339,7 +338,7 @@ void microscope_move_to_sample(int index,
         micorscope_run_to_coordinates(target);
         return;
     }
-    c.phi = angle_to_radian(14.4 * index-1 + ref_angle + FIRST);
+    c.phi = angle_to_radian(-360.0/SAMPLES * index-1 + ref_angle + FIRST);
     c.r   = RADIUS;
     c.z   = current.z;
     target =  rectangular_to_coordinates(cylindroid_to_rectangular(c));
@@ -350,24 +349,57 @@ void microscope_move_to_sample(int index,
     printf("x = %d, y = %d, z = %d\n", target.x, target.y, target.z);
 }
 
-void microscope_move_to_input_hole(int index, coordinates ref_original, float ref_angle)
+int HOLE = 1437;
+int HOLES = 25;
+float HOLE_FIRST = 108;
+void microscope_move_to_input_hole(int index,
+		coordinates ref_original, float ref_angle)
 {
-	int temp = RADIUS;
+    cylindroid  c;
     coordinates target;
-	RADIUS = HOLE;
-	microscope_move_to_sample(index, ref_original, ref_angle);
-    target = micorscope_get_coordinates();
-	target.x = target.x - 2500;
+    coordinates current = micorscope_get_coordinates();
+    if(index > 25 || index < 0)
+        return ;
+    if(index == 0)
+    {
+        target.x = 0;
+        target.y = 0;
+        target.z = current.z;
+        micorscope_run_to_coordinates(target);
+        return;
+    }
+    c.phi = angle_to_radian(-360.0/HOLES * index-1 + ref_angle + HOLE_FIRST);
+    c.r   = HOLE;
+    c.z   = current.z;
+    target =  rectangular_to_coordinates(cylindroid_to_rectangular(c));
+    target.x += ref_original.x;
+    target.y += ref_original.y;
+    target.z += ref_original.z;
     micorscope_run_to_coordinates(target);
-	RADIUS = temp;
+    printf("x = %d, y = %d, z = %d\n", target.x, target.y, target.z);
 }
 
-void microscope_save_the_data(FILE* file, void* data, int size)
+int DISTANCE=2500;
+int HIGH=5000;
+void microscope_move_neadle_to_sample()
 {
-
+	microscope_x_minus(DISTANCE);
+	microscope_z_minus(HIGH);
 }
 
-void micorscope_load_the_data(FILE* file, void* data, int size)
+void microscope_move_neadle_back()
 {
-
+	microscope_z_plus(HIGH);
+	microscope_x_plus(DISTANCE);
 }
+
+
+//void microscope_save_the_data(FILE* file, void* data, int size)
+//{
+//
+//}
+//
+//void micorscope_load_the_data(FILE* file, void* data, int size)
+//{
+//
+//}

@@ -17,7 +17,10 @@ typedef struct coordinates_t {
 
 extern int RADIUS;
 extern int SAMPLES;
+extern float FIRST;
 extern int HOLE;
+extern int HOLES;
+extern float HOLE_FIRST;
 
 extern void microscope_init(void);
 extern unsigned int microscope_x_plus(unsigned int step);
@@ -38,5 +41,11 @@ extern void microscope_original_angle(coordinates ref_point[],
         coordinates* original, float* angle);
 extern void microscope_move_to_sample(int index,
         coordinates ref_original, float ref_angle);
+extern void microscope_move_to_input_hole(int index,
+		coordinates ref_original, float ref_angle);
+extern int DISTANCE;
+extern int HIGH;
+extern void microscope_move_neadle_to_sample();
+extern void microscope_move_neadle_back();
 extern void microscope_led_set_light(int light);
 #endif /* MICROSCOPE_H_ */

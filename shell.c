@@ -234,7 +234,7 @@ int microscop_move(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0], "%d", &i);
-    microscope_move_to_sample(i, o, angle);
+    microscope_move_to_sample(i, o, 0);
     return (true);
 }
 
@@ -250,6 +250,18 @@ int microscop_set_radius(int argc,char* argv[])
     return (true);
 }
 
+int microscop_set_samples(int argc,char* argv[])
+{
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    SAMPLES = i;
+    return (true);
+}
+
 int microscop_set_angle(int argc,char* argv[])
 {
     float i;
@@ -258,7 +270,7 @@ int microscop_set_angle(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0], "%f", &i);
-    angle = i;
+    FIRST = i;
     return (true);
 }
 
@@ -270,7 +282,9 @@ int microscop_hole(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0], "%d", &i);
-    microscope_move_to_input_hole(i, o, angle);
+    microscope_move_to_input_hole(i, o, 0);
+    microscope_move_neadle_to_sample();
+    microscope_move_neadle_back();
     return (true);
 }
 
@@ -283,6 +297,30 @@ int microscop_set_hole_radius(int argc,char* argv[])
     }
     sscanf(argv[0], "%f", &i);
     HOLE = i*100;
+    return (true);
+}
+
+int microscop_set_holes(int argc,char* argv[])
+{
+    int i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d", &i);
+    HOLES = i;
+    return (true);
+}
+
+int microscop_set_hole_angle(int argc,char* argv[])
+{
+	float i;
+    if(argc < 1) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%f", &i);
+    HOLE_FIRST = i;
     return (true);
 }
 
@@ -336,30 +374,6 @@ int led(int argc,char* argv[])
     microscope_led_set_light(i);
 	return (true);
 }
-
-//int fan(int argc,char* argv[])
-//{
-//    int i, j;
-//    if(argc < 2) {
-//        printf("Error command");
-//        return (false);
-//    }
-//    sscanf(argv[0], "%d", &i);
-//    sscanf(argv[j], "%d", &j);
-//    switch (j)
-//	{
-//    	case 0:
-//
-//    		break;
-//    	case 1:
-//    		break;
-//    	case 2:
-//    		break;
-//	}
-//
-//
-//	return (true);
-//}
 
 int unit_test(int argc,char* argv[])
 {
@@ -445,9 +459,12 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"z",         "regular z of micro scope",          microscop_z},
     {"rad",       "set the radius of the sample",      microscop_set_radius},
     {"angle",     "set the first angle of the sample", microscop_set_angle},
+    {"sample",    "set the number of the samples",     microscop_set_samples},
     {"move",      "Move to the sample",                microscop_move},
     {"hole",      "Move to the hole",                  microscop_hole},
     {"holer",      "Set the hole radius",              microscop_set_hole_radius},
+    {"holes",      "Set the number of holes",          microscop_set_holes},
+    {"holea",      "Set the hole angle",               microscop_set_hole_angle},
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"syf",       "syringe run forward",               syringe_plus},
     {"syb",       "syringe run back",                  syringe_minus},
