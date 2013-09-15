@@ -530,7 +530,7 @@ int cli() {
 
     microscope_init();
     syringe_init();
-    //init_temperature_subsystem(20.0);
+    init_temperature_subsystem(25.0);
     init_moisture_subsystem(80.0);
     fan_motor_init(MSE_FAN_MOTOR_1, 5000, 100);
     fan_motor_init(MSE_FAN_MOTOR_2, 5000, 100);

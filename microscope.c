@@ -329,7 +329,7 @@ void microscope_move_to_sample(int index,
     cylindroid  c;
     coordinates target;
     coordinates current = micorscope_get_coordinates();
-    if(index > 24 || index < 0)
+    if(index > 25 || index < 0)
         return ;
     if(index == 0)
     {

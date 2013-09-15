@@ -122,23 +122,24 @@ void* temperature_regulating_process(void* arg)
     		continue;
         error_d_d = error_d;
         error_d = error;
-        error = (target_temperature - temperature)/target_temperature;
-        debuginf("temperature is %.2fC\n", temperature);
-        debuginf("error = %f\n", error);
+        error = target_temperature - temperature;
+        //error = (target_temperature - temperature)/target_temperature;
+        debuginf("error = %f\t", error);
+        debuginf("temperature is %.2fC\t", temperature);
         if (temperature < target_temperature - target_temperature * threshold)
         {
         	debuginf("temperature goes up\n");
         	semi_cooler_off();
         	//semi_cooler_on();
             //semi_warmer_regulating(PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+            debuginf("delta %f\n", PID(error,error_d,error_d_d, 0.3 ,0 ,0));
         }
         else if(temperature > target_temperature + target_temperature * threshold)
         {
         	debuginf("temperature goes down\n");
         	semi_cooler_on();
-        	semi_cooler_regulating(-PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
-            debuginf("delta %f", PID(error,error_d,error_d_d, 1 ,0.001 ,0.3));
+        	semi_cooler_regulating(-PID(error,error_d,error_d_d, 0.3,0,0));
+            debuginf("delta %f\n", -PID(error,error_d,error_d_d, 0.3 ,0 ,0));
         }
         else
         {

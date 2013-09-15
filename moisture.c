@@ -83,18 +83,19 @@ void* moisture_regulating_process(void *arg)
         moisture = sht1x_get_moisture(SHT1X_1);
         error_d_d = error_d;
         error_d = error;
-        error = (target_moisture - moisture)/target_moisture;
-        debuginf("error %f", error);
+        error = (target_moisture - moisture)/100;
+        //error = (target_moisture - moisture)/target_moisture;
+        debuginf("error = %f\t", error);
     	fp = fopen("log","a");
         fprintf(fp, "%f ", moisture);
         fclose(fp);
-        debuginf("moisture is %.2f%%\n", moisture);
+        debuginf("moisture is %.2f%%\t", moisture);
         if (moisture < target_moisture - target_moisture * threshold)
         {
         	debuginf("moisture goes up\n");
             humidifier_on();
-            humidifier_regulating(1 * error);
-            debuginf("delta %f", error);
+            humidifier_regulating(0.1+PID(error,error_d,error_d_d, 2 ,-0.2,3));
+            debuginf("delta %f\n", error);
             exhaust_off();
         }
         else if(moisture > target_moisture + target_moisture * threshold)
@@ -102,8 +103,8 @@ void* moisture_regulating_process(void *arg)
         	debuginf("moisture goes down\n");
             humidifier_off();
             exhaust_on();
-            exhaust_regulating(-1 * error);
-            debuginf("delta %f", error);
+            exhaust_regulating(PID(error,error_d,error_d_d, 2 ,0 ,0));
+            debuginf("delta %f\n", error);
         }
         else
         {

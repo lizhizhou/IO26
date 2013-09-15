@@ -16,11 +16,12 @@ float PID(float x_n,float x_n_1,float x_n_2, float Kp, float Ki, float Kd)
 {
 	float y_n, A0, A1, A2;
 	static float y_n_1=0.0;
-	A0 = Kp + Ki + Kd;
-	A1 = (-Kp) - (2 * Kd);
-	A2 = Kd;
-	y_n = y_n_1 + A0 * x_n + A1 * x_n_1 + A2 * x_n_2;
-	y_n_1 = y_n;
+//	A0 = Kp + Ki + Kd;
+//	A1 = (-Kp) - (2 * Kd);
+//	A2 = Kd;
+//	y_n = y_n_1 + A0 * x_n + A1 * x_n_1 + A2 * x_n_2;
+//	y_n_1 = y_n;
+	y_n = Kp*x_n+Ki*(x_n+x_n_1+x_n_2)+Kd*(x_n+x_n_2-2*x_n_1);
 	return y_n;
 }
 
