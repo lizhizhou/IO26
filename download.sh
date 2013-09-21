@@ -2,11 +2,11 @@
 #the program file in the host PC 
 set host_file        thermal    
 #the password of the user in lophilo board
-set lophilo_user     lophilo      
+set lophilo_user     simit      
 #the ip or hostname of lophilo board    
-set lophilo_password lab123      
+set lophilo_password simit123     
 #the user name in lophilo board
-set lophilo_address  10.235.6.195    
+set lophilo_address  10.235.6.196    
 #the directory to store the program on lophilo board
 set lophilo_path     ~/test/          
 #download program

@@ -234,7 +234,24 @@ void Window_Start()
 	GUI_printf(70,70,0xffff,Variational_Front_32,"IP Address:");
 	get_host_addresses(AF_INET,ip);
 	GUI_printf(140,120,0xffff,Variational_Front_32,ip);
+
 }
+
+void* lcd_task(void* arg)
+{
+	Window_Start();
+	while(1) {
+
+	}
+}
+
+void pannel_init()
+{
+	lcd_init();
+	pthread_t lcd;
+	pthread_create(&lcd, NULL, lcd_task, NULL);
+}
+
 
 int main(int argn, char* argv[])
 {
@@ -242,15 +259,13 @@ int main(int argn, char* argv[])
 		printf("FPGA open error\n");
 		exit(1);
 	}
-	lcd_init();
 //	brush_motor_init(MSE_BRUSH_MOTOR_0, 10000, 50);
 	//brush_motor_back(MSE_BRUSH_MOTOR_0);
 //	brush_motor_forward(MSE_BRUSH_MOTOR_0);
-
 //	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
 //	shield_ctrl_init();
-	Window_Start();
+	pannel_init();
 	cli();
 //	while(1) {
 //		printf("Temp %.2fC Mois %.2f%%\n\n", sht1x_get_temperature(SHT1X_0),
