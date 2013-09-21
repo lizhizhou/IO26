@@ -400,6 +400,17 @@ int led(int argc,char* argv[])
     microscope_led_set_light(i);
 	return (true);
 }
+int pannel_out(int argc,char* argv[])
+{
+	microscope_y_minus(10000);
+	return (true);
+}
+
+int pannel_in(int argc,char* argv[])
+{
+	microscope_y_plus(5100);
+	return (true);
+}
 
 int unit_test(int argc,char* argv[])
 {
@@ -497,6 +508,8 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"syf",       "syringe run forward",               syringe_plus},
     {"syb",       "syringe run back",                  syringe_minus},
     {"led",       "LED light",                         led},
+    {"po",        "Move out the pannel",               pannel_out},
+    {"pi",        "Move in  the pannel",               pannel_in},
     {"ut",        "Unit test of the system",           unit_test},
     {NULL, NULL, NULL}
 };
