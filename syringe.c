@@ -113,7 +113,7 @@ unsigned int syringe_forward_step(unsigned int step)
     int i;
     for(i = 0; i < step; i++)
     {
-        step_motor_move_step_back(STEP_MOTOR);
+        step_motor_move_step_forward(STEP_MOTOR);
         if (syringe_stuck_check())
         	return (step);
     }
@@ -124,7 +124,7 @@ unsigned int syringe_back_step(unsigned int step)
     int i;
     for(i = 0; i < step; i++)
     {
-        step_motor_move_step_forward(STEP_MOTOR);
+        step_motor_move_step_back(STEP_MOTOR);
         if (syringe_stuck_check())
         	return (step);
     }
