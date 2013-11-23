@@ -23,7 +23,7 @@
 #include "GUI.h"
 #include "led.h"
 #include "lcd.h"
-
+#include "shell.h"
 
 #include <stdio.h>
 #include <stropts.h>
@@ -237,11 +237,24 @@ void Window_Start()
 
 }
 
-void* lcd_task(void* arg)
+void* pannel_task(void* arg)
 {
+	float temp1;
+	float temp2;
+	float moist1;
+	float moist2;
 	Window_Start();
 	while(1) {
-
+    	pthread_mutex_lock(&mutex);
+		temp1  = sht1x_get_temperature(SHT1X_0);
+		temp2  = sht1x_get_temperature(SHT1X_1);
+		moist1 =  sht1x_get_moisture(SHT1X_0);
+		moist2 =  sht1x_get_moisture(SHT1X_1);
+        pthread_mutex_unlock(&mutex);
+		GUI_printf(100,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",temp1);
+		GUI_printf(214,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",temp2);
+		GUI_printf(350,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",moist1);
+		GUI_printf(454,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",moist2);
 	}
 }
 
@@ -249,9 +262,8 @@ void pannel_init()
 {
 	lcd_init();
 	pthread_t lcd;
-	pthread_create(&lcd, NULL, lcd_task, NULL);
+	pthread_create(&lcd, NULL, pannel_task, NULL);
 }
-
 
 int main(int argn, char* argv[])
 {

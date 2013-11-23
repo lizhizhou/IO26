@@ -28,6 +28,8 @@
 #include "unit_test.h"
 #include "debug.h"
 
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 typedef int (*shell_cmd_func)(int argc, char *argv[]);
 typedef struct shell_cmd_t {
     char *name;
@@ -585,7 +587,6 @@ int gets_s(char* buffer, int buf_size)
 int cli() {
     char buffer[CLI_BUFFER_SIZE];
     char *argv[ARG_LIST_SIZE];
-
     microscope_init();
     syringe_init();
     init_temperature_subsystem(25.0);
@@ -613,7 +614,9 @@ int cli() {
         {
             break;
         } else {
+        	pthread_mutex_lock(&mutex);
             cmd_distribution(argc, argv);
+            pthread_mutex_unlock(&mutex);
         }
     }
     return (true);
