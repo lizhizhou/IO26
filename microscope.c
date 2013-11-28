@@ -20,7 +20,11 @@
 #define STEP_MOTOR_Z        STEP_MOTOR_2
 #define LED 			    MSE_FAN_MOTOR_0
 static coordinates current;
-//static FILE* microscop_file;
+//#define X_Parameter 1     // 10 um per setp
+//#define Y_Parameter 1     // 10 um per setp
+#define X_Parameter 2     // 5 um per setp
+#define Y_Parameter 2     // 5 um per setp
+#define Z_Parameter 1     // 10 um per setp
 static int get_edge_sensor_x_plus()
 {
 	return (PORT0_DATA & 0x4);
@@ -75,7 +79,7 @@ void microscope_led_set_light(int light)
 unsigned int microscope_x_plus(unsigned int step)
 {
     int i;
-    for(i = 0; i < step; i++)
+    for(i = 0; i < step * X_Parameter; i++)
     {
         step_motor_move_step_forward(STEP_MOTOR_X);
         if (get_edge_sensor_x_plus())
@@ -86,7 +90,7 @@ unsigned int microscope_x_plus(unsigned int step)
 unsigned int microscope_x_minus(unsigned int step)
 {
     int i;
-    for(i = 0; i < step; i++)
+    for(i = 0; i < step * X_Parameter; i++)
     {
         step_motor_move_step_back(STEP_MOTOR_X);
         if (get_edge_sensor_x_minus())
@@ -97,7 +101,7 @@ unsigned int microscope_x_minus(unsigned int step)
 unsigned int microscope_y_plus(unsigned int step)
 {
     int i;
-    for(i = 0; i < step; i++)
+    for(i = 0; i < step * Y_Parameter; i++)
     {
         step_motor_move_step_forward(STEP_MOTOR_Y);
         if (get_edge_sensor_y_plus())
@@ -108,7 +112,7 @@ unsigned int microscope_y_plus(unsigned int step)
 unsigned int microscope_y_minus(unsigned int step)
 {
     int i;
-    for(i = 0; i < step; i++)
+    for(i = 0; i < step * Y_Parameter; i++)
     {
         step_motor_move_step_back(STEP_MOTOR_Y);
         if (get_edge_sensor_y_minus())
@@ -119,7 +123,7 @@ unsigned int microscope_y_minus(unsigned int step)
 unsigned int microscope_z_plus(unsigned int step)
 {
     int i;
-    for(i = 0; i < step; i++)
+    for(i = 0; i < step * Z_Parameter; i++)
     {
         step_motor_move_step_forward(STEP_MOTOR_Z);
         if (get_edge_sensor_z_plus())
@@ -130,7 +134,7 @@ unsigned int microscope_z_plus(unsigned int step)
 unsigned int microscope_z_minus(unsigned int step)
 {
     int i;
-    for(i = 0; i < step; i++)
+    for(i = 0; i < step * Z_Parameter; i++)
     {
         step_motor_move_step_back(STEP_MOTOR_Z);
         if (get_edge_sensor_z_minus())
@@ -393,13 +397,3 @@ void microscope_move_neadle_back()
 	microscope_x_plus(DISTANCE);
 }
 
-
-//void microscope_save_the_data(FILE* file, void* data, int size)
-//{
-//
-//}
-//
-//void micorscope_load_the_data(FILE* file, void* data, int size)
-//{
-//
-//}
