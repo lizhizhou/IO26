@@ -245,12 +245,12 @@ void* pannel_task(void* arg)
 	float moist2;
 	Window_Start();
 	while(1) {
-    	pthread_mutex_lock(&mutex);
+    	//pthread_mutex_lock(&mutex);
 		temp1  = sht1x_get_temperature(SHT1X_0);
 		temp2  = sht1x_get_temperature(SHT1X_1);
 		moist1 =  sht1x_get_moisture(SHT1X_0);
 		moist2 =  sht1x_get_moisture(SHT1X_1);
-        pthread_mutex_unlock(&mutex);
+        //pthread_mutex_unlock(&mutex);
 		GUI_printf(100,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",temp1);
 		GUI_printf(214,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",temp2);
 		GUI_printf(350,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.2f",moist1);

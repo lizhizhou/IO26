@@ -96,6 +96,11 @@ int set_temperature(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0],"%f", &temperature);
+    if(temperature > 35)
+    {
+        printf("Out of range\n");
+        return (false);
+    }
     set_temperature_target(temperature);
     return (1);
 }
@@ -614,9 +619,9 @@ int cli() {
         {
             break;
         } else {
-        	pthread_mutex_lock(&mutex);
+        	//pthread_mutex_lock(&mutex);
             cmd_distribution(argc, argv);
-            pthread_mutex_unlock(&mutex);
+            //pthread_mutex_unlock(&mutex);
         }
     }
     return (true);
