@@ -35,6 +35,7 @@ int main(int argn, char* argv[])
 //	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
 //	qsys_serial_test();
 //	shield_ctrl_init();
+	init_exit_hanedle();
 	pannel_init();
 	cli();
 	fpga_close();

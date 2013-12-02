@@ -10,5 +10,5 @@
 
 void set_moisture_target(float moisture);
 void init_moisture_subsystem(float moisture);
-
+void stop_moisture_subsystem();
 #endif /* MOISTURE_H_ */

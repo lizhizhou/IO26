@@ -412,10 +412,25 @@ int pannel_out(int argc,char* argv[])
 	microscope_y_minus(10000);
 	return (true);
 }
-
 int pannel_in(int argc,char* argv[])
 {
 	microscope_y_plus(5100);
+	return (true);
+}
+int holez = 0;
+int viewz = 0;
+int hole_z(int argc,char* argv[])
+{
+    coordinates current = micorscope_get_coordinates();
+	holez = current.z;
+	HIGH = holez - viewz;
+	return (true);
+}
+int view_z(int argc,char* argv[])
+{
+    coordinates current = micorscope_get_coordinates();
+    viewz = current.z;
+    HIGH = holez - viewz;
 	return (true);
 }
 
@@ -511,6 +526,8 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"holea",     "Set the hole angle",                microscop_set_hole_angle},
     {"holed",     "Set the hole delta",                microscop_set_hole_delta},
     {"holeuL",    "Set the hole uL",                   microscop_set_hole_uL},
+    {"holez",     "Set current z as the hole z",       hole_z},
+    {"viewz",     "Set current z as the view z",       view_z},
     {"ref",       "set the reference point of micro scope", microscop_ref},
     {"syf",       "syringe run forward",               syringe_plus},
     {"syb",       "syringe run back",                  syringe_minus},

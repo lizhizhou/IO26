@@ -117,11 +117,18 @@ void* moisture_regulating_process(void *arg)
     return (NULL);
 }
 
+static pthread_t pid;
 void init_moisture_subsystem(float moisture)
 {
-	pthread_t pid;
+
     fan_motor_init(EXHAUST, 500000, 50);
     fan_motor_init(HUMIDIFIER, 50000, 50);
     set_moisture_target(moisture);
 	pthread_create(&pid, NULL, moisture_regulating_process, "moisture");
+}
+
+void stop_moisture_subsystem()
+{
+    humidifier_off();
+    exhaust_off();
 }

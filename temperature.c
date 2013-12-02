@@ -155,13 +155,18 @@ void* temperature_regulating_process(void* arg)
     return (NULL);
 }
 
+static pthread_t pid;
 void init_temperature_subsystem(float temperature)
 {
-	pthread_t pid;
 	PORT0_OE  |= 0x1;
 	usleep(50);
 	brush_motor_init(SEMI_COOLER, 50000, 80);
 	wator_bump_on();
 	set_temperature_target(temperature);
 	pthread_create(&pid, NULL, temperature_regulating_process, "temperature");
+}
+
+void stop_temperature_subsystem()
+{
+	semi_cooler_off();
 }
