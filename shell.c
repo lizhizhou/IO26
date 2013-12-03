@@ -138,6 +138,20 @@ int set_microscop_position(int argc,char* argv[])
     return (true);
 }
 
+int set_microscop_position_xy(int argc,char* argv[])
+{
+    coordinates p;
+	p = micorscope_get_coordinates();
+    if(argc < 2) {
+        printf("Error command");
+        return (false);
+    }
+    sscanf(argv[0], "%d %d", &p.x, &p.y);
+    p = micorscope_run_to_coordinates(p);
+    printf("The position is %d %d %d\n", p.x, p.y, p.z);
+    return (true);
+}
+
 int microscop_x(int argc,char* argv[])
 {
     coordinates p;
@@ -512,6 +526,7 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"tempt",     "Set the target temperature",        set_temperature},
     {"moistt",    "Set the target temperature",        set_moisture},
     {"scope",     "set the coordinates of the micro scope",set_microscop_position},
+	{"xy",        "set the coordinates of the micro scope",set_microscop_position_xy},
     {"manual",    "Manual regulate the micro scope",   manual_calibration},
     {"x",         "regular x of micro scope",          microscop_x},
     {"y",         "regular y of micro scope",          microscop_y},
