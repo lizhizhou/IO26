@@ -25,6 +25,7 @@ void signal_handler(int signo)
         	 printf( "Process will  exit, because tty is exit/n");
         	 stop_temperature_subsystem();
         	 stop_moisture_subsystem();
+             exit(0);
              break;
         case SIGSEGV:
              //段错误，意味着指针所对应的地址是无效地址，没有物理内存对应该地址
@@ -58,9 +59,11 @@ void signal_handler(int signo)
         case SIGALRM:
              //时钟定时信号
            	 printf("Process recieve SIGALRM");
-             break;
+             exit(0);
+           	 break;
         case SIGCHLD:
              //处理子进程退出
+             exit(0);
              break;
         default:
         	 printf("%d signal unregister/n", signo);

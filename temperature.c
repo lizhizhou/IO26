@@ -134,8 +134,8 @@ void* temperature_regulating_process(void* arg)
         	debuginf("temperature goes up\n");
         	//semi_cooler_off();
         	semi_cooler_on();
-            semi_warmer_regulating(PID(error,error_d,error_d_d, 0.03,temperature_box/250,1));
-            debuginf("delta %f\n", PID(error,error_d,error_d_d, 0.03,temperature_box/250,1));
+            semi_warmer_regulating(PID(error,error_d,error_d_d, 0.03,temperature_box/250,0.2));
+            debuginf("delta %f\n", PID(error,error_d,error_d_d, 0.03,temperature_box/250,0.2));
         }
         //else if(temperature > target_temperature + target_temperature * threshold)
         else if(temperature > target_temperature - 0.3)

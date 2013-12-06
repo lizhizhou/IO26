@@ -17,6 +17,7 @@
 #include "led.h"
 #include "lcd.h"
 #include "shell.h"
+#include "sht1x.h"
 int get_host_addresses(const int domain, char* ip_address)
 {
   int s;
@@ -230,20 +231,20 @@ void* pannel_task(void* arg)
 	Window_Start();
 	while(1) {
     	pthread_mutex_lock(&mutex);
-		sht1x_get_temperature(SHT1X_0);
-		sht1x_get_temperature(SHT1X_1);
-		sht1x_get_moisture(SHT1X_0);
-		sht1x_get_moisture(SHT1X_1);
+    	temp1 = sht1x_get_temperature(SHT1X_0);
+    	temp2 = sht1x_get_temperature(SHT1X_1);
+    	moist1 = sht1x_get_moisture(SHT1X_0);
+    	moist2 = sht1x_get_moisture(SHT1X_1);
         pthread_mutex_unlock(&mutex);
-		GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
-		GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
-		GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
-		GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
+		GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
+		GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
+		GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
+		GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
 		sleep(1);
-		GUI_printf(79,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp1);
-		GUI_printf(319,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp2);
-		GUI_printf(185,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist1);
-		GUI_printf(425,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist2);
+		GUI_printf(79,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp2);
+		GUI_printf(319,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp1);
+		GUI_printf(185,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist2);
+		GUI_printf(425,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist1);
 	}
 }
 

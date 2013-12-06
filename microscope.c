@@ -20,10 +20,10 @@
 #define STEP_MOTOR_Z        STEP_MOTOR_2
 #define LED 			    MSE_FAN_MOTOR_0
 static coordinates current;
-//#define X_Parameter 1     // 10 um per setp
-//#define Y_Parameter 1     // 10 um per setp
-#define X_Parameter 2     // 5 um per setp
-#define Y_Parameter 2     // 5 um per setp
+#define X_Parameter 1     // 10 um per setp
+#define Y_Parameter 1     // 10 um per setp
+//#define X_Parameter 2     // 5 um per setp
+//#define Y_Parameter 2     // 5 um per setp
 #define Z_Parameter 1     // 10 um per setp
 static int get_edge_sensor_x_plus()
 {

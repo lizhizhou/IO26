@@ -656,6 +656,8 @@ int cli() {
             pthread_mutex_unlock(&mutex);
         }
     }
+    stop_temperature_subsystem();
+    stop_moisture_subsystem();
     return (true);
 }
 

@@ -26,6 +26,7 @@
 #include "lcd.h"
 #include "shell.h"
 #include "panel.h"
+#include "exit.h"
 int main(int argn, char* argv[])
 {
 	if (!fpga_open()) {
@@ -39,6 +40,5 @@ int main(int argn, char* argv[])
 	pannel_init();
 	cli();
 	fpga_close();
-	//trace_back();
 	return 0;
 }
