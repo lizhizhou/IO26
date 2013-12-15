@@ -33,7 +33,8 @@ int main(int argn, char* argv[])
 		printf("FPGA open error\n");
 		exit(1);
 	}
-//	printf("PNL_ENCODER0 = 0x%x", PNL_ENCODER0);
+	printf("PNL_ID = 0x%x\n", PNL_ID);
+	printf("PNL_DATA = 0x%x\n", PNL_DATA);
 //	qsys_serial_test();
 //	shield_ctrl_init();
 	init_exit_hanedle();
