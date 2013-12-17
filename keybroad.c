@@ -8,10 +8,12 @@
 #include <pthread.h>
 #include "FPGA.h"
 #include "platform.h"
+#include "debug.h"
 #define NUM_KEY 12
-#define KEYBROAD PNL_BASE
+#define KEYBROAD PNL_DATA
 static int key;
-static bool key_input;
+static int keybase;
+static bool key_input = false;
 int return_key()
 {
 	if(key_input == false)
@@ -24,24 +26,44 @@ int return_key()
 		return key;
 	}
 }
+int get_key()
+{
+	while(key_input == false);
+	key_input = false;
+	return key;
+}
 void keybroad_thread(void)
 {
-	int temp_key;
+	unsigned int temp_key;
 	int i;
-	temp_key = PNL_BASE;
-	if(temp_key == 0)
-		key_input = false;
-	else
-		key_input = true;
-	for(i=0; i< NUM_KEY; i++)
-	{
-		if (temp_key & (1 << i))
-			key = i+1;
+	while(1) {
+		temp_key = KEYBROAD;
+		if( keybase != temp_key)
+		{
+			printf("key input\n");
+			usleep(500);
+			if( KEYBROAD != temp_key) {
+				printf("bad input\n");
+				continue;
+			}
+			key_input = true;
+			printf("key input 0x%x\n",KEYBROAD);
+			for(i = 0; i < 16; i++)
+			{
+				if((~temp_key >> i) & 0x1 == 0x1)
+				{
+					key = i + 1;
+				}
+			}
+			while(KEYBROAD == temp_key)printf("key input 0x%x\n",KEYBROAD);
+			printf("key input end\n");
+		}
 	}
 }
 
 void keybroad_init()
 {
 	pthread_t keybroad;
+	keybase = KEYBROAD;
 	pthread_create(&keybroad, NULL, keybroad_thread, NULL);
 }

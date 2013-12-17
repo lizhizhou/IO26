@@ -22,7 +22,13 @@ enum key_value{
 	KEY_F4,
 	KEY_F5,
 	KEY_F6,
-	KEY_DN
+	ENCODER_PLUS,
+	ENCODER_MINUS,
+	ENCODER_PLUS_L,
+	ENCODER_MINUS_L,
+	ENCODER_KEY
 };
+
+extern void keybroad_init();
 
 #endif /* KEYBROAD_H_ */

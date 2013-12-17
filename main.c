@@ -33,12 +33,16 @@ int main(int argn, char* argv[])
 		printf("FPGA open error\n");
 		exit(1);
 	}
-	printf("PNL_ID = 0x%x\n", PNL_ID);
-	printf("PNL_DATA = 0x%x\n", PNL_DATA);
 //	qsys_serial_test();
 //	shield_ctrl_init();
 	init_exit_hanedle();
 	pannel_init();
+	keybroad_init();
+	while(1)
+	{
+		//printf("key 0x%x\n", PNL_DATA);
+		printf("get_key is %d\n", get_key());
+	}
 	cli();
 	fpga_close();
 	return 0;
