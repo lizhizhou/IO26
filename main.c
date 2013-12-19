@@ -44,10 +44,6 @@ int main(int argn, char* argv[])
 	init_exit_hanedle();
 	pannel_init();
 	keybroad_init();
-	while(1)
-	{
-		printf("get_key is %d\n", get_key());
-	}
 	cli();
 	fpga_close();
 	return 0;

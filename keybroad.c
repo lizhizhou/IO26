@@ -9,12 +9,13 @@
 #include "FPGA.h"
 #include "platform.h"
 #include "debug.h"
+#include "keybroad.h"
 #define NUM_KEY 12
 #define KEYBROAD PNL_DATA
 static int key;
 static int keybase;
 static bool key_input = false;
-int return_key()
+key_value return_key()
 {
 	if(key_input == false)
 	{
@@ -26,7 +27,7 @@ int return_key()
 		return key;
 	}
 }
-int get_key()
+key_value get_key()
 {
 	while(key_input == false)usleep(50000);
 	key_input = false;

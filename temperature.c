@@ -48,7 +48,7 @@ static void semi_cooler_off()
 static int previous_state = 0;
 static unsigned int previous_pwm = 0;
 
-#define DELTA 500000
+#define DELTA 600000
 
 static void semi_cooler_regulating(float i)
 {
@@ -129,7 +129,7 @@ void* temperature_regulating_process(void* arg)
         debuginf("error = %f\t", error);
         debuginf("temperature is %.2fC\t", temperature);
         //if (temperature < target_temperature - target_temperature * threshold)
-        if (temperature < target_temperature - 0.3)
+        if (temperature < target_temperature - 0.12)
         {
         	debuginf("temperature goes up\n");
         	//semi_cooler_off();
@@ -138,7 +138,7 @@ void* temperature_regulating_process(void* arg)
             debuginf("delta %f\n", PID(error,error_d,error_d_d, 0.03,temperature_box/250,0.2));
         }
         //else if(temperature > target_temperature + target_temperature * threshold)
-        else if(temperature > target_temperature - 0.3)
+        else if(temperature > target_temperature - 0.12)
         {
         	debuginf("temperature goes down\n");
         	semi_cooler_on();

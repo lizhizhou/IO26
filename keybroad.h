@@ -8,7 +8,7 @@
 #ifndef KEYBROAD_H_
 #define KEYBROAD_H_
 
-enum key_value{
+typedef enum key_value_t{
 	KEY_NONE =0,
 	KEY_UP = 1,
 	KEY_DOWN,
@@ -27,8 +27,10 @@ enum key_value{
 	ENCODER_PLUS_L,
 	ENCODER_MINUS_L,
 	ENCODER_KEY
-};
+}key_value;
 
 extern void keybroad_init();
+extern key_value return_key();
+extern key_value get_key();
 
 #endif /* KEYBROAD_H_ */

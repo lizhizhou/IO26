@@ -18,6 +18,7 @@
 #include "lcd.h"
 #include "shell.h"
 #include "sht1x.h"
+#include "keybroad.h"
 int get_host_addresses(const int domain, char* ip_address)
 {
   int s;
@@ -224,22 +225,37 @@ void Window_Start()
 
 void* pannel_task(void* arg)
 {
+	int color = 0;
+	key_value key;
 	float temp1  =0;
 	float temp2  =0;
 	float moist1 =0;
 	float moist2 =0;
 	Window_Start();
 	while(1) {
-    	pthread_mutex_lock(&mutex);
+    	//pthread_mutex_lock(&mutex);
     	temp1 = sht1x_get_temperature(SHT1X_0);
     	temp2 = sht1x_get_temperature(SHT1X_1);
     	moist1 = sht1x_get_moisture(SHT1X_0);
     	moist2 = sht1x_get_moisture(SHT1X_1);
-        pthread_mutex_unlock(&mutex);
-		GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
-		GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
-		GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
-		GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
+        //pthread_mutex_unlock(&mutex);
+    	key = return_key();
+		if(key == KEY_F1){
+			color = 1;
+		} else if(key == KEY_F2){
+			color = 0;
+		}
+    	if(color == 1) {
+			GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
+			GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
+			GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
+			GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
+		} else {
+			GUI_printf(79,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f\x81",temp2);
+			GUI_printf(319,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f\x81",temp1);
+			GUI_printf(185,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f%%",moist2);
+			GUI_printf(425,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f%%",moist1);
+		}
 		sleep(1);
 		GUI_printf(79,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp2);
 		GUI_printf(319,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp1);
