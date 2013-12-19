@@ -27,12 +27,18 @@
 #include "shell.h"
 #include "panel.h"
 #include "exit.h"
+#include <sched.h>
 int main(int argn, char* argv[])
 {
+	struct sched_param param;
+	param.sched_priority = 1;
+	sched_setscheduler( 0, SCHED_FIFO, &param);
+
 	if (!fpga_open()) {
 		printf("FPGA open error\n");
 		exit(1);
 	}
+
 //	qsys_serial_test();
 //	shield_ctrl_init();
 	init_exit_hanedle();
@@ -40,7 +46,6 @@ int main(int argn, char* argv[])
 	keybroad_init();
 	while(1)
 	{
-		//printf("key 0x%x\n", PNL_DATA);
 		printf("get_key is %d\n", get_key());
 	}
 	cli();

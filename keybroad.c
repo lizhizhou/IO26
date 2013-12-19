@@ -28,7 +28,7 @@ int return_key()
 }
 int get_key()
 {
-	while(key_input == false);
+	while(key_input == false)usleep(50000);
 	key_input = false;
 	return key;
 }
@@ -37,12 +37,12 @@ void keybroad_thread(void)
 	unsigned int temp_key;
 	int i;
 	while(1) {
-		temp_key = KEYBROAD;
+		temp_key = KEYBROAD & 0xFFFF;
 		if( keybase != temp_key)
 		{
 			printf("key input\n");
 			usleep(500);
-			if( KEYBROAD != temp_key) {
+			if( (KEYBROAD & 0xFFFF)  != temp_key) {
 				printf("bad input\n");
 				continue;
 			}
@@ -55,7 +55,8 @@ void keybroad_thread(void)
 					key = i + 1;
 				}
 			}
-			while(KEYBROAD == temp_key)printf("key input 0x%x\n",KEYBROAD);
+			printf("key wait\n");
+			while((KEYBROAD & 0xFFFF) == temp_key)usleep(50000);
 			printf("key input end\n");
 		}
 	}
@@ -64,6 +65,6 @@ void keybroad_thread(void)
 void keybroad_init()
 {
 	pthread_t keybroad;
-	keybase = KEYBROAD;
+	keybase = KEYBROAD & 0xFFFF;
 	pthread_create(&keybroad, NULL, keybroad_thread, NULL);
 }
