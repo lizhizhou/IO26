@@ -19,6 +19,7 @@
 #include "shell.h"
 #include "sht1x.h"
 #include "keybroad.h"
+#include "microscope.h"
 int get_host_addresses(const int domain, char* ip_address)
 {
   int s;
@@ -37,7 +38,6 @@ int get_host_addresses(const int domain, char* ip_address)
   ifconf.ifc_len = sizeof ifr;
 
   if (ioctl(s, SIOCGIFCONF, &ifconf) == -1) {
-    //perror("ioctl");
     return 0;
   }
 
@@ -190,17 +190,13 @@ void Window_Start()
 	GUI_DrawLine(0,27,479,27,RGBto16bit(252,252,252));	   //亮x线
 	GUI_DrawLine(0,26,479,26,RGBto16bit(180,175,160));  //暗x线
 	GUI_printf(5,5,0xffff,Variational_Front_13,"IN:  Temp:");
-	//GUI_printf(110,5,RGBto16bit(255,255,0),Variational_Front_13,Temp_C);
 	GUI_DrawDotted_Line(135,0,13,1,RGBto16bit(252,252,252),1);
 	GUI_printf(145,5,0xffff,Variational_Front_13,"Hum:");
-	//GUI_printf(214,5,RGBto16bit(255,255,0),Variational_Front_13,"%%");
 	GUI_DrawLine(235,0,235,26,RGBto16bit(252,252,252));  //亮y线
 	GUI_DrawLine(236,0,236,26,RGBto16bit(252,252,252));  //亮y线
 	GUI_printf(245,5,0xffff,Variational_Front_13,"OUT:  Temp:");
-	//GUI_printf(350,5,RGBto16bit(255,255,0),Variational_Front_13,Temp_C);
 	GUI_DrawDotted_Line(375,0,13,1,RGBto16bit(252,252,252),1);
 	GUI_printf(385,5,0xffff,Variational_Front_13,"Hum:");
-	//GUI_printf(454,5,RGBto16bit(255,255,0),Variational_Front_13,"%%");
 
 	GUI_DrawCircle_Limit(560,120,120,0x0000,RGBto16bit(30,50,64),1,0);  // Draw circle
 
@@ -213,8 +209,8 @@ void Window_Start()
 	FuncCell_set(1,"< Syrng",13,0);		 //软按键区域内容  << Syringe
 	FuncCell_set(2,"Syrng >",15,0);	 	//软按键区域内容  Syringe >>
 	FuncCell_set(3,"Light",26,0);		 //软按键区域内容  light
-	FuncCell_set(4,"Laser",25,0);		 //软按键区域内容  Laser
-	FuncCell_set(5,"User",28,0);		 //软按键区域内容  User
+	FuncCell_set(4,"User",25,0);		 //软按键区域内容  User
+	FuncCell_set(5,"Exit",28,0);		 //软按键区域内容  Exit
 	FuncCell_set(6,"IP Addr.",15,1);	 //软按键区域内容  Ip Address
 
 	GUI_printf(70,70,0xffff,Variational_Front_32,"IP Address:");
@@ -226,6 +222,7 @@ void Window_Start()
 void* pannel_task(void* arg)
 {
 	int color = 0;
+	char delta1, delta2;
 	key_value key;
 	float temp1  =0;
 	float temp2  =0;
@@ -238,24 +235,43 @@ void* pannel_task(void* arg)
     	temp2 = sht1x_get_temperature(SHT1X_1);
     	moist1 = sht1x_get_moisture(SHT1X_0);
     	moist2 = sht1x_get_moisture(SHT1X_1);
-        //pthread_mutex_unlock(&mutex);
     	key = return_key();
 		if(key == KEY_F1){
-			color = 1;
+			syringe_forward_step(200);
 		} else if(key == KEY_F2){
-			color = 0;
+			syringe_back_step(200);
+		} else if(key == KEY_F3){
+
+		} else if(key == KEY_F4){
+
+		} else if(key == KEY_F5){
+			exit(1);
+		} else if(key == KEY_F6){
+
+		} else if(key == KEY_UP){
+			microscope_y_plus(200);
+		} else if(key == KEY_DOWN){
+			microscope_y_minus(200);
+		} else if(key == KEY_LEFT){
+			microscope_x_minus(200);
+		} else if(key == KEY_RIGHT){
+			microscope_x_plus(200);
 		}
-    	if(color == 1) {
-			GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
-			GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
-			GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
-			GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
-		} else {
-			GUI_printf(79,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f\x81",temp2);
-			GUI_printf(319,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f\x81",temp1);
-			GUI_printf(185,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f%%",moist2);
-			GUI_printf(425,5,RGBto16bit(0,255,0),Variational_Front_13,"%0.1f%%",moist1);
-		}
+		delta1 = get_encoder_delta1();
+		delta2 = get_encoder_delta2();
+		if(delta1 > 0)
+			microscope_z_plus(delta1);
+		else
+			microscope_z_minus(-delta1);
+		if(delta2 > 0)
+			microscope_z_plus(delta2 * 100);
+		else
+			microscope_z_minus(-delta2 * 100);
+        //pthread_mutex_unlock(&mutex);
+		GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
+		GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
+		GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
+		GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
 		sleep(1);
 		GUI_printf(79,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp2);
 		GUI_printf(319,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp1);

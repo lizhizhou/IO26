@@ -38,7 +38,6 @@ int main(int argn, char* argv[])
 		printf("FPGA open error\n");
 		exit(1);
 	}
-
 //	qsys_serial_test();
 //	shield_ctrl_init();
 	init_exit_hanedle();

@@ -22,15 +22,13 @@ typedef enum key_value_t{
 	KEY_F4,
 	KEY_F5,
 	KEY_F6,
-	ENCODER_PLUS,
-	ENCODER_MINUS,
-	ENCODER_PLUS_L,
-	ENCODER_MINUS_L,
-	ENCODER_KEY
+	ENCODER_KEY,
 }key_value;
 
 extern void keybroad_init();
 extern key_value return_key();
 extern key_value get_key();
+extern char get_encoder_delta1();
+extern char get_encoder_delta2();
 
 #endif /* KEYBROAD_H_ */
