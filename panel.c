@@ -205,17 +205,22 @@ void Window_Start()
 	GUI_DrawSoft_Key(160,227,80,45,0);	 //软按键3
 	GUI_DrawSoft_Key(240,227,80,45,0);	 //软按键4
 	GUI_DrawSoft_Key(320,227,80,45,0);	 //软按键5
-	GUI_DrawSoft_Key(400,227,80,45,1);	 //软按键6
+	GUI_DrawSoft_Key(400,227,80,45,0);	 //软按键6
 	FuncCell_set(1,"< Syrng",13,0);		 //软按键区域内容  << Syringe
 	FuncCell_set(2,"Syrng >",15,0);	 	//软按键区域内容  Syringe >>
-	FuncCell_set(3,"Light",26,0);		 //软按键区域内容  light
-	FuncCell_set(4,"User",25,0);		 //软按键区域内容  User
+	FuncCell_set(3,"LED +",25,0);		 //软按键区域内容  light
+	FuncCell_set(4,"LED -",25,0);		 //软按键区域内容  User
 	FuncCell_set(5,"Exit",28,0);		 //软按键区域内容  Exit
-	FuncCell_set(6,"IP Addr.",15,1);	 //软按键区域内容  Ip Address
+	FuncCell_set(6,"IP Addr.",15,0);	 //软按键区域内容  Ip Address
 
-	GUI_printf(70,70,0xffff,Variational_Front_32,"IP Address:");
+	GUI_printf(70,70,0xffff,Variational_Front_13,"Rotary knob :    Ajust the focus");
+	GUI_printf(70,120,0xffff,Variational_Front_13,"Direction keys:    Move the image");
+	//GUI_printf(70,130,0xffff,Variational_Front_13,"F1 F2:Move the Syringe");
+	//GUI_printf(70,170,0xffff,Variational_Front_13,"F3 F4:Change the light of LED");
+	GUI_printf(70,170,0xffff,Variational_Front_13,"IP Address:");
+	//GUI_printf(70,70,0xffff,Variational_Front_32,"IP Address:");
 	get_host_addresses(AF_INET,ip);
-	GUI_printf(140,120,0xffff,Variational_Front_32,ip);
+	GUI_printf(170,160,0xffff,Variational_Front_32,ip);
 
 }
 
@@ -269,12 +274,12 @@ void* pannel_task(void* arg)
 			microscope_z_minus(-delta2 * 100);
         //pthread_mutex_unlock(&mutex);
 		GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
-		GUI_printf(319,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
+		GUI_printf(324,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);
 		GUI_printf(185,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist2);
 		GUI_printf(425,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f%%",moist1);
 		sleep(1);
 		GUI_printf(79,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp2);
-		GUI_printf(319,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp1);
+		GUI_printf(324,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f\x81",temp1);
 		GUI_printf(185,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist2);
 		GUI_printf(425,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist1);
 	}
