@@ -84,9 +84,14 @@ void keybroad_thread(void)
 		temp_encoder1 = (temp_key >> 16) & 0xFF;
 		printf("a = %d", temp_encoder1);
 		temp_encoder2 = (temp_key >> 24) & 0xFF;
-		delta1 = (encoder1 - temp_encoder1) & 0xFF;
+		if(temp_encoder1 > 200 && encoder1 < 50)
+			delta1 = encoder1 + (255 - temp_encoder1);
+		else if (encoder1 > 200 && temp_encoder1 < 50)
+			delta1 = -(255 - encoder1) + temp_encoder1;
+		else
+			delta1 = encoder1 - temp_encoder1;
 		printf("b = %d", encoder1 - temp_encoder1);
-		delta2 = (encoder2 - temp_encoder2) & 0xFF;
+		delta2 = encoder2 - temp_encoder2;
 		encoder1 = temp_encoder1;
 		encoder2 = temp_encoder2;
 		sleep(1);
