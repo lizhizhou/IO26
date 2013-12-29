@@ -235,7 +235,6 @@ void* pannel_task(void* arg)
 	float moist2 =0;
 	Window_Start();
 	while(1) {
-    	//pthread_mutex_lock(&mutex);
     	temp1 = sht1x_get_temperature(SHT1X_0);
     	temp2 = sht1x_get_temperature(SHT1X_1);
     	moist1 = sht1x_get_moisture(SHT1X_0);
@@ -262,6 +261,7 @@ void* pannel_task(void* arg)
 		} else if(key == KEY_RIGHT){
 			microscope_x_plus(200);
 		}
+    	//pthread_mutex_lock(&mutex);
 		delta1 = get_encoder_delta1();
 		delta2 = get_encoder_delta2();
 		if(delta1 > 0)

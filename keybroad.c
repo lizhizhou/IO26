@@ -16,10 +16,10 @@
 static unsigned int key;
 static unsigned int keybase;
 static bool key_input = false;
-static char delta1;
-static char delta2;
-static char encoder1;
-static char encoder2;
+static int delta1;
+static int delta2;
+static unsigned char encoder1;
+static unsigned char encoder2;
 key_value return_key()
 {
 	if(key_input == false)
@@ -39,12 +39,12 @@ key_value get_key()
 	return key;
 }
 
-char get_encoder_delta1()
+int get_encoder_delta1()
 {
 	return delta1;
 }
 
-char get_encoder_delta2()
+int get_encoder_delta2()
 {
 	return delta2;
 }
@@ -80,9 +80,9 @@ void keybroad_thread(void)
 			printf("key input end\n");
 		}
 		temp_key = KEYBROAD & 0xFFFF0000;
-		printf("temp_key = %d", temp_key);
+		//printf("temp_key = %d", temp_key);
 		temp_encoder1 = (temp_key >> 16) & 0xFF;
-		printf("a = %d", temp_encoder1);
+		//printf("a = %d", temp_encoder1);
 		temp_encoder2 = (temp_key >> 24) & 0xFF;
 		if(temp_encoder1 > 200 && encoder1 < 50)
 			delta1 = encoder1 + (255 - temp_encoder1);
@@ -90,8 +90,16 @@ void keybroad_thread(void)
 			delta1 = -(255 - encoder1) + temp_encoder1;
 		else
 			delta1 = encoder1 - temp_encoder1;
-		printf("b = %d", encoder1 - temp_encoder1);
-		delta2 = encoder2 - temp_encoder2;
+		if(delta1 != 0)
+			printf("d1 = %d\n", delta1);
+		if(temp_encoder2 > 200 && encoder2 < 50)
+			delta2 = encoder1 + (255 - temp_encoder2);
+		else if (encoder2 > 200 && temp_encoder2 < 50)
+			delta2 = -(255 - encoder1) + temp_encoder1;
+		else
+			delta2 = encoder2 - temp_encoder2;
+		if(delta2 != 0)
+			printf("d2 = %d\n", delta2);
 		encoder1 = temp_encoder1;
 		encoder2 = temp_encoder2;
 		sleep(1);

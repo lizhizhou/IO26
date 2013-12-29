@@ -28,7 +28,7 @@ typedef enum key_value_t{
 extern void keybroad_init();
 extern key_value return_key();
 extern key_value get_key();
-extern char get_encoder_delta1();
-extern char get_encoder_delta2();
+extern int get_encoder_delta1();
+extern int get_encoder_delta2();
 
 #endif /* KEYBROAD_H_ */
