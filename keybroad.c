@@ -41,12 +41,16 @@ key_value get_key()
 
 int get_encoder_delta1()
 {
-	return delta1;
+	int temp = delta1;
+	delta1 = 0;
+	return temp;
 }
 
 int get_encoder_delta2()
 {
-	return delta2;
+	int temp = delta2;
+	delta2 = 0;
+	return temp;
 }
 
 void keybroad_thread(void)
@@ -85,19 +89,19 @@ void keybroad_thread(void)
 		//printf("a = %d", temp_encoder1);
 		temp_encoder2 = (temp_key >> 24) & 0xFF;
 		if(temp_encoder1 > 200 && encoder1 < 50)
-			delta1 = encoder1 + (255 - temp_encoder1);
+			delta1 += encoder1 + (255 - temp_encoder1);
 		else if (encoder1 > 200 && temp_encoder1 < 50)
-			delta1 = -(255 - encoder1) + temp_encoder1;
+			delta1 += -(255 - encoder1) + temp_encoder1;
 		else
-			delta1 = encoder1 - temp_encoder1;
+			delta1 += encoder1 - temp_encoder1;
 		if(delta1 != 0)
 			printf("d1 = %d\n", delta1);
 		if(temp_encoder2 > 200 && encoder2 < 50)
-			delta2 = encoder1 + (255 - temp_encoder2);
+			delta2 += encoder1 + (255 - temp_encoder2);
 		else if (encoder2 > 200 && temp_encoder2 < 50)
-			delta2 = -(255 - encoder1) + temp_encoder1;
+			delta2 += -(255 - encoder1) + temp_encoder1;
 		else
-			delta2 = encoder2 - temp_encoder2;
+			delta2 += encoder2 - temp_encoder2;
 		if(delta2 != 0)
 			printf("d2 = %d\n", delta2);
 		encoder1 = temp_encoder1;
