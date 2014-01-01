@@ -226,8 +226,8 @@ void Window_Start()
 
 void* pannel_task(void* arg)
 {
-	int color = 0;
-	char delta1, delta2;
+	int delta1, delta2;
+	int led;
 	key_value key;
 	float temp1  =0;
 	float temp2  =0;
@@ -235,7 +235,8 @@ void* pannel_task(void* arg)
 	float moist2 =0;
 	Window_Start();
 	while(1) {
-    	temp1 = sht1x_get_temperature(SHT1X_0);
+    	//pthread_mutex_lock(&mutex);
+		temp1 = sht1x_get_temperature(SHT1X_0);
     	temp2 = sht1x_get_temperature(SHT1X_1);
     	moist1 = sht1x_get_moisture(SHT1X_0);
     	moist2 = sht1x_get_moisture(SHT1X_1);
@@ -245,9 +246,13 @@ void* pannel_task(void* arg)
 		} else if(key == KEY_F2){
 			syringe_back_step(200);
 		} else if(key == KEY_F3){
-
+			led = microscope_led_get_light();
+			if(led < 100)
+				microscope_led_set_light(led + 10);
 		} else if(key == KEY_F4){
-
+			led = microscope_led_get_light();
+			if(led > 10)
+				microscope_led_set_light(led - 10);
 		} else if(key == KEY_F5){
 			exit(1);
 		} else if(key == KEY_F6){
@@ -261,17 +266,16 @@ void* pannel_task(void* arg)
 		} else if(key == KEY_RIGHT){
 			microscope_x_plus(200);
 		}
-    	//pthread_mutex_lock(&mutex);
 		delta1 = get_encoder_delta1();
 		delta2 = get_encoder_delta2();
 		if(delta1 > 0)
-			microscope_z_plus(delta1);
+			microscope_z_plus(delta1 * 100);
 		else
-			microscope_z_minus(-delta1);
+			microscope_z_minus(-delta1 * 100);
 		if(delta2 > 0)
-			microscope_z_plus(delta2 * 100);
+			microscope_z_plus(delta2);
 		else
-			microscope_z_minus(-delta2 * 100);
+			microscope_z_minus(-delta2);
         //pthread_mutex_unlock(&mutex);
 		GUI_printf(79,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp2);
 		GUI_printf(324,5,RGBto16bit(255,255,0),Variational_Front_13,"%0.1f\x81",temp1);

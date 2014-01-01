@@ -63,14 +63,14 @@ void keybroad_thread(void)
 		temp_key = KEYBROAD & 0xFFFF;
 		if( keybase != temp_key)
 		{
-			printf("key input\n");
+			//printf("key input\n");
 			usleep(500);
 			if( (KEYBROAD & 0xFFFF)  != temp_key) {
-				printf("bad input\n");
+				//printf("bad input\n");
 				continue;
 			}
 			key_input = true;
-			printf("key input 0x%x\n",KEYBROAD);
+			//printf("key input 0x%x\n",KEYBROAD);
 			for(i = 0; i < 16; i++)
 			{
 				if((~temp_key >> i) & 0x1 == 0x1)
@@ -79,9 +79,9 @@ void keybroad_thread(void)
 					break;
 				}
 			}
-			printf("key wait\n");
+			//printf("key wait\n");
 			while((KEYBROAD & 0xFFFF) == temp_key)usleep(50000);
-			printf("key input end\n");
+			//printf("key input end\n");
 		}
 		temp_key = KEYBROAD & 0xFFFF0000;
 		//printf("temp_key = %d", temp_key);
@@ -94,19 +94,19 @@ void keybroad_thread(void)
 			delta1 += -(255 - encoder1) + temp_encoder1;
 		else
 			delta1 += encoder1 - temp_encoder1;
-		if(delta1 != 0)
-			printf("d1 = %d\n", delta1);
+		//if(delta1 != 0)
+		//	printf("d1 = %d\n", delta1);
 		if(temp_encoder2 > 200 && encoder2 < 50)
 			delta2 += encoder1 + (255 - temp_encoder2);
 		else if (encoder2 > 200 && temp_encoder2 < 50)
 			delta2 += -(255 - encoder1) + temp_encoder1;
 		else
 			delta2 += encoder2 - temp_encoder2;
-		if(delta2 != 0)
-			printf("d2 = %d\n", delta2);
+		//if(delta2 != 0)
+		//	printf("d2 = %d\n", delta2);
 		encoder1 = temp_encoder1;
 		encoder2 = temp_encoder2;
-		sleep(1);
+		//sleep(1);
 	}
 }
 

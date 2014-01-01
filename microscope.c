@@ -20,10 +20,10 @@
 #define STEP_MOTOR_Z        STEP_MOTOR_2
 #define LED 			    MSE_FAN_MOTOR_0
 static coordinates current;
-//#define X_Parameter 1     // 10 um per setp
-//#define Y_Parameter 1     // 10 um per setp
-#define X_Parameter 2     // 5 um per setp
-#define Y_Parameter 2     // 5 um per setp
+#define X_Parameter 1     // 10 um per setp
+#define Y_Parameter 1     // 10 um per setp
+//#define X_Parameter 2     // 5 um per setp
+//#define Y_Parameter 2     // 5 um per setp
 #define Z_Parameter 1     // 10 um per setp
 static int get_edge_sensor_x_plus()
 {
@@ -61,6 +61,8 @@ static int get_infrared_sensor_z()
 {
 	return (PORT0_DATA & 0x200);
 }
+#define LED_PWM 1
+static int led_light = LED_PWM * 10;
 
 void microscope_init()
 {
@@ -68,12 +70,18 @@ void microscope_init()
 	step_motor_init(STEP_MOTOR_X, 50000, 20);
 	step_motor_init(STEP_MOTOR_Y, 50000, 20);
 	step_motor_init(STEP_MOTOR_Z, 50000, 20);
-	fan_motor_init(LED, 5000, 1);
+	fan_motor_init(LED, 5000, LED_PWM);
+}
+
+int microscope_led_get_light()
+{
+	return led_light;
 }
 
 void microscope_led_set_light(int light)
 {
 	fan_motor_set_pwm(LED, 0xFFFFFFFF / 1000 * light);
+	led_light = light;
 }
 
 unsigned int microscope_x_plus(unsigned int step)

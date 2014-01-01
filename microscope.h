@@ -48,4 +48,5 @@ extern int HIGH;
 extern void microscope_move_neadle_to_sample();
 extern void microscope_move_neadle_back();
 extern void microscope_led_set_light(int light);
+extern int microscope_led_get_light();
 #endif /* MICROSCOPE_H_ */
