@@ -20,6 +20,8 @@
 #include "sht1x.h"
 #include "keybroad.h"
 #include "microscope.h"
+#include "syringe.h"
+#include <stdlib.h>
 int get_host_addresses(const int domain, char* ip_address)
 {
   int s;
@@ -199,7 +201,6 @@ void Window_Start()
 	GUI_printf(385,5,0xffff,Variational_Front_13,"Hum:");
 
 	GUI_DrawCircle_Limit(560,120,120,0x0000,RGBto16bit(30,50,64),1,0);  // Draw circle
-
 	GUI_DrawSoft_Key(0,227,80,45,0);	 //软按键1
 	GUI_DrawSoft_Key(80,227,80,45,0);	 //软按键2
 	GUI_DrawSoft_Key(160,227,80,45,0);	 //软按键3
@@ -233,7 +234,6 @@ void* pannel_task(void* arg)
 	float temp2  =0;
 	float moist1 =0;
 	float moist2 =0;
-	Window_Start();
 	while(1) {
     	//pthread_mutex_lock(&mutex);
 		temp1 = sht1x_get_temperature(SHT1X_0);
@@ -242,9 +242,9 @@ void* pannel_task(void* arg)
     	moist2 = sht1x_get_moisture(SHT1X_1);
     	key = return_key();
 		if(key == KEY_F1){
-			syringe_forward_step(200);
-		} else if(key == KEY_F2){
 			syringe_back_step(200);
+		} else if(key == KEY_F2){
+			syringe_forward_step(200);
 		} else if(key == KEY_F3){
 			led = microscope_led_get_light();
 			if(led < 100)
@@ -287,12 +287,15 @@ void* pannel_task(void* arg)
 		GUI_printf(185,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist2);
 		GUI_printf(425,5,RGBto16bit(0,0,0),Variational_Front_13,"%0.1f%%",moist1);
 	}
+	return NULL;
 }
+
 
 void pannel_init()
 {
-	lcd_init();
 	pthread_t lcd;
+	lcd_init();
+	Window_Start();
 	pthread_create(&lcd, NULL, pannel_task, NULL);
 }
 

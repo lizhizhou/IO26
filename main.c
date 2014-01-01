@@ -28,12 +28,15 @@
 #include "panel.h"
 #include "exit.h"
 #include <sched.h>
+//#define INIT_PROGRAM
 int main(int argn, char* argv[])
 {
-	struct sched_param param;
-	param.sched_priority = 1;
-	sched_setscheduler( 0, SCHED_FIFO, &param);
-
+//	struct sched_param param;
+//	param.sched_priority = 1;
+//	sched_setscheduler( 0, SCHED_FIFO, &param);
+#ifdef INIT_PROGRAM
+	pannel_init();
+#else
 	if (!fpga_open()) {
 		printf("FPGA open error\n");
 		exit(1);
@@ -45,5 +48,6 @@ int main(int argn, char* argv[])
 	keybroad_init();
 	cli();
 	fpga_close();
+#endif
 	return 0;
 }

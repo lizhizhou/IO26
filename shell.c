@@ -651,9 +651,9 @@ int cli() {
         {
             break;
         } else {
-        	pthread_mutex_lock(&mutex);
+        	//pthread_mutex_lock(&mutex);
             cmd_distribution(argc, argv);
-            pthread_mutex_unlock(&mutex);
+            //pthread_mutex_unlock(&mutex);
         }
     }
     stop_temperature_subsystem();
