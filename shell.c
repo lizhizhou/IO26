@@ -367,7 +367,7 @@ int microscop_set_hole_uL(int argc,char* argv[])
         return (false);
     }
     sscanf(argv[0], "%f", &i);
-    UL = i*20;
+    UL = i;
     return (true);
 }
 
