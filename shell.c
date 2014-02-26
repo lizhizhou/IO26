@@ -438,6 +438,8 @@ int hole_z(int argc,char* argv[])
     coordinates current = micorscope_get_coordinates();
 	holez = current.z;
 	HIGH = holez - viewz;
+	current.z = viewz;
+	micorscope_run_to_coordinates(current);
 	return (true);
 }
 int view_z(int argc,char* argv[])
