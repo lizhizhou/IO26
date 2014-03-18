@@ -520,6 +520,8 @@ int cli_debug(int argc,char* argv[])
     return (true);
 }
 
+extern int picoc(int argc, char **argv);
+
 shell_cmd_func_t shell_cmd_func_list[] = {
 	{"debug",     "on/off the debug log",              cli_debug},
 	{"help",      "Print Help Manual",                 cli_help},
@@ -552,6 +554,7 @@ shell_cmd_func_t shell_cmd_func_list[] = {
     {"po",        "Move out the pannel",               pannel_out},
     {"pi",        "Move in  the pannel",               pannel_in},
     {"ut",        "Unit test of the system",           unit_test},
+    {"picoc",         "C language script",                 picoc},
     {NULL, NULL, NULL}
 };
 
@@ -604,6 +607,7 @@ static int parser_cli(char* buffer, char* argv[])
                     i++;
                     break;
                 }
+                argv[i] = '\0';
             }
         }
     }
