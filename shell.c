@@ -607,7 +607,6 @@ static int parser_cli(char* buffer, char* argv[])
                     i++;
                     break;
                 }
-                argv[i] = '\0';
             }
         }
     }
