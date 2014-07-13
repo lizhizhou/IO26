@@ -20,10 +20,10 @@
 #define STEP_MOTOR_Z        STEP_MOTOR_2
 #define LED 			    MSE_FAN_MOTOR_0
 static coordinates current;
-//#define X_Parameter 1     // 10 um per setp
-//#define Y_Parameter 1     // 10 um per setp
-#define X_Parameter 2     // 5 um per setp
-#define Y_Parameter 2     // 5 um per setp
+#define X_Parameter 1     // 10 um per setp
+#define Y_Parameter 1     // 10 um per setp
+//#define X_Parameter 2     // 5 um per setp
+//s#define Y_Parameter 2     // 5 um per setp
 #define Z_Parameter 1     // 10 um per setp
 static int get_edge_sensor_x_plus()
 {
@@ -392,16 +392,37 @@ void microscope_move_to_input_hole(int index,
 }
 
 int DISTANCE=2500;
+int DELTA = 0;
 int HIGH=5000;
 void microscope_move_neadle_to_sample()
 {
-	microscope_x_minus(DISTANCE);
-	microscope_z_minus(HIGH);
+	if(DISTANCE > 0)
+		microscope_x_plus(DISTANCE);
+	else
+		microscope_x_minus(-DISTANCE);
+	if(DELTA > 0)
+		microscope_y_plus(DELTA);
+	else
+		microscope_y_minus(-DELTA);
+	if(HIGH > 0)
+		microscope_z_plus(HIGH);
+	else
+		microscope_z_minus(-HIGH);
 }
 
 void microscope_move_neadle_back()
 {
-	microscope_z_plus(HIGH);
-	microscope_x_plus(DISTANCE);
+	if(HIGH > 0)
+		microscope_z_minus(HIGH);
+	else
+		microscope_z_plus(-HIGH);
+	if(DELTA > 0)
+		microscope_y_minus(DELTA);
+	else
+		microscope_y_plus(-DELTA);
+	if(DISTANCE > 0)
+		microscope_x_minus(DISTANCE);
+	else
+		microscope_x_plus(-DISTANCE);
 }
 

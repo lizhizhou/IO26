@@ -349,13 +349,16 @@ int microscop_set_hole_angle(int argc,char* argv[])
 
 int microscop_set_hole_delta(int argc,char* argv[])
 {
-	float i;
+	int i, j, k;
     if(argc < 1) {
         printf("Error command");
         return (false);
     }
-    sscanf(argv[0], "%f", &i);
-    DISTANCE = i*100;
+    sscanf(argv[0], "%d %d %d", &i, &j, &k);
+    DISTANCE  = i;
+    DELTA     = j;
+    HIGH      = k;
+    debuginf("i %d j %d k %d", DISTANCE, DELTA, HIGH);
     return (true);
 }
 

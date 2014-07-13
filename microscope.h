@@ -45,6 +45,7 @@ extern void microscope_move_to_input_hole(int index,
 		coordinates ref_original, float ref_angle);
 extern int DISTANCE;
 extern int HIGH;
+extern int DELTA;
 extern void microscope_move_neadle_to_sample();
 extern void microscope_move_neadle_back();
 extern void microscope_led_set_light(int light);
